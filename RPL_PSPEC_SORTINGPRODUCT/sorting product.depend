@@ -1,0 +1,5 @@
+# depslib dependency file v1.0
+1728178692 source:d:\coolyeah\sems 5\impal\sorting product\main.c
+	<stdio.h>
+	<string.h>
+
