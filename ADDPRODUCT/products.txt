@@ -1,0 +1,1 @@
+Product: sepatu, Quantity: 3, Price: 20000.00
