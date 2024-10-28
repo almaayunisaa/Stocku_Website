@@ -136,3 +136,29 @@ INSERT INTO Product (namaCategory, Produk, ID, Stok, Indikator, Aksi, Prediksi, 
 ('Rumah_Tangga', 'Downy', 'PRD026', 130, 'Hijau', 'Edit', NULL, 'Rp35.000,-');
 
 SELECT * FROM Product;
+
+ALTER TABLE Product DROP COLUMN Aksi;
+ALTER TABLE Product DROP COLUMN Indikator;
+
+ALTER TABLE Administrator ADD email VARCHAR(255);
+
+SELECT * FROM Administrator;
+
+SET SQL_SAFE_UPDATES = 0;
+DELETE FROM Administrator WHERE email='mancool@mail.com';
+SET SQL_SAFE_UPDATES = 1;
+
+UPDATE Administrator 
+SET email = 'mancool@mail.com' 
+WHERE username = 'manager_keren';
+
+UPDATE Administrator 
+SET email = 'funplayer@mail.com' 
+WHERE username = 'vantasticMe';
+
+CREATE TABLE oldProduct (
+	ID VARCHAR(255),
+    Stok INT,
+    Harga VARCHAR(255),
+    PRIMARY KEY (ID)
+);
