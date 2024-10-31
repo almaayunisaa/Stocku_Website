@@ -1,0 +1,251 @@
+/* Global Styling */
+body {
+    background-color: #f8f9fa;
+}
+
+/* Sidebar Styling */
+.sidebar {
+    background-color: #EA8D45;
+    min-height: 100vh;
+}
+
+.nav-link {
+    font-size: 18px;
+    margin-bottom: 10px;
+    position: relative;
+}
+/* Container Logo */
+.logo-container {
+    display: flex;
+    align-items: center;
+    justify-content: start;
+}
+
+/* Styling untuk Logo Image */
+.logo-image {
+    width: 30px;  /* Atur ukuran logo */
+    height: 30px; /* Sama seperti lingkaran sebelumnya */
+    object-fit: contain; /* Agar gambar tidak terpotong */
+}
+
+
+/* Styling Teks StocKu */
+h3 {
+    color: white;
+    font-weight: bold;
+    margin: 0; /* Hilangkan margin agar rapi */
+}
+
+/* Indikator Kecil di Kiri */
+.indicator {
+    width: 10px;
+    height: 30px;
+    background-color: transparent;
+    border-radius: 3px;
+    position: absolute;
+    left: -25px; /* Memaksa menempel sedikit ke luar sidebar */
+    top: 50%; /* Posisikan indikator di tengah secara vertikal */
+    transform: translateY(-50%);
+    transition: background-color 0.3s;
+}
+
+/* Indikator untuk Menu Aktif */
+.nav-link.active .indicator {
+    background-color: #CBF3F0; /* Warna sesuai permintaan */
+}
+
+/* Highlighted Indicator */
+.nav-link.active .indicator {
+    background-color: #CBF3F0;
+}
+
+/* Main Content Styling */
+.header-content {
+    background-color: white; /* Latar belakang putih untuk header */
+    padding: 10px 20px; /* Tambahkan padding untuk header */
+    border-bottom: 2px solid #ff9900; /* Garis pemisah di bawah header */
+}
+
+.dashboard-title {
+    color: #CBF3F0; /* Warna teks Dashboard */
+    font-weight: bold;
+}
+
+.admin-text {
+    color: #B9B9B9; /* Warna teks Admin */
+    font-weight: bold;
+    font-size: 16px;
+    margin-right: 40px !important;
+}
+
+.icon-container {
+    width: 40px;
+    height: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 5px;
+    margin-right: 30px;
+}
+
+.admin-icon {
+    width: 50px;
+    height: 50px;
+}
+
+/* Horizontal Line Styling */
+.header-line {
+    border: none;
+    border-top: 2px solid #ff9900; /* Warna garis */
+    width: 100%;
+    margin: 20px 0; /* Jarak atas dan bawah garis */
+}
+
+.search-input {
+    border: 2px solid #ff9900; /* Warna border oranye */
+    box-sizing: border-box;
+    border-radius: 50px !important;
+    padding: 10px 40px; /* Padding untuk memberi ruang pada teks dan ikon */
+    outline: none; /* Menghapus outline default */
+    font-size: 16px; /* Ukuran font yang sesuai */
+    width: 50px; /* Mengatur lebar menjadi setengah dari konten utama */
+    margin-right: 700px;
+    
+}
+
+.search-input::placeholder {
+    color: #b0b0b0; /* Warna placeholder */
+}
+
+.search-icon {
+    position: absolute; /* Menempatkan ikon secara absolut */
+    right: 730px; /* Jarak dari kanan */
+    top: 50%; /* Posisikan di tengah vertikal */
+    transform: translateY(-50%); /* Memastikan ikon berada di tengah */
+    width: 20px; /* Ukuran ikon */
+    height: 20px; /* Ukuran ikon */
+}
+
+/* Dropdown Styling */
+.dropdown-custom {
+    position: absolute;
+    top: 80px; /* Sesuaikan dengan posisi */
+    right: 30px;
+    background-color: white;
+    border: 1px solid #EA8D45;
+    border-radius: 10px;
+    padding: 15px;
+    min-width: 200px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    font-family: 'Arial', sans-serif;
+}
+
+/* Header dalam Dropdown */
+.dropdown-header {
+    margin-bottom: 10px;
+    text-align: center;
+}
+
+.email-label {
+    font-weight: bold;
+    color: #A4D0C4;
+}
+
+.email-address {
+    display: block;
+    color: gray;
+    margin-top: 5px;
+}
+
+/* Item Dropdown */
+.dropdown-item {
+    display: flex;
+    align-items: center;
+    margin-top: 10px;
+    font-size: 16px;
+    color: gray;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.dropdown-item:hover {
+    background-color: #f1f1f1;
+    border-radius: 5px;
+    padding: 5px;
+}
+
+/* Ikon dalam Dropdown */
+.dropdown-icon {
+    width: 20px;
+    height: 20px;
+    margin-right: 10px;
+}
+
+.table-container {
+    margin-top: 20px;
+}
+
+.table {
+    width: 100%;
+    margin-bottom: 1rem;
+    background-color: white; /* Warna latar belakang putih */
+    border: 2px solid #FF9900; /* Border oranye di seluruh tabel */
+    border-collapse: collapse; 
+   
+}
+
+
+.table-striped tbody tr:nth-of-type(odd) {
+    background-color: white;
+}
+
+th {
+    text-align: left;
+    color: #FF9900; /* Matches the orange styling */
+    font-weight: bold;
+    height: 20px;
+}
+
+td {
+    font-size: 14px;
+    background-color: white;
+    vertical-align: middle;
+}
+.not-found-alert {
+    position: fixed;
+    top: 30px;
+    right: 5px;
+    background: none;
+    border: none;
+    padding: 0;
+    z-index: 1000;
+    width: 350px;
+    height: 200px;
+}
+
+.not-found-alert img {
+    width: 100%; /* Sesuaikan ukuran ikon agar memenuhi container */
+    height: auto;
+}
+
+.btn-close {
+    position: absolute;
+    top: 0;
+    right: 0;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 5px;
+}
+
+.ubah-button {
+    background: none;
+    border: none;
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.ubah-button:hover {
+    color: #ff9900;
+}

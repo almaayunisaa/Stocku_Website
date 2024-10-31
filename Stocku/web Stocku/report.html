@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>StockKu Dashboard</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="report.css">
+</head>
+<body>
+    <div class="container-fluid">
+        <div class="row flex-nowrap">
+            <!-- Sidebar -->
+            <div class="col-12 col-md-2 col-lg-2 sidebar bg-orange text-white p-4">
+                <div class="d-flex align-items-center mb-4 logo-container">
+                    <img src="image/logo Stocku.svg" alt="StocKu Logo" class="logo-image me-2">
+                    <h3 class="m-0">StocKu</h3>
+                </div>
+                
+                <ul class="nav flex-column">
+                    <li class="nav-item mb-3">
+                        <a class="nav-link text-white d-flex align-items-center" href="home.html">
+                            <img src="image/dashboard icon .svg">
+                            <span class="indicator"></span>
+                            <i class="bi bi-grid-fill me-2"></i> Dashboard
+                        </a>
+                    </li>
+                    <li class="nav-item mb-3">
+                        <a class="nav-link text-white d-flex align-items-center" href="category.html">
+                            <img src="image/Product icon.svg">
+                            <span class="indicator"></span>
+                            <i class="bi bi-box me-2"></i> Product
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active text-white d-flex align-items-center" href="report.html">
+                            <img src="image/report.svg">
+                            <span class="indicator"></span>
+                            <i class="bi bi-file-earmark-text me-2"></i> Report
+                        </a>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="col p-4">
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <h2 class="dashboard-title">Laporan</h2>
+                    <div class="d-flex align-items-center">
+                        <span class="admin-text me-2">ADMIN</span>
+                        <div class="icon-container">
+                            <img src="image/admin icon .svg" alt="Admin Icon" class="admin-icon">
+                        </div>
+                    </div>
+                </div>
+                
+                <hr class="header-line">
+
+                <!-- Pencarian Produk -->
+                <div class="input-group mb-4">
+                    <input type="text" class="form-control search-input" placeholder="Cari produk">
+                    <img src="image/search icon.svg" alt="Search Icon" class="search-icon">
+                </div>
+
+                <!-- Tombol Cetak Laporan -->
+                <div class="d-flex justify-content-start mb-4">
+                    <button class="btn btn-warning text-white d-flex align-items-center px-3">
+                        <img src="image/report.svg" alt="report" width="20" height="20" class="me-2">
+                        Cetak Laporan
+                    </button>
+                </div>
+
+                <div class="row g-3 ">
+                    <!-- Kolom yang berisi Total Penjualan dan Catatan -->
+                    <div class="col-md-6">
+                        <!-- Total Penjualan -->
+                        <div class="p-3 total-penjualan-panel">
+                            <h5>Total Penjualan</h5>
+                            <h2 class="text-orange">Rp20.143.000,-</h2>
+                            <div class="chart-placeholder">
+                                <img src="image/chart.svg" alt="Chart Placeholder" width="600" height="250" class="align-items-center">
+                            </div>
+                        </div>
+                        
+                        <!-- Catatan -->
+                        <div class="p-3 note-panel mt-2 d-flex align-items-center">
+                            <div>
+                                <img src="image/catatan icon.svg" alt="Note Icon" class="note-icon me-2" >
+                                catatan
+                                <p class="text-warning">Stok Bawang Bombay salah</p>
+                            </div>
+                        </div>
+                    </div>
+                
+                    <!-- Produk Paling Laris -->
+                    <div class="col-md-3">
+                        <div class="p-3 product-list-panel">
+                            <h5 class="judul">PRODUK PALING LARIS</h5>
+                            <ul class="list-group list-group-flush">
+                                <li class="list-group-item">Bawang Bombay</li>
+                                <li class="list-group-item">Bawang Bombay</li>
+                                <li class="list-group-item">Bawang Bombay</li>
+                                <li class="list-group-item">Bawang Bombay</li>
+                                <li class="list-group-item">Bawang Bombay</li>
+                                <li class="list-group-item">Bawang Bombay</li>
+                                <li class="list-group-item">Bawang Bombay</li>
+                                <li class="list-group-item">Bawang Bombay</li>
+                            </ul>
+                        </div>
+                    </div>
+                
+                    <!-- Produk Tidak Laris -->
+                    <div class="col-md-3">
+                        <div class="p-3 product-list-panel">
+                            <h5>PRODUK TIDAK LARIS</h5>
+                            <ul class="list-group list-group-flush">
+                                <li class="list-group-item">Bawang Bombay</li>
+                                <li class="list-group-item">Bawang Bombay</li>
+                                <li class="list-group-item">Bawang Bombay</li>
+                                <li class="list-group-item">Bawang Bombay</li>
+                                <li class="list-group-item">Bawang Bombay</li>
+                                <li class="list-group-item">Bawang Bombay</li>
+                                <li class="list-group-item">Bawang Bombay</li>
+                                <li class="list-group-item">Bawang Bombay</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Notifikasi Produk Tidak Ditemukan -->
+                <div id="not-found-alert" class="not-found-alert d-none">
+                    <img id="notFoundIcon" src="image/Notif Tidak dapat menemukan barang.svg" alt="Not Found Icon" width="30" height="30">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="report.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.10.5/font/bootstrap-icons.min.css"></script>
+</body>
+</html>
