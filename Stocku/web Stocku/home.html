@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>StockKu Dashboard</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="home.css">
+</head>
+<body>
+    <div class="container-fluid">
+        <div class="row flex-nowrap">
+            <!-- Sidebar -->
+            <div class="col-12 col-md-2 col-lg-2 sidebar bg-orange text-white p-4">
+                <div class="d-flex align-items-center mb-4 logo-container">
+                    <img src="image/logo Stocku.svg" alt="StocKu Logo" class="logo-image me-2">
+                    <h3 class="m-0">StocKu</h3>
+                </div>
+                
+                
+                <ul class="nav flex-column">
+                    <li class="nav-item mb-3">
+                        <a class="nav-link active text-white d-flex align-items-center" href="home.html">
+                            <img src="image/dashboard icon .svg">
+                            <span class="indicator"></span>
+                            <i class="bi bi-grid-fill me-2"></i> Dashboard
+                        </a>
+                    </li>
+                    <li class="nav-item mb-3">
+                        <a class="nav-link text-white d-flex align-items-center" href="category.html">
+                            <img src="image/Product icon.svg">
+                            <span class="indicator"></span>
+                            <i class="bi bi-box me-2"></i> Product
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-white d-flex align-items-center" href="report.html">
+                            <img src="image/report.svg" >
+                            <span class="indicator"></span>
+                            <i class="bi bi-file-earmark-text me-2"></i> Report
+                        </a>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="col p-4">
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <h2 class="dashboard-title">DASHBOARD</h2>
+                    <div class="d-flex align-items-center">
+                        <span class="admin-text me-2">ADMIN</span>
+                        <div class="icon-container">
+                            <img src="image/admin icon .svg" alt="Admin Icon" class="admin-icon">
+                        </div>
+                    </div>
+                </div>
+            
+                <hr class="header-line">
+            
+                
+               
+                <div class="col">
+                    <div class="input-group">
+                        <input type="text" class="form-control search-input" placeholder="Search product">
+                        <img src="image/search icon.svg" alt="Search Icon" class="search-icon">
+                    </div>
+                    <!-- Bagian Riwayat -->
+                    <div class="col-md-6 right-content ml-auto">
+                        <div class="riwayat-container">
+                            <h4 class="riwayat-title">
+                                <img class="riwayat-icon" src="image/history icon.svg" alt="Riwayat Icon">
+                                Riwayat
+                            </h4>
+                            <ul class="riwayat-list">
+                                <li class="riwayat-item">Produk baru: Bawang Bombay</li>
+                                <li class="riwayat-item">Update Stock: Bayam</li>
+                                <li class="riwayat-item">Update Stock: Bayam</li>
+                                <li class="riwayat-item">Update Stock: Bayam</li>
+                            </ul>
+                        </div>
+                    </div>
+                
+                    <!-- Bagian Catatan -->
+                    <div class="col-md-6 right-content ml-auto">
+                        <div class="catatan-container">
+                            <h4 class="catatan-title">
+                                <img class="catatan-icon" src="image/catatan icon.svg" alt="Catatan Icon">
+                                Catatan
+                            </h4>
+                            <ul class="catatan-list">
+                                <li class="catatan-item">Stok Bawang Bombay salah</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Segera Cek Stok Barang -->
+                <div class="parent-container">
+                    <div class="stok-barang-container">
+                        <h4 class="stok-barang-title">
+                            <img class="warningicon" src="image/warning icon.svg" alt="Alert Icon">
+                            SEGERA CEK STOK BARANG
+                        </h4>
+                        <ul class="stok-list">
+                            <li class="stok-item1">Sawi Putih</li>
+                            <li class="stok-item2">Bawang Bombay</li>
+                        </ul>
+                    </div>
+                </div>
+
+                 <!-- Bagian Aksi Produk -->
+                <div class="editing">
+                    <div class="row-buttons mb-4">
+                        <a href="add product.html">
+                            <button class="action-button">
+                                <img src="image/plus icon.svg" class="action-icon" alt="Tambah Produk">
+                                Tambah Produk
+                            </button>
+                        </a>
+                        <a href="tambah-kategori.html">
+                            <button class="action-button">
+                                <img src="image/tambah kategori icon.svg" class="action-icon" alt="Tambah Kategori">
+                                Tambah Kategori
+                            </button>
+                        </a>
+                    </div>
+
+                    <div class="row g-4 mb-4">
+                        <div class="col-md-4">
+                            <a href="hapus-produk.html">
+                                <button class="action-button delete">
+                                    <img src="image/hapus icon.svg" class="action-icon" alt="Hapus Produk">
+                                    Hapus Produk
+                                </button>
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Bagian Laporan dan Barcode -->
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <a href="laporan.html">
+                                <div class="info-box">
+                                    <img src="image/laporan icon.svg" class="info-icon" alt="Laporan">
+                                    Laporan
+                                </div>
+                            </a>
+                        </div>
+                        <div class="col-md-6">
+                            <a href="barcode.html">
+                                <div class="info-box">
+                                    <img src="image/barcode icon.svg" class="info-icon" alt="Memindai Barcode">
+                                    Memindai Barcode
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Notifikasi tidak ditemukan -->
+                <div id="not-found-alert" class="not-found-alert d-none">
+                    <img id="not-found-icon" src="image/icon.svg" alt="Not Found Icon" width="30" height="30">
+                    <button type="button" class="btn-close" id="close-alert-btn" aria-label="Close"></button>
+                </div>
+                
+
+                
+
+
+    <script src="home.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.10.5/font/bootstrap-icons.min.css"></script>
+</body>
+</html>

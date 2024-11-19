@@ -162,6 +162,9 @@ CREATE TABLE oldProduct (
     Harga VARCHAR(255),
     PRIMARY KEY (ID)
 );
+<<<<<<< HEAD
 
 describe product;
 ALTER TABLE product ADD deskripsi VARCHAR(700);
+=======
+>>>>>>> 0c1ad4c82be3edc33a6af3419f3fb2995b0969c3
