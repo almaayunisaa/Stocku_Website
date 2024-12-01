@@ -1,17 +1,22 @@
 const kategori = require('../models/kategori');
-// cek di form asli di fe
 
-const tambahKategori = (req, res) => {
+const tambahKategori = async (req, res) => {
     try {
-        const {namaKategori} = req.query;
+        const {namaKategori} = req.body;
 
         if (!namaKategori) {
             return res.status(400).json({ message: "Silahkan lengkapi semua bidang" });
         }
 
-        const cat = kategori.create(namaKategori);
+        const cariCat = await kategori.find(namaKategori);
 
-        if (produk.length===0) {
+        if (cariCat.length>0) {
+            return res.status(401).json({ message: 'Kategori sama silahkan input kembali' });
+        }
+
+        const cat = await kategori.create(namaKategori);
+
+        if (!cat) {
             return res.status(404).json({message : 'Kategori invalid'});
         }
 
@@ -25,22 +30,30 @@ const tambahKategori = (req, res) => {
     }
 }
 
-const editCategory = (req, res) => {
+const editCategory = async (req, res) => {
     try {
-        const {namaKategori} = req.query;
+        const {namaKategori} = req.params;
+        const {editNama} = req.body;
 
-        if (!namaKategori) {
+        if (!editNama) {
             return res.status(400).json({ message: "Silahkan lengkapi semua bidang" });
         }
 
-        const cat = kategori.edit(namaKategori);
+        const cariCat = await kategori.find(namaKategori);
 
-        if (produk.length===0) {
+        if (cariCat.length===0) {
+            return res.status(401).json({ message: 'Kategori tidak ada Silahkan coba lagi' });
+        }
+
+        const cat = await kategori.edit(namaKategori, editNama);
+
+        if (cat.affectedRows === 0) {
             return res.status(404).json({message : 'Kategori invalid'});
         }
 
         res.status(200).json({
             message: "Yey Kategori Berhasil diubah!",
+            cat
         });
 
     } catch (err) {
@@ -48,13 +61,23 @@ const editCategory = (req, res) => {
     }
 }
 
-const hapusKategori = (req, res) => {
+const hapusKategori = async (req, res) => {
     try {
         const {namaKategori} = req.params;
 
-        const cat = kategori.delete(namaKategori);
+        if (!(kategori.find(namaKategori))) {
+            return res.status(404).json({ message: "Kategori tidak ditemukan" });
+        }
 
-        if (produk.length===0) {
+        const cariCat = await kategori.find(namaKategori);
+
+        if (cariCat.length===0) {
+            return res.status(401).json({ message: 'Kategori tidak ada Silahkan coba lagi' });
+        }
+
+        const cat = await kategori.delete(namaKategori);
+
+        if (!cat) {
             return res.status(404).json({message : 'Kategori invalid'});
         }
 

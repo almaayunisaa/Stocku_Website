@@ -14,8 +14,21 @@ class Kategori {
         });
     }
 
-    static edit(namaCat) {
+    static edit(namaCat, editNama) {
         const query = 'UPDATE category SET namaCategory = ? WHERE namaCategory = ?';
+        return new Promise((resolve, reject) => {
+            db.query(query, [editNama, namaCat], (err, results) => {
+                if (err) {
+                    reject(err);
+                } else {
+                    resolve(results);
+                }
+            });
+        });
+    }
+
+    static delete(namaCat) {
+        const query = 'DELETE FROM category WHERE namaCategory = ?';
         return new Promise((resolve, reject) => {
             db.query(query, [namaCat], (err, results) => {
                 if (err) {
@@ -27,8 +40,8 @@ class Kategori {
         });
     }
 
-    static delete(namaCat) {
-        const query = 'DELETE FROM product WHERE namaCategory = ?';
+    static find(namaCat) {
+        const query = 'SELECT * FROM category WHERE namaCategory = ?';
         return new Promise((resolve, reject) => {
             db.query(query, [namaCat], (err, results) => {
                 if (err) {
