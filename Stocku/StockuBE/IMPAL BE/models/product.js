@@ -130,6 +130,19 @@ class Product {
             });
         });
     }
+
+    static getTanggalHabisNStok(id) {
+        const query = 'SELECT tanggal_habis, Stok FROM oldproduct WHERE IDProduk = ? ';
+        return new Promise((resolve, reject) => {
+            db.query(query, [id], (err, results) => {
+                if (err) {
+                    reject(err);
+                } else {
+                    resolve(results);
+                }
+            });
+        });
+    }
 }
 
 module.exports=Product;

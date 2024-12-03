@@ -12,6 +12,5 @@ router.patch('/:namaKategori/editHarga/:id', editHarga);
 router.patch('/:namaKategori/editPrediksi/:id', editPrediksi);
 router.patch('/:namaKategori/editCek/:id', editCek);
 router.patch('/:namaKategori/editDes/:id', editDes);
-router.get('/konversi', konversiExcel);
 
 module.exports=router;

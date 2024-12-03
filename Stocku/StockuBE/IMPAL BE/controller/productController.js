@@ -3,6 +3,7 @@ const db = require('../config/db');
 const mysql = require('mysql2/promise');
 const xlsx = require('xlsx');
 const fs = require('fs'); 
+const tf = require('@tensorflow/tfjs'); 
 
 const cariProduk = async (req, res) => {
     try {
@@ -171,20 +172,45 @@ const editHarga = async (req, res) => {
     }
 }
 
-const editPrediksi = (req, res) => {
-    try {
-        const {id} = req.params;
-        // const {prediksi}
-        // nanti tambahkan algo AI untuk prediksi
-        const produk = product.editPrediksi(id, prediksi);
+const editPrediksi = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const data = await product.getTanggalHabisNStok(id);
+    const dataBaru = data.map((item, index, array) => {
+      if (index === 0) {
+        return { ...item, selisih_hari: 0 };
+      }
 
-        if (produk.length===0) {
-            return res.status(404).json({message : 'Produk Tidak Valid'});
-        }
+      const date1 = new Date(array[index - 1].tanggal_habis);
+      const date2 = new Date(item.tanggal_habis);
+      const selisih = date2 - date1; 
+      const selisihHari = selisih / (1000 * 60 * 60 * 24); 
+  
+      return { ...item, selisih_hari: selisihHari }; 
+    }).filter(item=>item.selisih_hari>0);
 
-        res.status(200).json({ message: 'Berhasil di perbarui' });
+    const selisih_hari = dataBaru.map(item => item.selisih_hari);
+    const dataStok = dataBaru.map(item => item.Stok);
+    days = -1;
+    while (days<0) {
+        const x = tf.tensor2d(selisih_hari, [selisih_hari.length, 1]);
+        const y = tf.tensor2d(dataStok, [dataStok.length, 1]);
+    
+        const model = tf.sequential();
+        model.add(tf.layers.dense({ units: 1, inputShape: [1] })); 
+
+        model.compile({ loss: 'meanSquaredError', optimizer: 'sgd' });
+
+        await model.fit(x, y, { epochs: 100 });
+
+        const slope = model.layers[0].getWeights()[0].dataSync()[0];
+        const intercept = model.layers[0].getWeights()[1].dataSync()[0];
+    
+        days = Math.floor(-intercept / slope);
+    }
+    res.status(200).json({ message: 'Berhasil diprediksi', days});
     } catch (err) {
-        res.status(500).json({error: err.message});
+      res.status(500).json({error: err.message});
     }
 }
 
@@ -242,37 +268,4 @@ const editDes = async (req, res) => {
     }
 }
 
-const konversiExcel = async (req, res) => {
-    try {
-        const [rows] = await db.query('SELECT * FROM product');
-
-        const worksheet = xlsx.utils.json_to_sheet(rows);
-        const workbook = xlsx.utils.book_new();
-        xlsx.utils.book_append_sheet(workbook, worksheet, 'Data');
-
-        const filePath = './productReport.xlsx';
-        xlsx.writeFile(workbook, filePath);
-
-        res.download(filePath, 'productReport.xlsx');
-        console.log(worksheet);
-    } catch (err) {
-        res.status(500).json({error: err.message});
-    }
-};
-
-module.exports={cariProduk, tambahProduk, hapusProduk, editNama, editStok, editHarga, editPrediksi, editCek, editDes, konversiExcel};
-
-/*
-import { BrowserMultiFormatReader } from '@zxing/browser';
-
-const codeReader = new BrowserMultiFormatReader();
-const videoElement = document.getElementById('video');
-
-codeReader.decodeFromVideoDevice(null, videoElement, (result, error) => {
-    if (result) {
-        console.log('Barcode Data:', result.text);
-        // Proses hasil barcode (identifikasi formulir OMR, dll.)
-    } else if (error) {
-        console.error('Error:', error);
-    }
-}); */
+module.exports={cariProduk, tambahProduk, hapusProduk, editNama, editStok, editHarga, editPrediksi, editCek, editDes};
