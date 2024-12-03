@@ -281,13 +281,6 @@ html, body {
     background-color: #ff9f1c;
 }
 
-.action-button.delete {
-    background-color: rgba(255, 159, 28, 0.5);
-}
-
-.action-button.delete:hover {
-    background-color: #ff9f1c;
-}
 
 /* Styling Icon dalam Tombol */
 .action-icon {
