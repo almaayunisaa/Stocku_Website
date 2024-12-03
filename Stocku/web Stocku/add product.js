@@ -1,3 +1,4 @@
+
 const profileIcon = document.querySelector('.icon-container');
 const dropdownMenu = document.createElement('div');
 
