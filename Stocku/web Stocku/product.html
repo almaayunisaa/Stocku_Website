@@ -65,7 +65,7 @@
                     <table class="table table-striped">
                         <thead>
                             <tr>
-                                <th scope="col">PRODUK</th>
+                                <th id="kolom_produk" scope="col">PRODUK</th>
                                 <th scope="col">KODE</th>
                                 <th scope="col">STOK</th>
                                 <th scope="col">INDIKATOR</th>
@@ -75,61 +75,36 @@
                                 <th scope="col">HARGA</th>
                             </tr>
                         </thead>
-                        <tbody>
-                            <tr>
-                                <td>SUNLIGHT</td>
-                                <td>RT001</td>
-                                <td>120</td>
-                                <td><img src="image/indikator ijo.svg" alt=""></td>
-                                <td><button class="btn btn-link ubah-button">UBAH</button></td>
-                                <td><img src="image/check icon.svg" alt="check icon"></td>
-                                <td>10/15/24</td>
-                                <td>Rp5000,-</td>
-                            </tr>
-                            <tr>
-                                <td>RINSO</td>
-                                <td>RT001</td>
-                                <td>120</td>
-                                <td><img src="image/indikator ijo.svg" alt=""></td>
-                                <td><button class="btn btn-link ubah-button">UBAH</button></td>
-                                <td><img src="image/check icon.svg" alt="check icon"></td>
-                                <td>25/10/25</td>
-                                <td>Rp5000,-</td>
-                            </tr>
-                            <tr>
-                                <td>TESSA</td>
-                                <td>RT001</td>
-                                <td>120</td>
-                                <td><img src="image/indikator ijo.svg" alt=""></td>
-                                <td><button class="btn btn-link ubah-button">UBAH</button></td>
-                                <td><img src="image/check icon.svg" alt="check icon"></td>
-                                <td>14/11/24</td>
-                                <td>Rp5000,-</td>
-                            </tr>
-                            <tr>
-                                <td>VIXAL</td>
-                                <td>RT001</td>
-                                <td>20</td>
-                                <td><img src="image/indikator merah.svg" alt=""></td>
-                                <td><button class="btn btn-link ubah-button">UBAH</button></td>
-                                <td><img src="image/check icon.svg" alt="check icon"></td>
-                                <td>07/12/24</td>
-                                <td>Rp5000,-</td>
-                            </tr>
-                        </tbody>
+                        <tbody id="tableBody"></tbody>
                         
                     </table>
                 </div>
                 <div id="not-found-alert" class="not-found-alert d-none">
                     <img id="not-found-icon" src="image/Notif Tidak dapat menemukan barang.svg" alt="Not Found Icon" width="30" height="30">
                     <button type="button" class="btn-close" id="close-alert-btn" aria-label="Close"></button>
+                </div>     
+                
+                <!--POP UP KOMENTAR-->
+                <div id="Pop-Komentar" class="pop-up-container">
+                    <div class="pop-up-content">
+                        <h2>Komentar</h2>
+                        <textarea id="text_komen" class="pop-up-text" placeholder="Masukkan saran /pesan..."></textarea>
+                        <div class="button-container">
+                            <button id= "btn_komentar_batal" class="btn_batal"></button>
+                            <button id= "btn_komentar_simpan" class="btn_simpan"></button>
+                        </div>
+                    </div>
                 </div>
-                
-                
-                
+
+                 <!-- Notifikasi error -->
+                <div id="notification" class="notification" style="display: none;">
+                    <button id="closeNotification" class="close-button">
+                        <img id="notificationIcon" src="" alt="notification icon" width="30px" height="30px">
+                    </button>
+                </div>
                 
     <script src="product.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.10.5/font/bootstrap-icons.min.css"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.10.5/font/bootstrap-icons.min.css" rel="stylesheet">
 </body>
 </html>

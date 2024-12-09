@@ -143,6 +143,71 @@ class Product {
             });
         });
     }
+
+    static get(namaCat) {
+        const query = 'SELECT * FROM product WHERE namaCategory = ?';
+        return new Promise((resolve, reject) => {
+            db.query(query, [namaCat], (err, results) => {
+                if (err) {
+                    reject(err);
+                } else {
+                    resolve(results);
+                }
+            });
+        });
+    }
+
+    static getWithName(namaCat) {
+        const query = 'SELECT * FROM product WHERE Produk = ?';
+        return new Promise((resolve, reject) => {
+            db.query(query, [namaCat], (err, results) => {
+                if (err) {
+                    reject(err);
+                } else {
+                    resolve(results);
+                }
+            });
+        });
+    }
+
+    static getWithID(id) {
+        const query = 'SELECT * FROM product WHERE ID = ?';
+        return new Promise((resolve, reject) => {
+            db.query(query, [id], (err, results) => {
+                if (err) {
+                    reject(err);
+                } else {
+                    resolve(results);
+                }
+            });
+        });
+    }
+
+    static sort_asc(namaCat) {
+        const query = 'SELECT * FROM product WHERE namaCategory = ? ORDER by Produk ASC';
+        return new Promise((resolve, reject) => {
+            db.query(query, [namaCat], (err, results) => {
+                if (err) {
+                    reject(err);
+                } else {
+                    resolve(results);
+                }
+            });
+        });
+    }
+
+    static sort_dsc(namaCat) {
+        const query = 'SELECT * FROM product WHERE namaCategory = ? ORDER by Produk DESC';
+        return new Promise((resolve, reject) => {
+            db.query(query, [namaCat], (err, results) => {
+                if (err) {
+                    reject(err);
+                } else {
+                    resolve(results);
+                }
+            });
+        });
+    }
 }
 
 module.exports=Product;

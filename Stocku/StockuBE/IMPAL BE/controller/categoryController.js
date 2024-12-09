@@ -3,6 +3,7 @@ const kategori = require('../models/kategori');
 const tambahKategori = async (req, res) => {
     try {
         const {namaKategori} = req.body;
+        console.log(namaKategori);
 
         if (!namaKategori) {
             return res.status(400).json({ message: "Silahkan lengkapi semua bidang" });
@@ -90,4 +91,18 @@ const hapusKategori = async (req, res) => {
     }
 }
 
-module.exports={tambahKategori, hapusKategori, editCategory};
+const ambilKategori = async (req, res) => {
+    try {
+        const category_list = await kategori.get();
+
+        if (category_list.length===0) {
+            return res.status(401).json({ message: 'Kategori tidak ada Silahkan coba lagi' });
+        }
+
+        return res.status(200).json({ categories: category_list });
+    } catch (err) {
+        res.status(500).json({error: err.message});
+    }
+}
+
+module.exports={tambahKategori, hapusKategori, editCategory, ambilKategori};

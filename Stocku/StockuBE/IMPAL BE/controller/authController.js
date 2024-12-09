@@ -88,4 +88,18 @@ const editEmail = async (req, res) => {
     }
 }
 
-module.exports= {signUp, signIn, editEmail};
+const getEmails = async (req, res) => {
+    try {
+        const email_getted = await admin.getEmail(req.query.username);
+
+        if (email_getted.length===0) {
+            return res.status(500).json({ message: "Gagal mengambil email" });
+        }
+
+        res.status(201).json({message: 'Email fetched', email: email_getted});
+    } catch (err) {
+        res.status(500).json({error: err.message});
+    }
+}
+
+module.exports= {signUp, signIn, editEmail, getEmails};

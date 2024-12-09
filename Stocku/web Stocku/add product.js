@@ -1,4 +1,3 @@
-
 const profileIcon = document.querySelector('.icon-container');
 const dropdownMenu = document.createElement('div');
 
@@ -44,24 +43,57 @@ document.addEventListener('click', (event) => {
 // Form validation and submission
 document.addEventListener('DOMContentLoaded', function() {
     const form = document.querySelector('form');
-    const productName = document.getElementById('productName');
-    const productCode = document.getElementById('productCode');
-    const productStock = document.getElementById('productStock');
-    const productPrice = document.getElementById('productPrice');
-    const productDescription = document.getElementById('productDescription');
 
-    form.addEventListener('submit', function(e) {
-        e.preventDefault(); // Prevent form submission for now
-
-        // Simple validation
-        if (productName.value === '' || productCode.value === '' || productStock.value === '' || productPrice.value === '' || productDescription.value === '') {
+    document.querySelector('.btn-primary').addEventListener('click', async function(e) {
+        e.preventDefault();
+        const catName = document.getElementById('namaCat').value;
+        const productName = document.getElementById('productName').value;
+        const productCode = document.getElementById('productCode').value;
+        const productStock = document.getElementById('productStock').value;
+        const productPrice = document.getElementById('productPrice').value;
+        const productDescription = document.getElementById('productDescription').value;
+        const token = localStorage.getItem('authToken');
+        console.log(productStock, productPrice);
+        if (productName.value === '' || productCode.value === '' || productStock.value === '' || productPrice.value === '' || productDescription.value === '' || catName.value === '') {
             alert('Mohon lengkapi semua bidang!');
             return;
         }
 
-        // Simulate saving data
-        alert('Data produk berhasil disimpan!');
-        form.reset(); // Reset the form fields
+        try {
+            const res = await fetch(`http://localhost:5500/api/product/${catName}/tambahProduk`, {
+                method: 'POST',
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ namaProduk:productName, id:productCode, stok:productStock, harga:productPrice, deskripsi:productDescription }),
+            });
+    
+            const hasil = await res.json();
+            console.log(hasil)
+            if (res.ok) {
+                window.location.href = 'category.html'; 
+            } else {
+                if (hasil.message == 'Stok dan harga harus berupa angka' || hasil.message == 'ID sudah digunakan') {
+                    notificationIcon.src = "image/Notif kalo ada kesalahan.svg"; 
+                    console.log("Kategori error icon set:", notificationIcon.src); // Log path for debugging
+                    notification.style.display = 'block'; // Display notification
+                } else if (hasil.message === 'Kategori tidak ada') {
+                   notificationIcon.src = "image/Notif kalo ada kesalahan.svg";
+                   console.log("Kategori error icon set:", notificationIcon.src); // Log path for debugging
+                   notification.style.display = 'block';
+                } else if (hasil.message === 'Barang gagal ditambahkan') {
+                    notificationIcon.src = "image/Notif kalo ada kesalahan.svg";
+                    console.log("Kategori error icon set:", notificationIcon.src); // Log path for debugging
+                    notification.style.display = 'block';
+                 }
+            }
+
+            console.log('Response dari server:', hasil);
+            form.reset(); 
+        } catch (err) {
+            console.error('Error:', err);
+        }
     });
 
     // Optional: Add functionality for 'Cancel' button

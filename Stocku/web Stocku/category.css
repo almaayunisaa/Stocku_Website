@@ -236,3 +236,121 @@ h3 {
     font-weight: bold;
     color:white;
 }
+
+.popup-modal {
+    display: flex;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 698px;
+    height: 259px;
+    justify-content: center;
+    align-items: center;
+    background: url('image/bgcat.svg') no-repeat center center;
+}
+
+.popup-content {
+    font-family: 'Poppins', sans-serif;
+    background-size: cover;
+    padding: 30px 20px;
+    border-radius: 8px;
+    text-align: center;
+    width: 90%;
+    max-width: 400px;
+}
+
+label {
+    font-family: 'Poppins', sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    color: #333;
+    display: block;
+    margin-bottom: 8px;
+}
+
+#simpanKategori {
+    background: url('image/simpanbtn.svg') no-repeat center center;
+    background-size: contain;  
+    border: none;
+    padding: 10px;
+    width: 100px; 
+    height: 40px;
+    margin: 10px 5px;
+    cursor: pointer;
+}
+
+#simpanKategori2 {
+    background: url('image/simpanbtn.svg') no-repeat center center;
+    background-size: contain;  
+    border: none;
+    padding: 10px;
+    width: 100px; 
+    height: 40px;
+    margin: 10px 5px;
+    cursor: pointer;
+}
+
+#batalKategori2 {
+    background: url('image/batalbtn.svg') no-repeat center center;
+    background-size: contain;  
+    border: none;
+    padding: 10px;
+    width: 100px; 
+    height: 40px;
+    margin: 10px 5px;
+    cursor: pointer;
+}
+
+#batalKategori {
+    background: url('image/batalbtn.svg') no-repeat center center;
+    background-size: contain;  
+    border: none;
+    padding: 10px;
+    width: 100px; 
+    height: 40px;
+    margin: 10px 5px;
+    cursor: pointer;
+}
+
+
+#namaKategori {
+    width: 90%;
+    height: 43px;
+    padding: 10px;
+    border-radius: 10px;
+    border: 1px solid #EA8D45 !important;
+    font-family: 'Poppins', sans-serif;
+    font-size: 16px;
+    box-sizing: border-box;
+    margin-bottom: 20px;
+}
+
+#namaKategori::placeholder {
+    color: #C6C6C6;
+    font-size: 15px;
+    font-family: 'Poppins', sans-serif;
+}
+
+.notification {
+    position: fixed;
+    top: -50px;
+    right: 5px;
+    background: none;
+    border: none;
+    padding: 0;
+    z-index: 1000;
+}
+
+.close-button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+}
+
+.close-button img {
+    width: 350px;
+    height: 200px;
+}
+

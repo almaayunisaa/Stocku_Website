@@ -9,9 +9,9 @@ dropdownMenu.style.display = 'none'; // Sembunyikan menu secara default
 dropdownMenu.innerHTML = `
     <div class="dropdown-header">
         <span class="email-label">Email :</span>
-        <span class="email-address">admin@gmail.com</span>
+        <span id="text_email" class="email-address">admin@gmail.com</span>
     </div>
-    <div class="dropdown-item">
+    <div id="ubah_email_btn"class="dropdown-item">
         <img src="image/ubah email icon.svg" class="dropdown-icon" alt="Eye Icon">
         Ubah email
     </div>
@@ -24,6 +24,50 @@ dropdownMenu.innerHTML = `
         Sign Out
     </div>
 `;
+
+function decode(token) {
+    const payload = token.split('.')[1];
+    const decoded = atob(payload);
+    return JSON.parse(decoded);
+}
+
+document.addEventListener('DOMContentLoaded', async () => {
+    const email_text = document.getElementById("text_email");
+    const token = localStorage.getItem('authToken');
+    const decodeToken = (token) => {
+        const payload = token.split('.')[1];
+        return JSON.parse(atob(payload));
+    };
+
+    const { username } = decodeToken(token);
+    try {
+        const res = await fetch(`http://localhost:5500/api/auth/getEmail?username=${username}`, {
+            method: 'GET',
+            headers: {
+                'Authorization': `Bearer ${token}`,
+                'Content-Type': 'application/json',
+            },
+        });
+
+        const hasil = await res.json();
+        if (res.ok) {
+            email_text.textContent=hasil.email[0].email;
+            console.log('Berhasil mengambil email');
+        } else {
+            if (hasil.message == 'Gagal mengambil email') {
+                notificationIcon.src = "image/Notif kalo ada kesalahan.svg"; 
+                notification.style.display = 'block'; 
+            }
+        }
+        console.log('Response dari server:', hasil.email[0].email);
+    } catch (err) {
+        console.error('Error:', err.message);
+    }
+})
+
+document.getElementById('ubah_email_btn').addEventListener('click', () => {
+    
+})
 
 // Tambahkan dropdown ke dalam body
 document.body.appendChild(dropdownMenu);

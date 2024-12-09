@@ -1,9 +1,16 @@
 const profileIcon = document.querySelector('.icon-container');
 const dropdownMenu = document.createElement('div');
+const tambahPopup= document.getElementById('tambahPopup');
+const PopupAddCat = document.getElementById('PopupAddCat');
+const PopupEditCat = document.getElementById('PopupEditCat');
+const simpanKategori = document.getElementById('simpanKategori');
+const batalKategori = document.getElementById('batalKategori');
 
 // Tambahkan class dan styling untuk dropdown menu
 dropdownMenu.classList.add('dropdown-custom');
 dropdownMenu.style.display = 'none'; // Sembunyikan menu secara default
+PopupAddCat.style.display = "none";
+PopupEditCat.style.display = "none";
 
 // Tambahkan opsi sesuai gambar
 dropdownMenu.innerHTML = `
@@ -87,3 +94,174 @@ function searchProduct() {
 
 // Event listener untuk pencarian saat pengguna mengetik
 searchInput.addEventListener('input', searchProduct);
+
+//event listener buttonn add cat
+tambahPopup.addEventListener("click", function() {
+    PopupAddCat.style.display = "flex";
+})
+
+//close pop up add cat
+batalKategori.addEventListener("click", function() {
+    PopupAddCat.style.display = "none";
+})
+
+// save cat
+simpanKategori.addEventListener("click", async function() {
+    const namaCat = document.getElementById('kategori-nama').value;
+    const notification = document.getElementById('notification');
+    const notificationIcon = document.getElementById('notificationIcon');
+    const token = localStorage.getItem('authToken');
+    // Clear previous error message
+    notification.style.display = 'none';
+
+    if (namaCat==='') {
+        // Tampilkan ikon notifikasi untuk bidang kosong
+        notificationIcon.src = "image/Notif Belum Isi Semua.svg"; // Path untuk ikon bidang kosong
+        notification.style.display = 'flex';
+        return;
+    }
+
+    try {
+        const res = await fetch('http://localhost:5500/api/category/kategori', {
+            method: 'POST',
+            headers: {
+                'Authorization': `Bearer ${token}`,
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ namaKategori: namaCat }),
+        });
+
+        const hasil = await res.json();
+        if (res.ok) {
+            window.location.href = 'category.html'; 
+        } else {
+            if (hasil.message == 'Kategori sama silahkan input kembali') {
+                notificationIcon.src = "image/Notif kalo ada kesalahan.svg"; 
+                console.log("Kategori error icon set:", notificationIcon.src); // Log path for debugging
+                notification.style.display = 'block'; // Display notification
+            } else if (hasil.message === 'Kategori invalid') {
+               notificationIcon.src = "image/Notif kalo ada kesalahan.svg";
+               console.log("Kategori error icon set:", notificationIcon.src); // Log path for debugging
+               notification.style.display = 'block';
+            } else if (hasil.message === 'Silahkan lengkapi semua bidang') {
+                notificationIcon.src = "image/Notif kalo ada kesalahan.svg";
+                console.log("Kategori error icon set:", notificationIcon.src); // Log path for debugging
+                notification.style.display = 'block';
+             }
+        }
+
+        console.log('Response dari server:', hasil);
+
+    } catch (err) {
+        console.log('Error:', err);
+    }
+})
+
+document.addEventListener("DOMContentLoaded", async () => {
+    const categoryList = document.getElementById('categoryList');
+    const token = localStorage.getItem('authToken');
+
+    try {
+        const res = await fetch('http://localhost:5500/api/category/getKategori', {
+            method: 'GET',
+            headers: {
+                'Authorization': `Bearer ${token}`,
+                'Content-Type': 'application/json',
+            },
+        });
+
+        const hasil = await res.json();
+        if (res.ok) {
+            for (let i=0; i<hasil.categories.length;i++) {
+                const per_kategori = 
+                `<div id="list_cat" dataCat_id="${hasil.categories[i].namaCategory}" class="category-item d-flex justify-content-between align-items-center p-2 my-2 bg-warning">
+                        <span class="category-name">${hasil.categories[i].namaCategory}</span>
+                        <a href="product.html" class="view-product text-decoration-none text-dark d-flex align-items-center" dataCat_id="${hasil.categories[i].namaCategory}">
+                            Lihat Produk...
+                        </a>
+                        <img id="editCat_btn" src="image/edit_icon.svg" class="ms-2" width="25" height="25" dataCat_id="${hasil.categories[i].namaCategory}">
+                        <img id="deleteCat_btn" src="image/deletecat.svg" alt="Lihat Produk Icon" class="ms-2" width="25" height="25" dataCat_id="${hasil.categories[i].namaCategory}">
+                </div>`;
+                categoryList.insertAdjacentHTML("beforeend", per_kategori);
+
+                document.querySelectorAll('.view-product').forEach(button => {
+                    button.addEventListener('click', function (event) {
+                        event.preventDefault();
+                        const id = this.getAttribute('dataCat_id');
+                        window.location.href = `product.html?category=${id}`
+                    })
+                })
+                
+                const deleteButton = categoryList.querySelector(`img#deleteCat_btn[dataCat_id="${hasil.categories[i].namaCategory}"]`);
+                deleteButton.addEventListener("click", async (event) => {
+                    const id = event.target.getAttribute('dataCat_id');
+                    try {
+                        const res = await fetch(`http://localhost:5500/api/category/kategori/${id}`, {
+                            method: 'DELETE',
+                            headers: {
+                                'Authorization': `Bearer ${token}`,
+                                'Content-Type': 'application/json',
+                            },
+                        });
+    
+                        const hasil = await res.json();
+    
+                        if (res.ok) {
+                            const item_cat = document.getElementById('categoryList');
+                            item_cat.remove();
+                            window.location.href = 'category.html'; 
+                        } else {
+                            console.error('Error: Tidak dapat menghapus data')
+                        }
+                    } catch (err) {
+                        console.error('Error: Tidak dapat menghapus data')
+                    }   
+                })
+
+                const editCatButton = categoryList.querySelector(`img#editCat_btn[dataCat_id="${hasil.categories[i].namaCategory}"]`);
+                editCatButton.addEventListener("click", (event) => {
+                    id= event.target.getAttribute('dataCat_id');
+                    PopupEditCat.style.display = "flex";
+                    document.getElementById('batalKategori2').addEventListener("click", function() {
+                        PopupEditCat.style.display = "none";
+                    })
+                    document.getElementById('simpanKategori2').addEventListener('click', async () => {
+                        const namaCat = document.getElementById('kategori-nama2').value;
+                        try {
+                            const res = await fetch(`http://localhost:5500/api/category/kategori/${id}`, {
+                                method: 'PUT',
+                                headers: {
+                                    'Authorization': `Bearer ${token}`,
+                                    'Content-Type': 'application/json',
+                                },
+                                body: JSON.stringify({ editNama: namaCat }),
+                            });
+                            console.log(namaCat, id);
+                            const hasil = await res.json();
+        
+                            if (res.ok) {
+                                window.location.href = 'category.html'; 
+                            } else {
+                                console.log(hasil.message);
+                                console.error('Error: Tidak dapat mengubah data')
+                            }
+                        } catch (err) {
+                            console.error(err.message)
+                        }
+                    })
+                })
+
+            } 
+        } else {
+            console.error('Error: Tidak dapat mengambil data')
+        }
+
+    } catch (err) {
+        console.log('Error:', err);
+    }
+})
+
+// Event listener to hide the notification when the close button is clicked
+document.getElementById('closeNotification').addEventListener('click', function() {
+    document.getElementById('notification').style.display = 'none'; // Hide notification
+});

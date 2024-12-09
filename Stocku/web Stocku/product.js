@@ -1,9 +1,26 @@
 const profileIcon = document.querySelector('.icon-container');
 const dropdownMenu = document.createElement('div');
-
+const pop_up_komentar = document.getElementById('Pop-Komentar')
+const notification = document.getElementById('notification');
+const notificationIcon = document.getElementById('notificationIcon');
 // Tambahkan class dan styling untuk dropdown menu
 dropdownMenu.classList.add('dropdown-custom');
 dropdownMenu.style.display = 'none'; // Sembunyikan menu secara default
+pop_up_komentar.style.display='none';
+notification.style.display = 'none';
+
+function getCategory(param) {
+    const url = new URLSearchParams(window.location.search);
+    return url.get(param);
+}
+
+const kategori = getCategory('category');
+
+if (kategori) {
+    document.querySelector('.dashboard-title').textContent = `Produk/${kategori}`
+} else {
+    console.error('Kategori tidak ada')
+}
 
 // Tambahkan opsi sesuai gambar
 dropdownMenu.innerHTML = `
@@ -95,5 +112,301 @@ function searchProduct() {
     }
 }
 
+async function ambilProduk(category) {
+    const productList = document.getElementById('tableBody');
+    const token = localStorage.getItem('authToken');
+
+    try {
+        const res = await fetch(`http://localhost:5500/api/product/${category}/getProduct`, {
+            method: 'GET',
+            headers: {
+                'Authorization': `Bearer ${token}`,
+                'Content-Type': 'application/json',
+            },
+        });
+
+        const hasil = await res.json();
+
+        if (res.ok) {
+            for (let i=0; i<hasil.products.length;i++) {
+                let image;
+                if (hasil.products[i].Stok<=10) {
+                    image = "image/indikator merah.svg";
+                } else {
+                    image = "image/indikator ijo.svg";
+                }
+                const per_product = 
+                `<td>${hasil.products[i].Produk}</td>
+                <td>${hasil.products[i].ID}</td>
+                <td>${hasil.products[i].Stok}</td>
+                <td><img src="${image}"></td>
+                <td><button id="button_edit_prod" prod_id= ${hasil.products[i].ID} class="btn btn-link ubah-button">UBAH</button></td>
+                <td><img id = "komentar_btn" prod_id= ${hasil.products[i].ID} class="komentar_class" src="image/check icon.svg" alt="check icon"></td>
+                <td>${hasil.products[i].Prediksi}</td>
+                <td>${hasil.products[i].harga}</td>`;
+                productList.insertAdjacentHTML("beforeend", per_product);
+            } 
+
+            const ubahBtn = document.getElementsByClassName('btn btn-link ubah-button');
+            for (let btn of ubahBtn) {
+                btn.addEventListener('click',  () => {
+                    const id = btn.getAttribute('prod_id');
+                    console.log(id);
+                    window.location.href = `edit product.html?product=${id}`
+                })
+            }
+
+            const komenBtn = document.getElementsByClassName('komentar_class');
+            for (let btn of komenBtn) {
+                btn.addEventListener('click',  () => {
+                    const id = btn.getAttribute('prod_id');
+                    console.log(id);
+                    pop_up_komentar.style.display='flex';
+                    document.getElementById('btn_komentar_simpan').setAttribute('prod-id', id);
+                    document.getElementById('btn_komentar_simpan').addEventListener('click', async () => {
+                        const komentar = document.getElementById('text_komen').value;
+                        const id = document.getElementById('btn_komentar_simpan').getAttribute('prod-id');
+                        const token = localStorage.getItem('authToken');
+                    
+                        try {
+                            const res = await fetch(`http://localhost:5500/api/product/editCek/${id}`, {
+                                method: 'PATCH',
+                                headers: {
+                                    'Authorization': `Bearer ${token}`,
+                                    'Content-Type': 'application/json',
+                                },
+                                body: JSON.stringify({ cek: komentar }),
+                            });
+                    
+                            const hasil = await res.json();
+                    
+                            if (res.ok) {
+                                window.location.href = 'category.html'; 
+                            } else {
+                                if ((hasil.message == 'Produk Tidak Valid') || (hasil.message == 'Silahkan lengkapi semua bidang')) {
+                                    notificationIcon.src = "image/Notif kalo ada kesalahan.svg";
+                                    notification.style.display = 'block'; 
+                                }
+                            }
+                        } catch (error) {
+                            console.error(error.message);
+                        }
+                    })
+                })
+            }
+
+        } else {
+            console.error('Error: Tidak dapat mengambil data')
+        }
+    } catch (error) {
+        console.error(error.message);
+    }
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+    const kategori = getCategory('category'); 
+    if (kategori) {
+        ambilProduk(kategori);
+    }
+});
+
 // Event listener untuk pencarian saat pengguna mengetik
 searchInput.addEventListener('input', searchProduct);
+
+let isAsc = false;
+
+document.getElementById("kolom_produk").addEventListener('click', async () => {
+    const productList = document.getElementById('tableBody');
+    isAsc=!isAsc;
+    const token = localStorage.getItem('authToken');
+
+    if (isAsc) {
+        try {
+            const res = await fetch(`http://localhost:5500/api/product/${kategori}/sortASC`, {
+                method: 'POST',
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                    'Content-Type': 'application/json',
+                },
+            });
+    
+            const hasil = await res.json();
+    
+            if (res.ok) {
+                productList.innerHTML = '';
+                for (let i=0; i<hasil.products.length;i++) {
+                    let image;
+                    if (hasil.products[i].Stok<=10) {
+                        image = "image/indikator merah.svg";
+                    } else {
+                        image = "image/indikator ijo.svg";
+                    }
+                    const per_product = 
+                    `<td>${hasil.products[i].Produk}</td>
+                    <td>${hasil.products[i].ID}</td>
+                    <td>${hasil.products[i].Stok}</td>
+                    <td><img src="${image}"></td>
+                    <td><button id="button_edit_prod" prod_id= ${hasil.products[i].ID} class="btn btn-link ubah-button">UBAH</button></td>
+                    <td><img id = "komentar_btn" catid= ${hasil.products[i].ID} src="image/check icon.svg" alt="check icon"></td>
+                    <td>${hasil.products[i].Prediksi}</td>
+                    <td>${hasil.products[i].harga}</td>`;
+                    productList.insertAdjacentHTML("beforeend", per_product);
+                } 
+    
+                document.getElementById('button_edit_prod').addEventListener('click', function () {
+                    const id = document.getElementById('button_edit_prod').getAttribute('prod_id');
+                    console.log(id);
+                    window.location.href = `edit product.html?product=${id}`
+                })
+
+                const ubahBtn = document.getElementsByClassName('btn btn-link ubah-button');
+            for (let btn of ubahBtn) {
+                btn.addEventListener('click',  () => {
+                    const id = btn.getAttribute('prod_id');
+                    console.log(id);
+                    window.location.href = `edit product.html?product=${id}`
+                })
+            }
+
+            const komenBtn = document.getElementsByClassName('komentar_class');
+            for (let btn of komenBtn) {
+                btn.addEventListener('click',  () => {
+                    const id = btn.getAttribute('prod_id');
+                    console.log(id);
+                    pop_up_komentar.style.display='flex';
+                    document.getElementById('btn_komentar_simpan').setAttribute('prod-id', id);
+                    document.getElementById('btn_komentar_simpan').addEventListener('click', async () => {
+                        const komentar = document.getElementById('text_komen').value;
+                        const id = document.getElementById('btn_komentar_simpan').getAttribute('prod-id');
+                        const token = localStorage.getItem('authToken');
+                    
+                        try {
+                            const res = await fetch(`http://localhost:5500/api/product/editCek/${id}`, {
+                                method: 'PATCH',
+                                headers: {
+                                    'Authorization': `Bearer ${token}`,
+                                    'Content-Type': 'application/json',
+                                },
+                                body: JSON.stringify({ cek: komentar }),
+                            });
+                    
+                            const hasil = await res.json();
+                    
+                            if (res.ok) {
+                                window.location.href = 'category.html'; 
+                            } else {
+                                if ((hasil.message == 'Produk Tidak Valid') || (hasil.message == 'Silahkan lengkapi semua bidang')) {
+                                    notificationIcon.src = "image/Notif kalo ada kesalahan.svg";
+                                    notification.style.display = 'block'; 
+                                }
+                            }
+                        } catch (error) {
+                            console.error(error.message);
+                        }
+                    })
+                })
+            }
+            } else {
+                console.error('Error: Tidak dapat mengambil data');
+            }
+        } catch (error) {
+            console.error(error.message);
+        }
+    } else {
+        try {
+            const res = await fetch(`http://localhost:5500/api/product/${kategori}/sortDSC`, {
+                method: 'POST',
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                    'Content-Type': 'application/json',
+                },
+            });
+    
+            const hasil = await res.json();
+    
+            if (res.ok) {
+                productList.innerHTML = '';
+                for (let i=0; i<hasil.products.length;i++) {
+                    let image;
+                    if (hasil.products[i].Stok<=10) {
+                        image = "image/indikator merah.svg";
+                    } else {
+                        image = "image/indikator ijo.svg";
+                    }
+                    const per_product = 
+                    `<td>${hasil.products[i].Produk}</td>
+                    <td>${hasil.products[i].ID}</td>
+                    <td>${hasil.products[i].Stok}</td>
+                    <td><img src="${image}"></td>
+                    <td><button id="button_edit_prod" prod_id= ${hasil.products[i].ID} class="btn btn-link ubah-button">UBAH</button></td>
+                    <td><img id = "komentar_btn" catid= ${hasil.products[i].ID} src="image/check icon.svg" alt="check icon"></td>
+                    <td>${hasil.products[i].Prediksi}</td>
+                    <td>${hasil.products[i].harga}</td>`;
+                    productList.insertAdjacentHTML("beforeend", per_product);
+                } 
+    
+                document.getElementById('button_edit_prod').addEventListener('click', function () {
+                    const id = document.getElementById('button_edit_prod').getAttribute('prod_id');
+                    console.log(id);
+                    window.location.href = `edit product.html?product=${id}`
+                })
+            } else {
+                console.error('Error: Tidak dapat mengambil data');
+            }
+
+            const ubahBtn = document.getElementsByClassName('btn btn-link ubah-button');
+            for (let btn of ubahBtn) {
+                btn.addEventListener('click',  () => {
+                    const id = btn.getAttribute('prod_id');
+                    console.log(id);
+                    window.location.href = `edit product.html?product=${id}`
+                })
+            }
+
+            const komenBtn = document.getElementsByClassName('komentar_class');
+            for (let btn of komenBtn) {
+                btn.addEventListener('click',  () => {
+                    const id = btn.getAttribute('prod_id');
+                    console.log(id);
+                    pop_up_komentar.style.display='flex';
+                    document.getElementById('btn_komentar_simpan').setAttribute('prod-id', id);
+                    document.getElementById('btn_komentar_simpan').addEventListener('click', async () => {
+                        const komentar = document.getElementById('text_komen').value;
+                        const id = document.getElementById('btn_komentar_simpan').getAttribute('prod-id');
+                        const token = localStorage.getItem('authToken');
+                    
+                        try {
+                            const res = await fetch(`http://localhost:5500/api/product/editCek/${id}`, {
+                                method: 'PATCH',
+                                headers: {
+                                    'Authorization': `Bearer ${token}`,
+                                    'Content-Type': 'application/json',
+                                },
+                                body: JSON.stringify({ cek: komentar }),
+                            });
+                    
+                            const hasil = await res.json();
+                    
+                            if (res.ok) {
+                                window.location.href = 'category.html'; 
+                            } else {
+                                if ((hasil.message == 'Produk Tidak Valid') || (hasil.message == 'Silahkan lengkapi semua bidang')) {
+                                    notificationIcon.src = "image/Notif kalo ada kesalahan.svg";
+                                    notification.style.display = 'block'; 
+                                }
+                            }
+                        } catch (error) {
+                            console.error(error.message);
+                        }
+                    })
+                })
+            }
+        } catch (error) {
+            console.error(error.message);
+        }
+    }
+})
+
+document.getElementById("btn_komentar_batal").addEventListener('click', () => {
+    pop_up_komentar.style.display='none';
+})

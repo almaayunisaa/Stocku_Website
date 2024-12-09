@@ -249,3 +249,97 @@ td {
 .ubah-button:hover {
     color: #ff9900;
 }
+
+.pop-up-container {
+    display: flex;
+    flex-direction: column;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 698px;
+    height: 259px;
+    justify-content: center;
+    align-items: center;
+    background: url('image/bgcat.svg') no-repeat center center;
+
+}
+
+.pop-up-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+}
+
+.pop-up-content h2 {
+    color: #EA8D45;
+    font-family: 'Poppins', sans-serif;
+    font-size: 23;
+    font-weight: bold;
+}
+
+.btn_simpan {
+    background: url('image/simpanbtn.svg') no-repeat center center;
+    background-size: contain;  
+    border: none;
+    padding: 10px;
+    width: 100px; 
+    height: 40px;
+    margin: 10px 5px;
+    cursor: pointer;
+}
+
+.btn_batal {
+    background: url('image/batalbtn.svg') no-repeat center center;
+    background-size: contain;  
+    border: none;
+    padding: 10px;
+    width: 100px; 
+    height: 40px;
+    margin: 10px 5px;
+    cursor: pointer;
+}
+
+
+.pop-up-text {
+    width: 382px;
+    height: 101px;
+    padding: 10px;
+    border-radius: 10px;
+    border: 1px solid #EA8D45 !important;
+    font-family: 'Poppins', sans-serif;
+    font-size: 15px;
+    box-sizing: border-box;
+    resize: none;
+}
+
+.pop-up-text::placeholder {
+    color: #C6C6C6;
+    font-size: 15px;
+    font-family: 'Poppins', sans-serif;
+}
+
+.notification {
+    position: fixed;
+    top: -50px;
+    right: 5px;
+    background: none;
+    border: none;
+    padding: 0;
+    z-index: 1000;
+}
+
+.close-button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+}
+
+.close-button img {
+    width: 350px;
+    height: 200px;
+}
+
+

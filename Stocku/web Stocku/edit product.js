@@ -5,6 +5,48 @@ const dropdownMenu = document.createElement('div');
 dropdownMenu.classList.add('dropdown-custom');
 dropdownMenu.style.display = 'none'; // Sembunyikan menu secara default
 
+function getProduct(param) {
+    const url = new URLSearchParams(window.location.search);
+    return url.get(param);
+}
+
+const product = getProduct('product');
+
+async function ambilDataProduk(product) {
+    const token = localStorage.getItem('authToken');
+    try {
+        const res = await fetch(`http://localhost:5500/api/product/getProductNama?produk=${product}`, {
+            method: 'GET',
+            headers: {
+                'Authorization': `Bearer ${token}`,
+                'Content-Type': 'application/json',
+            },
+        });
+
+        const hasil = await res.json();
+        console.log('Response dari server:', hasil);
+        return hasil;
+    } catch (err) {
+        console.log('Error:', err);
+    }
+}
+
+const objek = ambilDataProduk(product);
+objek
+  .then((result) => {
+    const data = result.products[0];
+    document.getElementById('namaCat').value = data.namaCategory;
+    document.getElementById('productName').value = data.Produk;
+    document.getElementById('productCode').value = data.ID;
+    document.getElementById('productStock').value = data.Stok;
+    document.getElementById('productPrice').value = data.harga;
+    document.getElementById('productDescription').value = data.deskripsi;
+
+  })
+  .catch((error) => {
+    console.error("Error:", error);
+  });
+
 // Tambahkan opsi sesuai gambar
 dropdownMenu.innerHTML = `
     <div class="dropdown-header">
@@ -133,5 +175,79 @@ function searchProduct() {
     }
 }
 
+document.addEventListener('DOMContentLoaded', function() {
+    const form = document.querySelector('form');
+
+    document.querySelector('.btn-primary').addEventListener('click', async function(e) {
+        e.preventDefault();
+        const namaProd_now = document.getElementById('productName').value;
+        const stok_now = document.getElementById('productStock').value;
+        const harga_now = document.getElementById('productPrice').value;
+        const des_now = document.getElementById('productDescription').value;
+        const token = localStorage.getItem('authToken');
+
+        try {
+            const res = await fetch(`http://localhost:5500/api/product/editProduk/${product}`, {
+                method: 'PATCH',
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ namaProduk:namaProd_now,stok:stok_now, harga:harga_now, deskripsi:des_now }),
+            });
+    
+            const hasil = await res.json();
+            console.log(hasil)
+            if (res.ok) {
+                window.location.href = 'category.html'; 
+            } else {
+                if (hasil.message == 'Produk Tidak Valid' || hasil.message == 'Silahkan lengkapi semua bidang' || hasil.message == 'Stok atau harga harus berupa angka') {
+                    notificationIcon.src = "image/Notif kalo ada kesalahan.svg"; 
+                    console.log("Kategori error icon set:", notificationIcon.src); // Log path for debugging
+                    notification.style.display = 'block'; // Display notification
+                }
+            }
+
+            console.log('Response dari server:', hasil);
+            form.reset(); 
+        } catch (err) {
+            console.error('Error:', err);
+        }
+    });
+
+    // Optional: Add functionality for 'Cancel' button
+    const cancelButton = document.querySelector('.btn-secondary');
+    cancelButton.addEventListener('click', function() {
+        if (confirm('Apakah Anda yakin ingin membatalkan? Semua perubahan akan hilang.')) {
+            form.reset(); // Reset the form fields
+        }
+    });
+});
+
 // Event listener untuk pencarian saat pengguna mengetik
 searchInput.addEventListener('input', searchProduct);
+
+// Event listener to hide the notification when the close button is clicked
+document.getElementById('closeNotification').addEventListener('click', function() {
+    document.getElementById('notification').style.display = 'none'; // Hide notification
+});
+
+document.getElementById('btn_hapus_produk').addEventListener('click', async () => {
+    const token = localStorage.getItem('authToken');
+    try {
+        const res = await fetch(`http://localhost:5500/api/product/hapusProduk/${product}`, {
+            method: 'DELETE',
+            headers: {
+                'Authorization': `Bearer ${token}`,
+                'Content-Type': 'application/json',
+            },
+        });
+
+        const hasil = await res.json();
+        window.location.href='category.html';
+        console.log('Response dari server:', hasil);
+        return hasil;
+    } catch (err) {
+        console.log('Error:', err);
+    }
+})

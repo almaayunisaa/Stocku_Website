@@ -1,16 +1,18 @@
 const express = require('express');
-const {cariProduk, tambahProduk, hapusProduk, editNama, editStok, editHarga, editPrediksi, editCek, editDes, konversiExcel} = require('../controller/productController');
+const {cariProduk, tambahProduk, hapusProduk, editProduk, editPrediksi, editCek, getProduct, getProduct_ID, sortASC, sortDESC} = require('../controller/productController');
 
 const router = express.Router();
 
 router.get('/cariProduk', cariProduk);
+router.get('/:namaKategori/getProduct', getProduct);
+router.get('/getProductNama', getProduct_ID);
+router.post('/:namaKategori/sortASC', sortASC);
+router.post('/:namaKategori/sortDSC', sortDESC);
 router.post('/:namaKategori/tambahProduk', tambahProduk);
-router.delete('/:namaKategori/hapusProduk/:id', hapusProduk);
-router.patch('/:namaKategori/editNama/:id', editNama);
-router.patch('/:namaKategori/editStok/:id', editStok);    
-router.patch('/:namaKategori/editHarga/:id', editHarga);
-router.patch('/:namaKategori/editPrediksi/:id', editPrediksi);
-router.patch('/:namaKategori/editCek/:id', editCek);
-router.patch('/:namaKategori/editDes/:id', editDes);
+router.delete('/hapusProduk/:id', hapusProduk);
+router.patch('/editProduk/:id', editProduk);
+router.patch('/editPrediksi/:id', editPrediksi);
+router.patch('/editCek/:id', editCek);
+
 
 module.exports=router;

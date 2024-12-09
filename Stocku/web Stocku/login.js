@@ -1,19 +1,4 @@
-// Contoh data pengguna yang tersimpan di database (simulasi)
-const users = [
-    { username: 'yourUsername', password: 'yourPassword' } // data user yang valid
-];
-
-// Fungsi pengecekan apakah username terdaftar dalam database
-function isUsernameValid(username) {
-    return users.some(user => user.username === username);
-}
-
-// Fungsi pengecekan apakah kombinasi username dan password cocok dalam database
-function isUserValid(username, password) {
-    return users.some(user => user.username === username && user.password === password);
-}
-
-document.getElementById('loginButton').addEventListener('click', function() {
+document.getElementById('loginButton').addEventListener('click', async function() {
     const username = document.getElementById('username').value;
     const password = document.getElementById('password').value;
     const notification = document.getElementById('notification');
@@ -22,18 +7,38 @@ document.getElementById('loginButton').addEventListener('click', function() {
     // Clear previous error message
     notification.style.display = 'none';
 
-    if (!isUsernameValid(username)) {
-        // Set icon for username error
-        notificationIcon.src = "image/Notif Username Salah.svg"; // Path to username error icon
-        console.log("Username error icon set:", notificationIcon.src); // Log path for debugging
-        notification.style.display = 'block'; // Display notification
-    } else if (!isUserValid(username, password)) {
-        // Set icon for password error
-        notificationIcon.src = "image/Notif Password Salah.svg"; // Path to password error icon
-        console.log("Password error icon set:", notificationIcon.src); // Log path for debugging
-        notification.style.display = 'block'; // Display notification
-    } else {
-        window.location.href = 'loading.html'; // Redirect to next page if login successful
+    try {
+        const res = await fetch('http://localhost:5500/api/auth/signIn', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ username, password }),
+        });
+
+        const hasil = await res.json();
+        if (res.ok) {
+            const token = hasil.token;
+            localStorage.setItem('authToken', token);
+            window.location.href = 'category.html'; 
+        } else {
+            if (hasil.message == 'Username Anda salah Silahkan coba lagi') {
+                // Set icon for username error
+                notificationIcon.src = "image/Notif Username Salah.svg"; // Path to username error icon
+                console.log("Username error icon set:", notificationIcon.src); // Log path for debugging
+                notification.style.display = 'block'; // Display notification
+            } else if (hasil.message === 'Password Anda salah Silahkan coba lagi') {
+               // Set icon for password error
+               notificationIcon.src = "image/Notif Password Salah.svg"; // Path to password error icon
+               console.log("Password error icon set:", notificationIcon.src); // Log path for debugging
+               notification.style.display = 'block';
+            }
+        }
+
+        console.log('Response dari server:', hasil);
+
+    } catch (err) {
+        console.log('Error:', err);
     }
 });
 

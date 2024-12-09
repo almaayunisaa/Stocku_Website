@@ -39,6 +39,20 @@ class Admin {
             });
         });
     }
+
+    static getEmail(username) {
+        console.log(username);
+        const query = 'SELECT email FROM Administrator WHERE username = ?';
+        return new Promise((resolve, reject) => {
+            db.query(query, [username], (err, results) => {
+                if (err) {
+                    reject(err);
+                } else {
+                    resolve(results);
+                }
+            });
+        });
+    }
 }
 
 module.exports=Admin;

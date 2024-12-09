@@ -1,4 +1,5 @@
 const product = require('../models/product');
+const category = require('../models/kategori');
 const db = require('../config/db');
 const mysql = require('mysql2/promise');
 const xlsx = require('xlsx');
@@ -31,6 +32,7 @@ const tambahProduk = async (req, res) => {
         const namaCat = req.params.namaKategori;
         const cek = null;
         const prediksi = null;
+        console.log(namaProduk, id, stok, harga, deskripsi);
 
         if (!namaProduk || !stok || !id || !harga || !deskripsi) {
             return res.status(400).json({ message: "Silahkan lengkapi semua bidang" });
@@ -42,6 +44,10 @@ const tambahProduk = async (req, res) => {
 
         if (product.findID(id)>0) {
             return res.status(400).json({ message: "ID sudah digunakan" });
+        }
+
+        if (category.find(namaCat)===0) {
+            return res.status(400).json({ message: "Kategori tidak ada" });
         }
 
         const produk = await product.create(namaCat, namaProduk, id, stok, harga, cek, prediksi, deskripsi);
@@ -83,10 +89,10 @@ const hapusProduk = async (req, res) => {
     }
 }
 
-const editNama = async (req, res) => {
+const editProduk = async (req, res) => {
     try {
         const {id} = req.params;
-        const {namaProduk} = req.body;
+        const {namaProduk, stok, harga, deskripsi} = req.body;
 
         const found = await product.findID(id);
 
@@ -94,75 +100,35 @@ const editNama = async (req, res) => {
             return res.status(404).json({message : 'Produk Tidak Valid'});
         }
 
-        if (!namaProduk) {
+        if (!namaProduk || !stok || !harga || !deskripsi) {
             return res.status(400).json({ message: "Silahkan lengkapi semua bidang" });
         }
 
-        const produk = await product.editNama(id, namaProduk);
+        if (isNaN(stok) || isNaN(harga)) {
+            return res.status(400).json({ message: "Stok atau harga harus berupa angka" });
+        }
 
-        if (!produk) {
+        const namaEdited = await product.editNama(id, namaProduk);
+
+        if (!namaEdited) {
             return res.status(404).json({message : 'Produk Tidak Valid'});
         }
 
-        res.status(200).json({ message: 'Berhasil di perbarui' });
-    } catch (err) {
-        res.status(500).json({error: err.message});
-    }
-}
+        const stokEdited = await product.editStok(id, stok);
 
-const editStok = async (req, res) => {
-    try {
-        const {id} = req.params;
-        const {stok} = req.body;
-
-        const found = await product.findID(id);
-
-        if (found.length===0) {
+        if (!stokEdited) {
             return res.status(404).json({message : 'Produk Tidak Valid'});
         }
 
-        if (!stok) {
-            return res.status(400).json({ message: "Silahkan lengkapi semua bidang" });
-        }
+        const hargaEdited = await product.editHarga(id, harga);
 
-        if (isNaN(stok)) {
-            return res.status(400).json({ message: "Stok harus berupa angka" });
-        }
-
-        const produk = await product.editStok(id, stok);
-
-        if (!produk) {
+        if (!hargaEdited) {
             return res.status(404).json({message : 'Produk Tidak Valid'});
         }
 
-        res.status(200).json({ message: 'Berhasil di perbarui' });
-    } catch (err) {
-        res.status(500).json({error: err.message});
-    }
-}
+        const desEdited = await product.editDes(id, deskripsi);
 
-const editHarga = async (req, res) => {
-    try {
-        const {id} = req.params;
-        const {harga} = req.body;
-
-        const found = await product.findID(id);
-
-        if (found.length===0) {
-            return res.status(404).json({message : 'Produk Tidak Valid'});
-        }
-
-        if (!harga) {
-            return res.status(400).json({ message: "Silahkan lengkapi semua bidang" });
-        }
-
-        if (isNaN(harga)) {
-            return res.status(400).json({ message: "Harga harus berupa angka" });
-        }
-
-        const produk = await product.editHarga(id, harga);
-
-        if (!produk) {
+        if (!desEdited) {
             return res.status(404).json({message : 'Produk Tidak Valid'});
         }
 
@@ -241,31 +207,64 @@ const editCek = async (req, res) => {
     }
 }
 
-const editDes = async (req, res) => {
+const getProduct = async (req, res) => {
     try {
-        const {id} = req.params;
-        const {deskripsi} = req.body;
+        const product_list = await product.get(req.params.namaKategori);
 
-        const found = await product.findID(id);
-
-        if (found.length===0) {
-            return res.status(404).json({message : 'Produk Tidak Valid'});
+        if (product_list.length===0) {
+            return res.status(401).json({ message: 'Produk tidak ada' });
         }
 
-        if (!deskripsi) {
-            return res.status(400).json({ message: "Silahkan lengkapi semua bidang" });
-        }
-
-        const produk = product.editDes(id, deskripsi);
-
-        if (!produk) {
-            return res.status(404).json({message : 'Produk Tidak Valid'});
-        }
-
-        res.status(200).json({ message: 'Berhasil di perbarui' });
+        return res.status(200).json({ products: product_list });
     } catch (err) {
         res.status(500).json({error: err.message});
     }
 }
 
-module.exports={cariProduk, tambahProduk, hapusProduk, editNama, editStok, editHarga, editPrediksi, editCek, editDes};
+const getProduct_ID = async (req, res) => {
+    try {
+        const {produk} = req.query;
+        console.log(produk);
+        const product_list = await product.getWithID(produk);
+
+        if (product_list.length===0) {
+            return res.status(401).json({ message: 'Produk tidak ada' });
+        }
+
+        return res.status(200).json({ products: product_list });
+    } catch (err) {
+        res.status(500).json({error: err.message});
+    }
+}
+
+const sortASC = async (req, res) => {
+    try {
+        const namaCat = req.params.namaKategori;
+        const sorted = await product.sort_asc(namaCat);
+
+        if (!sorted) {
+            return res.status(401).json({ message: 'Sorting tidak berhasil' });
+        }
+
+        return res.status(200).json({ products: sorted });
+    } catch (err) {
+        res.status(500).json({error: err.message});
+    }
+}
+
+const sortDESC = async (req, res) => {
+    try {
+        const namaCat = req.params.namaKategori;
+        const sorted = await product.sort_dsc(namaCat);
+
+        if (!sorted) {
+            return res.status(401).json({ message: 'Sorting tidak berhasil' });
+        }
+
+        return res.status(200).json({ products: sorted });
+    } catch (err) {
+        res.status(500).json({error: err.message});
+    }
+}
+
+module.exports={cariProduk, tambahProduk, hapusProduk, editProduk, editPrediksi, editCek, getProduct, getProduct_ID, sortASC, sortDESC};

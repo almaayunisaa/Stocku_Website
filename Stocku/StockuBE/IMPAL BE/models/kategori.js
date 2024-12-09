@@ -52,6 +52,20 @@ class Kategori {
             });
         });
     }
+
+    static get() {
+        const query = 'SELECT namaCategory FROM category';
+        return new Promise((resolve, reject) => {
+            db.query(query, (err, results) => {
+                if (err) {
+                    reject(err);
+                } else {
+                    resolve(results);
+                }
+            });
+        });
+    }
+
 }
 
 module.exports=Kategori;

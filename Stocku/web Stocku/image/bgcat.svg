@@ -1,0 +1,24 @@
+<svg width="707" height="267" viewBox="0 0 707 267" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g filter="url(#filter0_d_132_141)">
+<path d="M5.5 10C5.5 4.7533 9.7533 0.5 15 0.5H693C698.247 0.5 702.5 4.75329 702.5 10V249C702.5 254.247 698.247 258.5 693 258.5H15C9.75328 258.5 5.5 254.247 5.5 249V10Z" fill="white" stroke="#EA8D45"/>
+<rect x="62.2417" y="203.699" width="50" height="50" transform="rotate(179.846 62.2417 203.699)" fill="#EA8D45" fill-opacity="0.5"/>
+<rect x="58.9458" y="93.7071" width="50" height="50" transform="rotate(179.846 58.9458 93.7071)" fill="#EA8D45"/>
+<rect x="93.8301" y="50.6131" width="50" height="50" transform="rotate(179.846 93.8301 50.6131)" fill="#EA8D45"/>
+<rect x="34.0889" y="146.922" width="29.0891" height="53.1477" transform="rotate(179.846 34.0889 146.922)" fill="#EA8D45" fill-opacity="0.75"/>
+<rect x="185.792" y="36.3657" width="50" height="36" transform="rotate(179.846 185.792 36.3657)" fill="#EA8D45"/>
+<rect x="143.927" y="86.4785" width="50" height="50" transform="rotate(179.846 143.927 86.4785)" fill="#EA8D45"/>
+<rect x="109.053" y="133.572" width="50" height="50" transform="rotate(179.846 109.053 133.572)" fill="#EA8D45" fill-opacity="0.5"/>
+</g>
+<defs>
+<filter id="filter0_d_132_141" x="0.856934" y="0" width="706.143" height="267" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+<feFlood flood-opacity="0" result="BackgroundImageFix"/>
+<feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
+<feOffset dy="4"/>
+<feGaussianBlur stdDeviation="2"/>
+<feComposite in2="hardAlpha" operator="out"/>
+<feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.25 0"/>
+<feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow_132_141"/>
+<feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow_132_141" result="shape"/>
+</filter>
+</defs>
+</svg>
