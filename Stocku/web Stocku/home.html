@@ -11,7 +11,7 @@
     <div class="container-fluid">
         <div class="row flex-nowrap">
             <!-- Sidebar -->
-            <div class="col-12 col-md-2 col-lg-2 sidebar bg-orange text-white p-4">
+             <div class="col-12 col-md-2 col-lg-2 sidebar bg-orange text-white p-4">
                 <div class="d-flex align-items-center mb-4 logo-container">
                     <img src="image/logo Stocku.svg" alt="StocKu Logo" class="logo-image me-2">
                     <h3 class="m-0">StocKu</h3>
@@ -23,21 +23,21 @@
                         <a class="nav-link active text-white d-flex align-items-center" href="home.html">
                             <img src="image/dashboard icon .svg">
                             <span class="indicator"></span>
-                            <i class="bi bi-grid-fill me-2"></i> Dashboard
+                            Dashboard
                         </a>
                     </li>
                     <li class="nav-item mb-3">
                         <a class="nav-link text-white d-flex align-items-center" href="category.html">
                             <img src="image/Product icon.svg">
                             <span class="indicator"></span>
-                            <i class="bi bi-box me-2"></i> Product
+                            Product
                         </a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link text-white d-flex align-items-center" href="report.html">
                             <img src="image/report.svg" >
                             <span class="indicator"></span>
-                            <i class="bi bi-file-earmark-text me-2"></i> Report
+                            Report
                         </a>
                     </li>
                 </ul>
@@ -130,6 +130,17 @@
                 <div id="not-found-alert" class="not-found-alert d-none">
                     <img id="not-found-icon" src="image/icon.svg" alt="Not Found Icon" width="30" height="30">
                     <button type="button" class="btn-close" id="close-alert-btn" aria-label="Close"></button>
+                </div>
+
+                <div id="PopUpUbahEmail" class="popup-modal">
+                    <div class="popup-content">
+                        <label for="Email">Email</label>
+                        <input type="text" id="email-text" placeholder="Masukkan email..."> 
+                        <div class="button-container">
+                            <button id="btn_simpan" class="btn btn-primary"></button>
+                            <button id="btn_batal" class="btn btn-secondary"></button>
+                        </div>
+                    </div>
                 </div>
 
     <script src="home.js"></script>

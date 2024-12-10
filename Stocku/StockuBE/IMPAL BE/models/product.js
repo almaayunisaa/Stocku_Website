@@ -208,6 +208,33 @@ class Product {
             });
         });
     }
+
+    static getData() {
+        const query = 'SELECT * FROM product';
+        return new Promise((resolve, reject) => {
+            db.query(query, (err, results) => {
+                if (err) {
+                    reject(err);
+                } else {
+                    resolve(results);
+                }
+            });
+        });
+    }
+
+    static setStokOld(ID, Stok, Harga, IDProduk, tanggal_habis) {
+        const query = 'INSERT INTO oldproduct (ID, Stok, Harga, IDProduk, tanggal_habis) VALUES (?, ?, ?, ?, ?)';
+        return new Promise((resolve, reject) => {
+            db.query(query, [ID, Stok, Harga, IDProduk, tanggal_habis], (err, results) => {
+                if (err) {
+                    reject(err);
+                } else {
+                    resolve(results);
+                }
+            });
+        });
+    }
+
 }
 
 module.exports=Product;

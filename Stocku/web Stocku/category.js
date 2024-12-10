@@ -173,22 +173,24 @@ document.addEventListener("DOMContentLoaded", async () => {
         const hasil = await res.json();
         if (res.ok) {
             for (let i=0; i<hasil.categories.length;i++) {
-                const per_kategori = 
-                `<div id="list_cat" dataCat_id="${hasil.categories[i].namaCategory}" class="category-item d-flex justify-content-between align-items-center p-2 my-2 bg-warning">
+                const per_kategori = `
+                    <div id="list_cat" dataCat_id="${hasil.categories[i].namaCategory}" class="category-item d-flex justify-content-between  align-items-center p-2 my-2 bg-warning">
                         <span class="category-name">${hasil.categories[i].namaCategory}</span>
-                        <a href="product.html" class="view-product text-decoration-none text-dark d-flex align-items-center" dataCat_id="${hasil.categories[i].namaCategory}">
-                            Lihat Produk...
-                        </a>
-                        <img id="editCat_btn" src="image/edit_icon.svg" class="ms-2" width="25" height="25" dataCat_id="${hasil.categories[i].namaCategory}">
-                        <img id="deleteCat_btn" src="image/deletecat.svg" alt="Lihat Produk Icon" class="ms-2" width="25" height="25" dataCat_id="${hasil.categories[i].namaCategory}">
-                </div>`;
+                        <div class="action-container d-flex align-items-center"> 
+                            <a href="product.html" class="view-product text-decoration-none text-dark d-flex align-items-center" dataCat_id="${hasil.categories[i].namaCategory}">
+                                Lihat Produk...
+                            </a>
+                            <img id="editCat_btn" src="image/edit_icon.svg" class="ms-2" width="25" height="25" dataCat_id="${hasil.categories[i].namaCategory}">
+                            <img id="deleteCat_btn" src="image/deletecat.svg" alt="Lihat Produk Icon" class="ms-2" width="25" height="25" dataCat_id="${hasil.categories[i].namaCategory}">
+                        </div>
+                    </div>`;
                 categoryList.insertAdjacentHTML("beforeend", per_kategori);
 
                 document.querySelectorAll('.view-product').forEach(button => {
                     button.addEventListener('click', function (event) {
                         event.preventDefault();
                         const id = this.getAttribute('dataCat_id');
-                        window.location.href = `product.html?category=${id}`
+                        window.location.href = `product.html?category=${categoryId}`
                     })
                 })
                 

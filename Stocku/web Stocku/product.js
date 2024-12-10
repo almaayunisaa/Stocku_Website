@@ -135,6 +135,7 @@ async function ambilProduk(category) {
                 } else {
                     image = "image/indikator ijo.svg";
                 }
+                const date_prediksi = await prediksiTanggal(hasil.products[i].ID);
                 const per_product = 
                 `<td>${hasil.products[i].Produk}</td>
                 <td>${hasil.products[i].ID}</td>
@@ -142,9 +143,10 @@ async function ambilProduk(category) {
                 <td><img src="${image}"></td>
                 <td><button id="button_edit_prod" prod_id= ${hasil.products[i].ID} class="btn btn-link ubah-button">UBAH</button></td>
                 <td><img id = "komentar_btn" prod_id= ${hasil.products[i].ID} class="komentar_class" src="image/check icon.svg" alt="check icon"></td>
-                <td>${hasil.products[i].Prediksi}</td>
+                <td>${date_prediksi}</td>
                 <td>${hasil.products[i].harga}</td>`;
                 productList.insertAdjacentHTML("beforeend", per_product);
+                checkTanggalandUpdate(hasil.products[i].Stok, hasil.products[i].harga, hasil.products[i].ID);
             } 
 
             const ubahBtn = document.getElementsByClassName('btn btn-link ubah-button');
@@ -251,6 +253,8 @@ document.getElementById("kolom_produk").addEventListener('click', async () => {
                     <td>${hasil.products[i].Prediksi}</td>
                     <td>${hasil.products[i].harga}</td>`;
                     productList.insertAdjacentHTML("beforeend", per_product);
+
+                    prediksiTanggal(hasil.products[i].ID);
                 } 
     
                 document.getElementById('button_edit_prod').addEventListener('click', function () {
@@ -410,3 +414,101 @@ document.getElementById("kolom_produk").addEventListener('click', async () => {
 document.getElementById("btn_komentar_batal").addEventListener('click', () => {
     pop_up_komentar.style.display='none';
 })
+
+async function bisaPrediksi(id) {
+    const token = localStorage.getItem('authToken');
+    try {
+        const res = await fetch(`http://localhost:5500/api/product/getOldProd?id=${id}`, {
+            method: 'GET',
+            headers: {
+                'Authorization': `Bearer ${token}`,
+                'Content-Type': 'application/json',
+            },
+        });
+
+        const hasil = await res.json();
+
+        if (res.ok) {
+            if (hasil.oldproducts.length>=12) {
+                return true;
+            } else {
+                return false;
+            }
+        } else {
+            return false;
+        }
+    } catch (error) {
+        console.error(error.message);
+    }
+}
+
+function tambahHari(tanggal, hari) {
+    if (isNaN(Date.parse(tanggal)) || isNaN(hari)) {
+        console.error("Input tanggal atau hari tidak valid");
+        return null;
+    }
+    const hasil = new Date(tanggal);
+    hasil.setDate(hasil.getDate() + hari);
+    return hasil;
+}
+
+async function prediksiTanggal(id) {
+    const bisa = await bisaPrediksi(id);
+    if (bisa) {
+        const token = localStorage.getItem('authToken');
+        try {
+            const res = await fetch(`http://localhost:5500/api/product/editPrediksi/${id}`, {
+                method: 'PATCH',
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                    'Content-Type': 'application/json',
+                },
+            });
+
+            const hasil = await res.json();
+            if (res.ok) {
+                const currentDate = new Date();
+                const date_prediksi = tambahHari(currentDate, hasil.hari);
+                return date_prediksi.toLocaleDateString();
+            } else {
+                return "Belum bisa diprediksi";
+            }
+
+        } catch (error) {
+            console.error(error.message);
+        }
+    } else {
+        return "Belum bisa diprediksi";
+    }
+        
+}
+
+function checkTanggalandUpdate(stok, harga, id_prod) {
+    const tanggal = new Date();
+
+    if (tanggal.getDate()===1) {
+        parseInt(localStorage.getItem("totalSelisih")) || 0;
+        id = `${id_prod}${tanggal.getDate().toString().padStart(2, '0')}${(tanggal.getMonth() + 1).toString().padStart(2, '0')}${ tanggal.getFullYear().toString().slice(-2)}`;
+        updateStokHabis(id, stok, harga, id_prod, tanggal.toISOString().split('T')[0]);
+        console.log(tanggal.toISOString().split('T')[0]);
+        localStorage.removeItem("totalSelisih");
+    }
+}
+
+async function updateStokHabis(id, stok, harga, id_prod, tanggalnow) {
+    const token = localStorage.getItem('authToken');
+    try {
+        const res = await fetch(`http://localhost:5500/api/product/setOldProd?id=${id}&stok=${stok}&harga=${harga}&id_prod=${id_prod}&tgl_hbs=${tanggalnow}`, {
+            method: 'POST',
+            headers: {
+                'Authorization': `Bearer ${token}`,
+                'Content-Type': 'application/json',
+            },
+        });
+
+        const hasil = await res.json();
+        console.log('Response dari server:', hasil);
+    } catch (err) {
+        console.log('Error:', err);
+    }
+}

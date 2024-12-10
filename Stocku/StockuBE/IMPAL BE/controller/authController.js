@@ -65,9 +65,6 @@ const signIn = async (req, res) => {
 
 const editEmail = async (req, res) => {
     try {
-        const token = req.header('Authorization')?.replace('Bearer ', '');
-        const decoded = jwt.verify(token, 'your_jwt_secret');
-        const {username} = decoded;
         const {email} = req.body;
 
         // Cek apakah sudah di isi smeua formnya
@@ -75,7 +72,7 @@ const editEmail = async (req, res) => {
             return res.status(400).json({ message: "Silahkan lengkapi semua bidang" });
         }
 
-        const edited = admin.editEmail(username, email);
+        const edited = admin.editEmail(req.query.username, email);
 
         // Kalau gagal teredit
         if (!edited) {

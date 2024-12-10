@@ -42,6 +42,12 @@ objek
     document.getElementById('productPrice').value = data.harga;
     document.getElementById('productDescription').value = data.deskripsi;
 
+    cat_bfr=data.namaCategory; 
+    namaProd_bfr =data.Produk;
+    id_bfr = data.ID;
+    stok_bfr = data.Stok;
+    harga_bfr = data.harga;
+    des_bfr = data.deskripsi;
   })
   .catch((error) => {
     console.error("Error:", error);
@@ -186,6 +192,11 @@ document.addEventListener('DOMContentLoaded', function() {
         const des_now = document.getElementById('productDescription').value;
         const token = localStorage.getItem('authToken');
 
+        if (stokNotStonk(stok_bfr, stok_now)) {
+            const selisih = stok_bfr-stok_now;
+            updateSelisih(selisih);
+        }
+
         try {
             const res = await fetch(`http://localhost:5500/api/product/editProduk/${product}`, {
                 method: 'PATCH',
@@ -251,3 +262,13 @@ document.getElementById('btn_hapus_produk').addEventListener('click', async () =
         console.log('Error:', err);
     }
 })
+
+function stokNotStonk(stok_bfr, stok_now) {
+    return stok_bfr>stok_now;
+}
+
+function updateSelisih(selisih) {
+    let total = parseInt(localStorage.getItem("totalSelisih")) || 0;
+    total = total +selisih;
+    localStorage.setItem("totalSelisih", total);
+}

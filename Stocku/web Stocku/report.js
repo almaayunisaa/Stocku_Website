@@ -87,3 +87,31 @@ function searchProduct() {
 
 // Event listener untuk pencarian saat pengguna mengetik
 searchInput.addEventListener('input', searchProduct);
+
+document.getElementById('laporan_btn').addEventListener('click', async () => {
+    const token = localStorage.getItem('authToken');
+    try {
+        const res = await fetch(`http://localhost:5500/api/product/getReport`, {
+            method: 'GET',
+            headers: {
+                'Authorization': `Bearer ${token}`,
+                'Content-Type': 'application/json',
+            },
+        });
+
+        const hasil = await res.json();
+
+        if (res.ok) {
+            data = hasil.datas;
+            const ws = XLSX.utils.json_to_sheet(data);
+
+            const wb = XLSX.utils.book_new();
+            XLSX.utils.book_append_sheet(wb, ws, "Sheet1"); 
+            XLSX.writeFile(wb, "laporan.xlsx");
+        } else {
+            console.error('Error: Tidak dapat mengambil data')
+        }
+    } catch (error) {
+        console.error(error.message);
+    }
+})

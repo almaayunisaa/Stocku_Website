@@ -421,3 +421,76 @@ a{
     cursor: pointer;
     padding: 5px;
 }
+
+.popup-modal {
+    display: flex;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 698px;
+    height: 259px;
+    justify-content: center;
+    align-items: center;
+    background: url('image/bgcat.svg') no-repeat center center;
+}
+
+.popup-content {
+    font-family: 'Poppins', sans-serif;
+    background-size: cover;
+    padding: 30px 20px;
+    border-radius: 8px;
+    text-align: center;
+    width: 90%;
+    max-width: 400px;
+}
+
+label {
+    font-family: 'Poppins', sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    color: #333;
+    display: block;
+    margin-bottom: 8px;
+}
+
+#btn_simpan {
+    background: url('image/simpanbtn.svg') no-repeat center center;
+    background-size: contain;  
+    border: none;
+    padding: 10px;
+    width: 100px; 
+    height: 40px;
+    margin: 10px 5px;
+    cursor: pointer;
+}
+
+#btn_batal {
+    background: url('image/batalbtn.svg') no-repeat center center;
+    background-size: contain;  
+    border: none;
+    padding: 10px;
+    width: 100px; 
+    height: 40px;
+    margin: 10px 5px;
+    cursor: pointer;
+}
+
+
+#email-text {
+    width: 90%;
+    height: 43px;
+    padding: 10px;
+    border-radius: 10px;
+    border: 1px solid #EA8D45 !important;
+    font-family: 'Poppins', sans-serif;
+    font-size: 16px;
+    box-sizing: border-box;
+    margin-bottom: 20px;
+}
+
+#email-text::placeholder {
+    color: #C6C6C6;
+    font-size: 15px;
+    font-family: 'Poppins', sans-serif;
+}

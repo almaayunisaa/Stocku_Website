@@ -159,8 +159,14 @@ const editPrediksi = async (req, res) => {
     const dataStok = dataBaru.map(item => item.Stok);
     days = -1;
     while (days<0) {
-        const x = tf.tensor2d(selisih_hari, [selisih_hari.length, 1]);
-        const y = tf.tensor2d(dataStok, [dataStok.length, 1]);
+        const maxSelisih = Math.max(...selisih_hari);
+        const maxStok = Math.max(...dataStok);
+
+        const normalizedSelisih = selisih_hari.map(val => val / maxSelisih);
+        const normalizedStok = dataStok.map(val => val / maxStok);
+
+        const x = tf.tensor2d(normalizedSelisih, [normalizedSelisih.length, 1]);
+        const y = tf.tensor2d(normalizedStok, [normalizedStok.length, 1]);
     
         const model = tf.sequential();
         model.add(tf.layers.dense({ units: 1, inputShape: [1] })); 
@@ -171,10 +177,9 @@ const editPrediksi = async (req, res) => {
 
         const slope = model.layers[0].getWeights()[0].dataSync()[0];
         const intercept = model.layers[0].getWeights()[1].dataSync()[0];
-    
         days = Math.floor(-intercept / slope);
     }
-    res.status(200).json({ message: 'Berhasil diprediksi', days});
+    res.status(200).json({ message: 'Berhasil diprediksi', hari: days});
     } catch (err) {
       res.status(500).json({error: err.message});
     }
@@ -267,4 +272,52 @@ const sortDESC = async (req, res) => {
     }
 }
 
-module.exports={cariProduk, tambahProduk, hapusProduk, editProduk, editPrediksi, editCek, getProduct, getProduct_ID, sortASC, sortDESC};
+const getReport = async (req, res) => {
+    try {
+        const data = await product.getData();
+
+        if (!data) {
+            return res.status(401).json({ message: 'Tidak dapat mengambil data' });
+        }
+
+        return res.status(200).json({ datas: data });
+    } catch (err) {
+        res.status(500).json({error: err.message});
+    }
+}
+
+const getOldProd = async (req, res) => {
+    try {
+        const id = req.query.id;
+        const oldproduct_list = await product.getTanggalHabisNStok(id);
+
+        if (oldproduct_list.length===0) {
+            return res.status(401).json({ message: 'Produk tidak ada' });
+        }
+
+        return res.status(200).json({ oldproducts: oldproduct_list });
+    } catch (err) {
+        res.status(500).json({error: err.message});
+    }
+}
+
+const setOldProd = async (req, res) => {
+    try {
+        const id = req.query.id;
+        const stok = req.query.stok;
+        const harga = req.query.harga;
+        const id_prod = req.query.id_prod;
+        const tgl_hbs = req.query.tgl_hbs;
+        const updated = await product.setStokOld(id, stok, harga, id_prod, tgl_hbs);
+
+        if (!updated) {
+            return res.status(401).json({ message: 'Tidak dapat ditambah' });
+        }
+
+        return res.status(200).json({ message: 'Berhasil ditambah' });
+    } catch (err) {
+        res.status(500).json({error: err.message});
+    }
+}
+
+module.exports={cariProduk, tambahProduk, hapusProduk, editProduk, editPrediksi, editCek, getProduct, getProduct_ID, sortASC, sortDESC, getReport, getOldProd, setOldProd};
