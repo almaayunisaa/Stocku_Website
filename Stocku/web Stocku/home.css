@@ -1,6 +1,9 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
+
 /* Global Styling */
 body {
     background-color: #f8f9fa;
+    font-family: 'Poppins', sans-serif;
 }
 
 /* Sidebar Styling */
@@ -184,6 +187,7 @@ h3 {
     margin-top: 30px;
     display: flex;
     justify-content: flex-end; /* Taruh anak ke sisi kanan */
+    margin-right: 100px;
 }
 
 /* Container Segera Cek Stok Barang */
@@ -196,6 +200,7 @@ h3 {
     border-radius: 20px;
     background-color: #fff;
     box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 8px;
 }
 
 .stok-list{
@@ -204,22 +209,15 @@ h3 {
     margin: 10px;
 
 }
-.stok-item1{
+.stok-item{
     background-color: rgba(255, 159, 28, 0.5); /* Warna background */
     color: white; /* Warna teks */
     padding: 10px; /* Jarak dalam item */
-    margin-bottom: 8px; /* Jarak antar item */
+    margin-bottom: 10px;
     border-radius: 5px; /* Membuat sudut melengkung */
-
-}
-
-.stok-item2{
-    background-color: rgba(255, 159, 28, 0.5) !important; /* Warna background */
-    color: white; /* Warna teks */
-    padding: 10px; /* Jarak dalam item */
-    margin-bottom: 8px; /* Jarak antar item */
-    border-radius: 5px; /* Membuat sudut melengkung */
-
+    height: 40px;
+    font-family: 'Poppins', sans-serif;
+    font-size: 17px;
 }
 
 h4{
@@ -478,7 +476,7 @@ label {
 
 
 #email-text {
-    width: 90%;
+    width: 100%;
     height: 43px;
     padding: 10px;
     border-radius: 10px;
@@ -493,4 +491,60 @@ label {
     color: #C6C6C6;
     font-size: 15px;
     font-family: 'Poppins', sans-serif;
+    text-align: center;
+}
+
+.nav-link .teks {
+    margin-left: 3px;
+    font-size: 17px;
+    font-weight: 500;
+}
+
+.nav-link .teks-off {
+    margin-left: 3px;
+    font-size: 17px;
+    font-weight: 500;
+    color: #E2DDDD;
+}
+
+.dropdown-header {
+    font-family: 'Poppins', sans-serif;
+}
+
+.teks-cekstok {
+    font-family: 'Poppins', sans-serif;
+    font-size: 20px;
+    font-weight: 500;
+}
+
+.riwayat-item {
+    background : linear-gradient(90deg, rgba(255, 159, 28, 0.5) 51%, #FFFFFF 100%);
+    color: white;
+    padding: 10px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+    height: 40px;
+}
+
+.teks-riwayat {
+    font-family: 'Poppins', sans-serif;
+    font-size: 22px;
+    font-weight: 500;
+}
+
+.riwayat-item {
+    font-family: 'Poppins', sans-serif;
+    font-size: 17px;
+    font-weight: 500;
+}
+
+#teks-email {
+    font-family: 'Poppins', sans-serif;
+    font-weight: bold;
+    font-size: 23px;
+    color: #EA8D45;
+}
+
+#list-produk-lrs {
+    background-color: #FFFFFF;
 }

@@ -6,6 +6,7 @@
     <title>Produk</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="product.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
     <div class="container-fluid">
@@ -21,23 +22,23 @@
                 <ul class="nav flex-column">
                     <li class="nav-item mb-3">
                         <a class="nav-link text-white d-flex align-items-center" href="home.html">
-                            <img src="image/dashboard icon .svg">
+                            <img src="image/dasbor-btn-off.svg">
                             <span class="indicator"></span>
-                            Dashboard
+                            <span class="teks-off">Dasbor</span>
                         </a>
                     </li>
                     <li class="nav-item mb-3">
                         <a class="nav-link active text-white d-flex align-items-center" href="category.html">
-                            <img src="image/Product icon.svg">
+                            <img src="image/product-btn-on.svg">
                             <span class="indicator"></span>
-                            Product
+                            <span class="teks">Kategori</span>
                         </a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link text-white d-flex align-items-center" href="report.html">
                             <img src="image/report.svg" >
                             <span class="indicator"></span>
-                            Report
+                            <span class="teks-off">Laporan</span>
                         </a>
                     </li>
                 </ul>
@@ -57,7 +58,7 @@
                 <hr class="header-line">
             
                 <div class="input-group">
-                    <input type="text" class="form-control search-input" placeholder="Search product">
+                    <input type="text" class="form-control search-input" placeholder="Cari produk...">
                     <img src="image/search icon.svg" alt="Search Icon" class="search-icon">
                 </div>
 
@@ -65,14 +66,14 @@
                     <table class="table table-striped">
                         <thead>
                             <tr>
-                                <th id="kolom_produk" scope="col">PRODUK</th>
-                                <th scope="col">KODE</th>
-                                <th scope="col">STOK</th>
-                                <th scope="col">INDIKATOR</th>
-                                <th scope="col">AKSI</th>
-                                <th scope="col">CHECK</th>
-                                <th scope="col">PREDIKSI</th>
-                                <th scope="col">HARGA</th>
+                                <th id="kolom_produk" scope="col" class="kolom">PRODUK</th>
+                                <th scope="col" class="kolom">KODE</th>
+                                <th scope="col" class="kolom">STOK</th>
+                                <th scope="col" class="kolom">INDIKATOR</th>
+                                <th scope="col" class="kolom">AKSI</th>
+                                <th scope="col" class="kolom">CHECK</th>
+                                <th scope="col" class="kolom">PREDIKSI</th>
+                                <th scope="col" class="kolom">HARGA</th>
                             </tr>
                         </thead>
                         <tbody id="tableBody"></tbody>
@@ -101,6 +102,18 @@
                     <button id="closeNotification" class="close-button">
                         <img id="notificationIcon" src="" alt="notification icon" width="30px" height="30px">
                     </button>
+                </div>
+
+                <!--Pop Up Email-->
+                <div id="PopUpUbahEmail" class="popup-modal">
+                    <div class="popup-content">
+                        <label id="teks-email" for="Email">Email</label>
+                        <input type="text" id="email-text" placeholder="Masukkan email baru..."> 
+                        <div class="button-container">
+                            <button id="btn_simpan" class="btn btn-primary"></button>
+                            <button id="btn_batal" class="btn btn-secondary"></button>
+                        </div>
+                    </div>
                 </div>
                 
     <script src="product.js"></script>

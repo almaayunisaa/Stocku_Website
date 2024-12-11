@@ -1,6 +1,8 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
 /* Global Styling */
 body {
     background-color: #f8f9fa;
+    font-family: 'Poppins', sans-serif;
 }
 
 /* Sidebar Styling */
@@ -236,7 +238,7 @@ form textarea.form-control {
     justify-content: end;
 }
 
-.btn-primary, .btn-secondary {
+#button_batal, #button_simpan {
     width: 120px;
     height: 40px;
     background-color: rgba(255, 159, 28, 0.5) !important;
@@ -250,6 +252,7 @@ form textarea.form-control {
     transition: background-color 0.3s, box-shadow 0.3s;
     box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
 }
+
 .btn-hapus{
     width: 200px;
     height: 40px;
@@ -269,17 +272,18 @@ form textarea.form-control {
     box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
     color: white;
 }
-.btn-primary:hover {
+
+#button_simpan:hover{
     background-color: #ff9f1c !important;
     box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
 }
 
-.btn-secondary {
+#button_batal {
     background-color: #F0F0F0 !important;
     color: #333 !important;
 }
 
-.btn-secondary:hover {
+#button_batal:hover {
     background-color: #ff9f1c !important;
 }
 
@@ -357,4 +361,98 @@ input[type=number] {
 .close-button img {
     width: 350px;
     height: 200px;
+}
+
+.nav-link .teks {
+    margin-left: 3px;
+    font-size: 17px;
+    font-weight: 500;
+}
+
+.nav-link .teks-off {
+    margin-left: 3px;
+    font-size: 17px;
+    font-weight: 500;
+    color: #E2DDDD;
+}
+
+#teks-email {
+    font-family: 'Poppins', sans-serif;
+    font-weight: bold;
+    font-size: 23px;
+    color: #EA8D45;
+}
+
+.popup-modal {
+    display: flex;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 698px;
+    height: 259px;
+    justify-content: center;
+    align-items: center;
+    background: url('image/bgcat.svg') no-repeat center center;
+}
+
+.popup-content {
+    font-family: 'Poppins', sans-serif;
+    background-size: cover;
+    padding: 30px 20px;
+    border-radius: 8px;
+    text-align: center;
+    width: 90%;
+    max-width: 400px;
+}
+
+label {
+    font-family: 'Poppins', sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    color: #333;
+    display: block;
+    margin-bottom: 8px;
+}
+
+#btn_simpan {
+    background: url('image/simpanbtn.svg') no-repeat center center;
+    background-size: contain;  
+    border: none;
+    padding: 10px;
+    width: 100px; 
+    height: 40px;
+    margin: 10px 5px;
+    cursor: pointer;
+}
+
+#btn_batal {
+    background: url('image/batalbtn.svg') no-repeat center center;
+    background-size: contain;  
+    border: none;
+    padding: 10px;
+    width: 100px; 
+    height: 40px;
+    margin: 10px 5px;
+    cursor: pointer;
+}
+
+
+#email-text {
+    width: 100%;
+    height: 43px;
+    padding: 10px;
+    border-radius: 10px;
+    border: 1px solid #EA8D45 !important;
+    font-family: 'Poppins', sans-serif;
+    font-size: 16px;
+    box-sizing: border-box;
+    margin-bottom: 20px;
+}
+
+#email-text::placeholder {
+    color: #C6C6C6;
+    font-size: 15px;
+    font-family: 'Poppins', sans-serif;
+    text-align: center;
 }

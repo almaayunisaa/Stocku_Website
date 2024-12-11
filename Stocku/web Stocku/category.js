@@ -5,12 +5,20 @@ const PopupAddCat = document.getElementById('PopupAddCat');
 const PopupEditCat = document.getElementById('PopupEditCat');
 const simpanKategori = document.getElementById('simpanKategori');
 const batalKategori = document.getElementById('batalKategori');
+const PopUpUbahEmail = document.getElementById('PopUpUbahEmail');
 
 // Tambahkan class dan styling untuk dropdown menu
 dropdownMenu.classList.add('dropdown-custom');
 dropdownMenu.style.display = 'none'; // Sembunyikan menu secara default
 PopupAddCat.style.display = "none";
 PopupEditCat.style.display = "none";
+PopUpUbahEmail.style.display='none';
+
+function decode(token) {
+    const payload = token.split('.')[1];
+    const decoded = atob(payload);
+    return JSON.parse(decoded);
+}
 
 // Tambahkan opsi sesuai gambar
 dropdownMenu.innerHTML = `
@@ -18,7 +26,7 @@ dropdownMenu.innerHTML = `
         <span class="email-label">Email :</span>
         <span class="email-address">admin@gmail.com</span>
     </div>
-    <div class="dropdown-item">
+    <div id = "ubah_email_btn" class="dropdown-item">
         <img src="image/ubah email icon.svg" class="dropdown-icon" alt="Eye Icon">
         Ubah email
     </div>
@@ -174,7 +182,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         if (res.ok) {
             for (let i=0; i<hasil.categories.length;i++) {
                 const per_kategori = `
-                    <div id="list_cat" dataCat_id="${hasil.categories[i].namaCategory}" class="category-item d-flex justify-content-between  align-items-center p-2 my-2 bg-warning">
+                    <div id="list_cat" dataCat_id="${hasil.categories[i].namaCategory}" class="category-item d-flex justify-content-between  align-items-center p-2 my-2 bg-white">
                         <span class="category-name">${hasil.categories[i].namaCategory}</span>
                         <div class="action-container d-flex align-items-center"> 
                             <a href="product.html" class="view-product text-decoration-none text-dark d-flex align-items-center" dataCat_id="${hasil.categories[i].namaCategory}">
@@ -267,3 +275,81 @@ document.addEventListener("DOMContentLoaded", async () => {
 document.getElementById('closeNotification').addEventListener('click', function() {
     document.getElementById('notification').style.display = 'none'; // Hide notification
 });
+
+document.addEventListener('DOMContentLoaded', async () => {
+    const email_text = document.getElementById("text_email");
+    const token = localStorage.getItem('authToken');
+    const decodeToken = (token) => {
+        const payload = token.split('.')[1];
+        return JSON.parse(atob(payload));
+    };
+
+    const { username } = decodeToken(token);
+    console.log(username);
+    try {
+        const res = await fetch(`http://localhost:5500/api/auth/getEmail?username=${username}`, {
+            method: 'GET',
+            headers: {
+                'Authorization': `Bearer ${token}`,
+                'Content-Type': 'application/json',
+            },
+        });
+
+        const hasil = await res.json();
+        if (res.ok) {
+            email_text.textContent=hasil.email[0].email;
+            console.log('Berhasil mengambil email');
+        } else {
+            if (hasil.message == 'Gagal mengambil email') {
+                notificationIcon.src = "image/Notif kalo ada kesalahan.svg"; 
+                notification.style.display = 'block'; 
+            }
+        }
+        console.log('Response dari server:', hasil.email[0].email);
+    } catch (err) {
+        console.error('Error:', err.message);
+    }
+})
+
+document.getElementById('ubah_email_btn').addEventListener('click', () => {
+    PopUpUbahEmail.style.display='flex';
+})
+
+document.getElementById('btn_batal').addEventListener("click", function() {
+    PopUpUbahEmail.style.display = "none";
+})
+
+document.getElementById('btn_simpan').addEventListener("click", async () => {
+    const new_email = document.getElementById('email-text').value;
+    const token = localStorage.getItem('authToken');
+    const decodeToken = (token) => {
+        const payload = token.split('.')[1];
+        return JSON.parse(atob(payload));
+    };
+
+    const { username } = decodeToken(token);
+    try {
+        const res = await fetch(`http://localhost:5500/api/auth/editEmail?username=${username}`, {
+            method: 'POST',
+            headers: {
+                'Authorization': `Bearer ${token}`,
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ email: new_email }),
+        });
+
+        const hasil = await res.json();
+        if (res.ok) {
+           console.log(hasil.message);
+           window.location.href="home.html";
+        } else {
+            if (hasil.message == 'Gagal mengubah email' || hasil.message == 'Silahkan lengkapi semua bidang') {
+                notificationIcon.src = "image/Notif kalo ada kesalahan.svg"; 
+                notification.style.display = 'block'; 
+            }
+        }
+        console.log('Response dari server:', hasil.email[0].email);
+    } catch (err) {
+        console.error('Error:', err.message);
+    }
+})

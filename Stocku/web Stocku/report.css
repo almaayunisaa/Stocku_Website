@@ -1,7 +1,10 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
+
 /* Global Styling */
 body {
     background-color: #f8f9fa;
     overflow: hidden;
+    font-family: 'Poppins', sans-serif;
 }
 
 /* Sidebar Styling */
@@ -237,6 +240,55 @@ h3 {
 
 }
 /* Styling untuk ikon catatan */
+.catatan-container {
+    border: 2px solid #ff9900;
+    border-radius: 20px;
+    background-color: #fff;
+    padding: 15px;
+    margin-bottom: 20px;
+    margin-top: 20px;
+    height: 180px; 
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.catatan-title {
+    margin-top: 10px;
+    margin-left: 10px;
+    color: #FFBF69;
+}
+
+.catatan-list {
+    list-style: none;
+    padding: 0;
+    margin: 10px;
+}
+
+.catatan-item {
+    background-color: rgba(255, 159, 28, 0.5); /* Warna background */
+    color: white;
+    padding: 10px;
+    margin-bottom: 8px;
+    border-radius: 5px;
+}
+
+.riwayat-item {
+    background : linear-gradient(90deg, rgba(255, 159, 28, 0.5) 51%, #FFFFFF 100%);
+    color: white;
+    padding: 10px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+    height: 40px;
+}
+
+.riwayat-item2 {
+    background : rgba(255, 159, 28, 0.5);
+    color: white;
+    padding: 10px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+    height: 40px;
+}
+
 .note-panel {
     background-color: white; /* Warna latar belakang lembut */
     margin-top: 10px; /* Jarak di atas panel catatan */
@@ -251,6 +303,19 @@ h3 {
     width: 570px;
     
     font-weight: bold;
+}
+
+.nav-link .teks {
+    margin-left: 3px;
+    font-size: 17px;
+    font-weight: 500;
+}
+
+.nav-link .teks-off {
+    margin-left: 3px;
+    font-size: 17px;
+    font-weight: 500;
+    color: #E2DDDD;
 }
 
 .note-icon {
@@ -277,4 +342,85 @@ h3 {
 .total-penjualan-panel{
     border: 2px solid #ff9900;
     border-radius: 10px;
+}
+
+.popup-modal {
+    display: flex;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 698px;
+    height: 259px;
+    justify-content: center;
+    align-items: center;
+    background: url('image/bgcat.svg') no-repeat center center;
+}
+
+.popup-content {
+    font-family: 'Poppins', sans-serif;
+    background-size: cover;
+    padding: 30px 20px;
+    border-radius: 8px;
+    text-align: center;
+    width: 90%;
+    max-width: 400px;
+}
+
+label {
+    font-family: 'Poppins', sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    color: #333;
+    display: block;
+    margin-bottom: 8px;
+}
+
+#btn_simpan {
+    background: url('image/simpanbtn.svg') no-repeat center center;
+    background-size: contain;  
+    border: none;
+    padding: 10px;
+    width: 100px; 
+    height: 40px;
+    margin: 10px 5px;
+    cursor: pointer;
+}
+
+#btn_batal {
+    background: url('image/batalbtn.svg') no-repeat center center;
+    background-size: contain;  
+    border: none;
+    padding: 10px;
+    width: 100px; 
+    height: 40px;
+    margin: 10px 5px;
+    cursor: pointer;
+}
+
+
+#email-text {
+    width: 100%;
+    height: 43px;
+    padding: 10px;
+    border-radius: 10px;
+    border: 1px solid #EA8D45 !important;
+    font-family: 'Poppins', sans-serif;
+    font-size: 16px;
+    box-sizing: border-box;
+    margin-bottom: 20px;
+}
+
+#email-text::placeholder {
+    color: #C6C6C6;
+    font-size: 15px;
+    font-family: 'Poppins', sans-serif;
+    text-align: center;
+}
+
+#teks-email {
+    font-family: 'Poppins', sans-serif;
+    font-weight: bold;
+    font-size: 23px;
+    color: #EA8D45;
 }

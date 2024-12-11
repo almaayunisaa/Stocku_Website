@@ -6,6 +6,7 @@
     <title>StockKu Dashboard</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="home.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
     <div class="container-fluid">
@@ -23,21 +24,21 @@
                         <a class="nav-link active text-white d-flex align-items-center" href="home.html">
                             <img src="image/dashboard icon .svg">
                             <span class="indicator"></span>
-                            Dashboard
+                            <span class="teks">Dasbor</span>
                         </a>
                     </li>
                     <li class="nav-item mb-3">
                         <a class="nav-link text-white d-flex align-items-center" href="category.html">
                             <img src="image/Product icon.svg">
                             <span class="indicator"></span>
-                            Product
+                            <span class="teks-off">Kategori</span>
                         </a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link text-white d-flex align-items-center" href="report.html">
                             <img src="image/report.svg" >
                             <span class="indicator"></span>
-                            Report
+                            <span class="teks-off">Laporan</span>
                         </a>
                     </li>
                 </ul>
@@ -45,7 +46,7 @@
 
             <div class="col p-4">
                 <div class="d-flex justify-content-between align-items-center mb-4">
-                    <h2 class="dashboard-title">DASHBOARD</h2>
+                    <h2 class="dashboard-title">DASBOR</h2>
                     <div class="d-flex align-items-center">
                         <span class="admin-text me-2">ADMIN</span>
                         <div class="icon-container">
@@ -60,7 +61,7 @@
                
                 <div class="col">
                     <div class="input-group">
-                        <input type="text" class="form-control search-input" placeholder="Search product">
+                        <input type="text" class="form-control search-input" placeholder="Cari produk...">
                         <img src="image/search icon.svg" alt="Search Icon" class="search-icon">
                     </div>
                     <!-- Bagian Riwayat -->
@@ -68,13 +69,10 @@
                         <div class="riwayat-container">
                             <h4 class="riwayat-title">
                                 <img class="riwayat-icon" src="image/history icon.svg" alt="Riwayat Icon">
-                                Riwayat
+                                <span class="teks-riwayat">Riwayat</span>
                             </h4>
                             <ul class="riwayat-list">
                                 <li class="riwayat-item">Produk baru: Bawang Bombay</li>
-                                <li class="riwayat-item">Update Stock: Bayam</li>
-                                <li class="riwayat-item">Update Stock: Bayam</li>
-                                <li class="riwayat-item">Update Stock: Bayam</li>
                             </ul>
                         </div>
                     </div>
@@ -87,7 +85,7 @@
                                 Catatan
                             </h4>
                             <ul class="catatan-list">
-                                <li class="catatan-item">Stok Bawang Bombay salah</li>
+                                <li class="riwayat-item">Stok Bawang Bombay salah</li>
                             </ul>
                         </div>
                     </div>
@@ -98,11 +96,11 @@
                     <div class="stok-barang-container">
                         <h4 class="stok-barang-title">
                             <img class="warningicon" src="image/warning icon.svg" alt="Alert Icon">
-                            SEGERA CEK STOK BARANG
+                            <span class="teks-cekstok">SEGERA CEK STOK BARANG</span>
                         </h4>
                         <ul class="stok-list">
-                            <li class="stok-item1">Sawi Putih</li>
-                            <li class="stok-item2">Bawang Bombay</li>
+                            <li class="stok-item">Sawi Putih</li>
+                            <li class="stok-item">Bawang Bombay</li>
                         </ul>
                     </div>
                 </div>
@@ -113,13 +111,13 @@
                         <a href="add product.html">
                             <button class="action-button">
                                 <img src="image/plus icon.svg" class="action-icon" alt="Tambah Produk">
-                                Tambah Produk
+                                <span class="teks-tambahprod">Tambah Produk</span>
                             </button>
                         </a>
                         <a href="tambah-kategori.html">
                             <button class="action-button">
                                 <img src="image/tambah kategori icon.svg" class="action-icon" alt="Tambah Kategori">
-                                Tambah Kategori
+                                <span class="teks-tambahcat">Tambah Kategori</span>
                             </button>
                         </a>
                     </div>
@@ -132,10 +130,11 @@
                     <button type="button" class="btn-close" id="close-alert-btn" aria-label="Close"></button>
                 </div>
 
+                <!--Pop Up Email-->
                 <div id="PopUpUbahEmail" class="popup-modal">
                     <div class="popup-content">
-                        <label for="Email">Email</label>
-                        <input type="text" id="email-text" placeholder="Masukkan email..."> 
+                        <label id="teks-email" for="Email">Email</label>
+                        <input type="text" id="email-text" placeholder="Masukkan email baru..."> 
                         <div class="button-container">
                             <button id="btn_simpan" class="btn btn-primary"></button>
                             <button id="btn_batal" class="btn btn-secondary"></button>

@@ -3,11 +3,21 @@ const dropdownMenu = document.createElement('div');
 const pop_up_komentar = document.getElementById('Pop-Komentar')
 const notification = document.getElementById('notification');
 const notificationIcon = document.getElementById('notificationIcon');
+const PopUpUbahEmail = document.getElementById('PopUpUbahEmail');
+
 // Tambahkan class dan styling untuk dropdown menu
 dropdownMenu.classList.add('dropdown-custom');
 dropdownMenu.style.display = 'none'; // Sembunyikan menu secara default
 pop_up_komentar.style.display='none';
 notification.style.display = 'none';
+
+PopUpUbahEmail.style.display='none';
+
+function decode(token) {
+    const payload = token.split('.')[1];
+    const decoded = atob(payload);
+    return JSON.parse(decoded);
+}
 
 function getCategory(param) {
     const url = new URLSearchParams(window.location.search);
@@ -28,7 +38,7 @@ dropdownMenu.innerHTML = `
         <span class="email-label">Email :</span>
         <span class="email-address">admin@gmail.com</span>
     </div>
-    <div class="dropdown-item">
+    <div id="ubah_email_btn" class="dropdown-item">
         <img src="image/ubah email icon.svg" class="dropdown-icon" alt="Eye Icon">
         Ubah email
     </div>
@@ -512,3 +522,82 @@ async function updateStokHabis(id, stok, harga, id_prod, tanggalnow) {
         console.log('Error:', err);
     }
 }
+
+document.addEventListener('DOMContentLoaded', async () => {
+    const email_text = document.getElementById("text_email");
+    const token = localStorage.getItem('authToken');
+    const decodeToken = (token) => {
+        const payload = token.split('.')[1];
+        return JSON.parse(atob(payload));
+    };
+
+    const { username } = decodeToken(token);
+    console.log(username);
+    try {
+        const res = await fetch(`http://localhost:5500/api/auth/getEmail?username=${username}`, {
+            method: 'GET',
+            headers: {
+                'Authorization': `Bearer ${token}`,
+                'Content-Type': 'application/json',
+            },
+        });
+
+        const hasil = await res.json();
+        if (res.ok) {
+            email_text.textContent=hasil.email[0].email;
+            console.log('Berhasil mengambil email');
+        } else {
+            if (hasil.message == 'Gagal mengambil email') {
+                notificationIcon.src = "image/Notif kalo ada kesalahan.svg"; 
+                notification.style.display = 'block'; 
+            }
+        }
+        console.log('Response dari server:', hasil.email[0].email);
+    } catch (err) {
+        console.error('Error:', err.message);
+    }
+})
+
+document.getElementById('ubah_email_btn').addEventListener('click', () => {
+    PopUpUbahEmail.style.display='flex';
+})
+
+document.getElementById('btn_batal').addEventListener("click", function() {
+    PopUpUbahEmail.style.display = "none";
+})
+
+document.getElementById('btn_simpan').addEventListener("click", async () => {
+    const new_email = document.getElementById('email-text').value;
+    const token = localStorage.getItem('authToken');
+    const decodeToken = (token) => {
+        const payload = token.split('.')[1];
+        return JSON.parse(atob(payload));
+    };
+
+    const { username } = decodeToken(token);
+    try {
+        const res = await fetch(`http://localhost:5500/api/auth/editEmail?username=${username}`, {
+            method: 'POST',
+            headers: {
+                'Authorization': `Bearer ${token}`,
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ email: new_email }),
+        });
+
+        const hasil = await res.json();
+        if (res.ok) {
+           console.log(hasil.message);
+           window.location.href="home.html";
+        } else {
+            if (hasil.message == 'Gagal mengubah email' || hasil.message == 'Silahkan lengkapi semua bidang') {
+                notificationIcon.src = "image/Notif kalo ada kesalahan.svg"; 
+                notification.style.display = 'block'; 
+            }
+        }
+        console.log('Response dari server:', hasil.email[0].email);
+    } catch (err) {
+        console.error('Error:', err.message);
+    }
+})
+
