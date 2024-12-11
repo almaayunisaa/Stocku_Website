@@ -355,7 +355,7 @@ document.getElementById("kolom_produk").addEventListener('click', async () => {
                     window.location.href = `edit product.html?product=${id}`
                 })
             } else {
-                console.error('Error: Tidak dapat mengambil data');
+                console.error('Error: Tidak dapat mengambil data', hasil.message);
             }
 
             const ubahBtn = document.getElementsByClassName('btn btn-link ubah-button');

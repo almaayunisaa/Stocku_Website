@@ -190,7 +190,7 @@ document.addEventListener("DOMContentLoaded", async () => {
                     button.addEventListener('click', function (event) {
                         event.preventDefault();
                         const id = this.getAttribute('dataCat_id');
-                        window.location.href = `product.html?category=${categoryId}`
+                        window.location.href = `product.html?category=${id}`
                     })
                 })
                 
