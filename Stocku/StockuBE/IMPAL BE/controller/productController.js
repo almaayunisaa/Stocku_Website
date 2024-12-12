@@ -320,4 +320,18 @@ const setOldProd = async (req, res) => {
     }
 }
 
-module.exports={cariProduk, tambahProduk, hapusProduk, editProduk, editPrediksi, editCek, getProduct, getProduct_ID, sortASC, sortDESC, getReport, getOldProd, setOldProd};
+const getOldData = async (req, res) => {
+    try {
+        const data = await product.getDataOld();
+
+        if (!data) {
+            return res.status(401).json({ message: 'Tidak dapat mengambil data' });
+        }
+
+        return res.status(200).json({ datas: data });
+    } catch (err) {
+        res.status(500).json({error: err.message});
+    }
+}
+
+module.exports={cariProduk, tambahProduk, hapusProduk, editProduk, editPrediksi, editCek, getProduct, getProduct_ID, sortASC, sortDESC, getReport, getOldProd, setOldProd, getOldData};

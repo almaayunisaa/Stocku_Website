@@ -48,7 +48,7 @@
                 <div class="d-flex justify-content-between align-items-center mb-4">
                     <h2 class="dashboard-title">Kategori</h2>
                     <div class="d-flex align-items-center">
-                        <span class="admin-text me-2">ADMIN</span>
+                        <span id="user-teks" class="admin-text me-2">ADMIN</span>
                         <div class="icon-container">
                             <img src="image/admin icon .svg" alt="Admin Icon" class="admin-icon">
                         </div>
@@ -58,8 +58,8 @@
                 <hr class="header-line">
             
                 <div class="input-group">
-                    <input type="text" class="form-control search-input" placeholder="Cari produk...">
-                    <img src="image/search icon.svg" alt="Search Icon" class="search-icon">
+                    <input id="search-input" type="text" class="form-control search-input" placeholder="Cari produk...">
+                    <img id="search-btn" src="image/search icon.svg" alt="Search Icon" class="search-icon">
                 </div>
 
                
@@ -69,7 +69,7 @@
                 </div>
                 
                 <!-- Daftar Kategori -->
-                <div class="category-list mt-4">
+                <div id="main-content" class="category-list mt-4">
                     <h4 class="category-title">Daftar Kategori 
                         <button id="tambahPopup" class="btn btn-light">
                             <img src="image/plus category.svg" alt="Kategori Icon" width="30" height="30"></h4>
@@ -100,6 +100,18 @@
                 </div>
             </div>
 
+            <div id="PopUpKonfirmDel" class="popup-modal-konfirm">
+                <div class="popup-content-konfirm">
+                    <label id="konfirm-teks">
+                        Apakah anda yakin <br> <span class="hapus">menghapus</span> kategori ini?
+                    </label>
+                    <div class="button-container-konfirm">
+                        <button id="simpanKonfirm" class="btn btn-primary"></button>
+                        <button id="batalKonfirm" class="btn btn-secondary"></button>
+                    </div>
+                </div>
+            </div>
+
             <!-- Notifikasi error -->
             <div id="notification" class="notification" style="display: none;">
                 <button id="closeNotification" class="close-button">
@@ -117,6 +129,21 @@
                         <button id="btn_batal" class="btn btn-secondary"></button>
                     </div>
                 </div>
+            </div>
+
+            <div id="tabel-produk" class="table-container">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th id="kolom_produk" scope="col" class="kolom">PRODUK</th>
+                            <th scope="col" class="kolom">KODE</th>
+                            <th scope="col" class="kolom">STOK</th>
+                            <th scope="col" class="kolom">HARGA</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tableBody"></tbody>
+                    
+                </table>
             </div>
 
     <script src="category.js"></script>

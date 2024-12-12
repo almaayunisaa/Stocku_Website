@@ -154,7 +154,7 @@ async function ambilProduk(category) {
                 <td><button id="button_edit_prod" prod_id= ${hasil.products[i].ID} class="btn btn-link ubah-button">UBAH</button></td>
                 <td><img id = "komentar_btn" prod_id= ${hasil.products[i].ID} class="komentar_class" src="image/check icon.svg" alt="check icon"></td>
                 <td>${date_prediksi}</td>
-                <td>${hasil.products[i].harga}</td>`;
+                <td>Rp${hasil.products[i].harga.toLocaleString()},-</td>`;
                 productList.insertAdjacentHTML("beforeend", per_product);
                 checkTanggalandUpdate(hasil.products[i].Stok, hasil.products[i].harga, hasil.products[i].ID);
             } 
@@ -270,7 +270,7 @@ document.getElementById("kolom_produk").addEventListener('click', async () => {
                     <td><button id="button_edit_prod" prod_id= ${hasil.products[i].ID} class="btn btn-link ubah-button">UBAH</button></td>
                     <td><img id = "komentar_btn" catid= ${hasil.products[i].ID} src="image/check icon.svg" alt="check icon"></td>
                     <td>${hasil.products[i].Prediksi}</td>
-                    <td>${hasil.products[i].harga}</td>`;
+                    <td>Rp${hasil.products[i].harga.toLocaleString()},-</td>`;
                     productList.insertAdjacentHTML("beforeend", per_product);
 
                     prediksiTanggal(hasil.products[i].ID);
@@ -364,7 +364,7 @@ document.getElementById("kolom_produk").addEventListener('click', async () => {
                     <td><button id="button_edit_prod" prod_id= ${hasil.products[i].ID} class="btn btn-link ubah-button">UBAH</button></td>
                     <td><img id = "komentar_btn" catid= ${hasil.products[i].ID} src="image/check icon.svg" alt="check icon"></td>
                     <td>${hasil.products[i].Prediksi}</td>
-                    <td>${hasil.products[i].harga}</td>`;
+                    <td>Rp${hasil.products[i].harga.toLocaleString()},-</td>`;
                     productList.insertAdjacentHTML("beforeend", per_product);
                 } 
     
@@ -612,6 +612,7 @@ document.getElementById('btn_simpan').addEventListener("click", async () => {
 
 document.getElementById('keluar_btn').addEventListener('click', () => {
     localStorage.removeItem('authToken');
+    localStorage.removeItem('riwayatArray');
     window.location.href='login.html';
 })
 

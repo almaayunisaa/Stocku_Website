@@ -1,11 +1,13 @@
 const profileIcon = document.querySelector('.icon-container');
 const dropdownMenu = document.createElement('div');
 const PopUpUbahEmail = document.getElementById('PopUpUbahEmail');
+const tabel_Produk = document.getElementById('tabel-produk');
 
 // Tambahkan class dan styling untuk dropdown menu
 dropdownMenu.classList.add('dropdown-custom');
 dropdownMenu.style.display = 'none'; // Sembunyikan menu secara default
 PopUpUbahEmail.style.display='none';
+tabel_Produk.style.display='none';
 
 function decode(token) {
     const payload = token.split('.')[1];
@@ -17,7 +19,7 @@ function decode(token) {
 dropdownMenu.innerHTML = `
     <div class="dropdown-header">
         <span class="email-label">Email :</span>
-        <span class="email-address">admin@gmail.com</span>
+        <span id="text_email" class="email-address">admin@gmail.com</span>
     </div>
     <div id="ubah_email_btn" class="dropdown-item">
         <img src="image/ubah email icon.svg" class="dropdown-icon" alt="Eye Icon">
@@ -26,10 +28,6 @@ dropdownMenu.innerHTML = `
     <div id="keluar_btn" class="dropdown-item">
         <img src="image/keluar icon.svg" class="dropdown-icon" alt="Logout Icon">
         Keluar
-    </div>
-    <div class="dropdown-item">
-        <img src="image/sign out icon .svg" class="dropdown-icon" alt="Sign Out Icon">
-        Sign Out
     </div>
 `;
 
@@ -51,53 +49,13 @@ document.addEventListener('click', (event) => {
 const searchInput = document.querySelector('.search-input');
 const notFoundAlert = document.getElementById('not-found-alert');
 
-// Fungsi untuk mencari produk dalam tabel berdasarkan list produk yang ada di tabel halaman product.html
-function searchProduct() {
-    const searchValue = searchInput.value.toLowerCase();
-    const tableRows = document.querySelectorAll('.table tbody tr'); // Ambil semua baris produk dari tabel
-    let found = false;
-
-    // Jika input kosong, sembunyikan notifikasi dan tampilkan semua produk
-    if (searchValue === '') {
-        notFoundAlert.classList.add('d-none');
-        tableRows.forEach(row => {
-            row.style.display = ''; // Tampilkan semua produk
-        });
-        return;
-    }
-
-    // Looping melalui setiap baris produk di tabel
-    tableRows.forEach(row => {
-        const productNameCell = row.querySelector('td:first-child'); // Ambil sel produk di kolom pertama
-        if (productNameCell) {
-            const productName = productNameCell.textContent.toLowerCase();
-            if (productName.includes(searchValue)) {
-                row.style.display = ''; // Tampilkan baris yang cocok
-                found = true;
-            } else {
-                row.style.display = 'none'; // Sembunyikan baris yang tidak cocok
-            }
-        }
-    });
-
-    // Tampilkan ikon notifikasi jika produk tidak ditemukan
-    if (!found) {
-        notFoundAlert.classList.remove('d-none');
-        
-        // Tambahkan event listener ke ikon untuk menutup notifikasi saat diklik
-        document.getElementById('notFoundIcon').addEventListener('click', () => {
-            notFoundAlert.classList.add('d-none');
-        });
-    } else {
-        notFoundAlert.classList.add('d-none'); // Sembunyikan notifikasi jika produk ditemukan
-    }
-}
-
-// Event listener untuk pencarian saat pengguna mengetik
-searchInput.addEventListener('input', searchProduct);
-
 document.getElementById('laporan_btn').addEventListener('click', async () => {
     const token = localStorage.getItem('authToken');
+    const notification = document.getElementById('notification');
+    const notificationIcon = document.getElementById('notificationIcon');
+
+    notification.style.display = 'none';
+    
     try {
         const res = await fetch(`http://localhost:5500/api/product/getReport`, {
             method: 'GET',
@@ -113,6 +71,9 @@ document.getElementById('laporan_btn').addEventListener('click', async () => {
             data = hasil.datas;
             const ws = XLSX.utils.json_to_sheet(data);
 
+            notificationIcon.src = "image/notif-report.svg";  
+            notification.style.display = 'block'; 
+
             const wb = XLSX.utils.book_new();
             XLSX.utils.book_append_sheet(wb, ws, "Sheet1"); 
             XLSX.writeFile(wb, "laporan.xlsx");
@@ -124,9 +85,14 @@ document.getElementById('laporan_btn').addEventListener('click', async () => {
     }
 })
 
+document.getElementById('closeNotification').addEventListener('click', function() {
+    document.getElementById('notification').style.display = 'none'; // Hide notification
+});
+
 document.addEventListener('DOMContentLoaded', async () => {
     const email_text = document.getElementById("text_email");
     const token = localStorage.getItem('authToken');
+
     const decodeToken = (token) => {
         const payload = token.split('.')[1];
         return JSON.parse(atob(payload));
@@ -146,6 +112,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         const hasil = await res.json();
         if (res.ok) {
             email_text.textContent=hasil.email[0].email;
+            document.getElementById('user-teks').textContent=username;
             console.log('Berhasil mengambil email');
         } else {
             if (hasil.message == 'Gagal mengambil email') {
@@ -204,5 +171,298 @@ document.getElementById('btn_simpan').addEventListener("click", async () => {
 
 document.getElementById('keluar_btn').addEventListener('click', () => {
     localStorage.removeItem('authToken');
+    localStorage.removeItem('riwayatArray');
     window.location.href='login.html';
 })
+
+document.getElementById('search-btn').addEventListener('click', async () => {
+    const productList = document.getElementById('tableBody');
+    const searchInput = document.getElementById('search-input');
+    (document.getElementById('main-content_laporan1')).style.display='none';
+    (document.getElementById('main-content_laporan2')).style.display='none';
+
+    tabel_Produk.style.display='flex';
+    const token = localStorage.getItem('authToken');
+
+    try {
+        const res = await fetch(`http://localhost:5500/api/product/getReport`, {
+            method: 'GET',
+            headers: {
+                'Authorization': `Bearer ${token}`,
+                'Content-Type': 'application/json',
+            },
+        });
+
+        const hasil = await res.json();
+
+        if (res.ok) {
+            for (let i=0; i<hasil.datas.length;i++) {
+                if (searchInput.value.includes(hasil.datas[i].Produk)) {
+                    const per_product = 
+                    `<td>${hasil.datas[i].Produk}</td>
+                    <td>${hasil.datas[i].ID}</td>
+                    <td>${hasil.datas[i].Stok}</td>
+                    <td>${hasil.datas[i].harga}</td>`;
+                    productList.insertAdjacentHTML("beforeend", per_product);
+                }
+            } 
+
+        } else {
+            console.error('Error: Tidak dapat mengambil data')
+        }
+    } catch (error) {
+        console.error(error.message);
+    }
+})
+
+async function ambilCatatan() {
+    const catatan_list = document.getElementById('catatan-list');
+    const token = localStorage.getItem('authToken');
+
+    try {
+        const res = await fetch(`http://localhost:5500/api/product/getReport`, {
+            method: 'GET',
+            headers: {
+                'Authorization': `Bearer ${token}`,
+                'Content-Type': 'application/json',
+            },
+        });
+
+        const hasil = await res.json();
+        let stop = 0;
+
+        if (res.ok) {
+            for (let i=0; i<hasil.datas.length && stop<2 ;i++) {
+                if (hasil.datas[i].Cek!==null && hasil.datas[i].Cek!=="null") {
+                    const per_product = 
+                    `<li class="riwayat-item">${hasil.datas[i].Produk} - ${hasil.datas[i].Cek}</li>`;
+                    catatan_list.insertAdjacentHTML("beforeend", per_product);
+                    stop++;
+                }
+            } 
+
+        } else {
+            console.error('Error: Tidak dapat mengambil data')
+        }
+    } catch (error) {
+        console.error(error.message);
+    }
+}
+
+async function ambilProdukLaris() {
+    let produk_laris= document.getElementById('produk-laris-list');
+    const token = localStorage.getItem('authToken');
+
+    try {
+        const res = await fetch(`http://localhost:5500/api/product/getOldData`, {
+            method: 'GET',
+            headers: {
+                'Authorization': `Bearer ${token}`,
+                'Content-Type': 'application/json',
+            },
+        });
+
+        const hasil = await res.json();
+        let stop = 0;
+
+        if (res.ok) {
+            let stok_sort_desc = hasil.datas.slice().sort((x, y) => y.Stok - x.Stok);
+            let hariIni = new Date();
+            const tahunIni = hariIni.getFullYear();
+            const bulanIni = hariIni.getMonth();
+            stok_sort_desc = stok_sort_desc.filter(produk => {
+                let tanggalProduk = new Date(produk.tanggal_habis);
+                let tahunProduk = tanggalProduk.getFullYear();
+                let bulanProduk = tanggalProduk.getMonth()
+
+                if (bulanIni===0) {
+                    return tahunProduk === tahunIni-1 && bulanProduk === 11;
+                } else {
+                    return tahunProduk === tahunIni && bulanProduk === bulanIni-1;
+                }
+            });
+
+            for (let i=0; i<stok_sort_desc.length && stop<10 ;i++) {
+                if (stok_sort_desc[i].IDProduk!==null) {
+                    const per_product = 
+                    `<li class="riwayat-item">${stok_sort_desc[i].IDProduk}</li>`;
+                    produk_laris.insertAdjacentHTML("beforeend", per_product);
+                    stop++;
+                }
+            } 
+
+        } else {
+            console.error('Error: Tidak dapat mengambil data')
+        }
+    } catch (error) {
+        console.error(error.message);
+    }
+}
+
+async function ambilProdukTidakLaris() {
+    let produk_tidaklaris= document.getElementById('produk-tidaklaris-list');
+    const token = localStorage.getItem('authToken');
+
+    try {
+        const res = await fetch(`http://localhost:5500/api/product/getOldData`, {
+            method: 'GET',
+            headers: {
+                'Authorization': `Bearer ${token}`,
+                'Content-Type': 'application/json',
+            },
+        });
+
+        const hasil = await res.json();
+        let stop = 0;
+
+        if (res.ok) {
+            let stok_sort_asc = hasil.datas.slice().sort((x, y) => x.Stok - y.Stok);
+            let hariIni = new Date();
+            const tahunIni = hariIni.getFullYear();
+            const bulanIni = hariIni.getMonth();
+            stok_sort_asc = stok_sort_asc.filter(produk => {
+                let tanggalProduk = new Date(produk.tanggal_habis);
+                let tahunProduk = tanggalProduk.getFullYear();
+                let bulanProduk = tanggalProduk.getMonth()
+
+                if (bulanIni===0) {
+                    return tahunProduk === tahunIni-1 && bulanProduk === 11;
+                } else {
+                    return tahunProduk === tahunIni && bulanProduk === bulanIni-1;
+                }
+            });
+
+            for (let i=0; i<stok_sort_asc.length && stop<10 ;i++) {
+                if (stok_sort_asc[i].IDProduk!==null) {
+                    const per_product = 
+                    `<li class="riwayat-item2">${stok_sort_asc[i].IDProduk}</li>`;
+                    produk_tidaklaris.insertAdjacentHTML("beforeend", per_product);
+                    stop++;
+                }
+            } 
+
+        } else {
+            console.error('Error: Tidak dapat mengambil data')
+        }
+    } catch (error) {
+        console.error(error.message);
+    }
+}
+
+async function ambilLaporan() {
+    let teks_total_penjualan = document.getElementById('totalPenj-teks');
+    const token = localStorage.getItem('authToken');
+
+    try {
+        const res = await fetch(`http://localhost:5500/api/product/getOldData`, {
+            method: 'GET',
+            headers: {
+                'Authorization': `Bearer ${token}`,
+                'Content-Type': 'application/json',
+            },
+        });
+
+        const hasil = await res.json();
+
+        if (res.ok) {
+            let penjualan = hasil.datas;
+            let hariIni = new Date();
+            const tahunIni = hariIni.getFullYear();
+            const bulanIni = hariIni.getMonth();
+            penjualan = penjualan.filter(produk => {
+                let tanggalProduk = new Date(produk.tanggal_habis);
+                let tahunProduk = tanggalProduk.getFullYear();
+                let bulanProduk = tanggalProduk.getMonth()
+
+                if (bulanIni===0) {
+                    return tahunProduk === tahunIni-1 && bulanProduk === 11;
+                } else {
+                    return tahunProduk === tahunIni && bulanProduk === bulanIni-1;
+                }
+            });
+            let totalPenjualan = 0;
+            for (let i=0; i<penjualan.length ;i++) {
+               totalPenjualan=totalPenjualan+penjualan[i].Harga*penjualan[i].Stok;
+            } 
+            teks_total_penjualan.innerText=`Rp${totalPenjualan.toLocaleString()},-`;
+        } else {
+            console.error('Error: Tidak dapat mengambil data')
+        }
+    } catch (error) {
+        console.error(error.message);
+    }
+}
+
+async function ambilGraf() {
+    const chart = document.getElementById('graf').getContext('2d');
+    const token = localStorage.getItem('authToken');
+
+    try {
+        const res = await fetch(`http://localhost:5500/api/product/getOldData`, {
+            method: 'GET',
+            headers: {
+                'Authorization': `Bearer ${token}`,
+                'Content-Type': 'application/json',
+            },
+        });
+
+        const hasil = await res.json();
+
+        if (res.ok) {
+            let penjualan = hasil.datas;
+            let hariIni = new Date();
+            const tahunIni = hariIni.getFullYear();
+            const bulanIni = hariIni.getMonth();
+            penjualan = penjualan.filter(produk => {
+                let tanggalProduk = new Date(produk.tanggal_habis);
+                let tahunProduk = tanggalProduk.getFullYear();
+                let bulanProduk = tanggalProduk.getMonth()
+
+                if (bulanIni===0) {
+                    return tahunProduk === tahunIni-1 && bulanProduk === 11;
+                } else {
+                    return tahunProduk === tahunIni && bulanProduk === bulanIni-1;
+                }
+            });
+
+            const list_idprod = penjualan.map(produk => produk.IDProduk);
+            const list_penjualan = penjualan.map(produk => produk.Stok*produk.Harga);
+
+            const graf_penjualan = new Chart(chart, {
+                type: 'bar', 
+                data: {
+                    labels: list_idprod, 
+                    datasets: [{
+                        label: 'Pendapatan Bulan Lalu',
+                        data: list_penjualan, 
+                        backgroundColor: '#EA8D45',
+                        borderColor: '#EA8D45',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+            return graf_penjualan;
+        } else {
+            console.error('Error: Tidak dapat mengambil data')
+        }
+    } catch (error) {
+        console.error(error.message);
+    }
+}
+
+
+document.addEventListener('DOMContentLoaded', async () => {
+    await ambilCatatan();
+    await ambilProdukLaris();
+    await ambilProdukTidakLaris();
+    await ambilLaporan();
+    await ambilGraf();
+})
+

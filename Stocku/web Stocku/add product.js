@@ -80,8 +80,7 @@ document.addEventListener('DOMContentLoaded', function() {
             const hasil = await res.json();
             console.log(hasil)
             if (res.ok) {
-                const storedRiwayat = localStorage.getItem("riwayatArray");
-                console.log(storedRiwayat);
+                let storedRiwayat = localStorage.getItem("riwayatArray");
                 storedRiwayat = storedRiwayat ? JSON.parse(storedRiwayat) : [];
                 if (storedRiwayat.length>6) {
                     storedRiwayat.shift();
@@ -89,8 +88,11 @@ document.addEventListener('DOMContentLoaded', function() {
                 const data_baru = `Produk baru: ${productName}`;
                 storedRiwayat.push(data_baru);
                 localStorage.setItem("riwayatArray", JSON.stringify(storedRiwayat));
-
-                window.location.href = 'category.html'; 
+                notificationIcon.src = "image/notif-produk-tambah.svg"; 
+                notification.style.display = 'block'; 
+                setTimeout(() => {
+                    window.location.href = "category.html";
+                }, 2000);
             } else {
                 if (hasil.message == 'Stok dan harga harus berupa angka' || hasil.message == 'ID sudah digunakan') {
                     notificationIcon.src = "image/Notif kalo ada kesalahan.svg"; 
@@ -252,7 +254,7 @@ document.getElementById('btn_simpan').addEventListener("click", async () => {
         const hasil = await res.json();
         if (res.ok) {
            console.log(hasil.message);
-           window.location.href="home.html";
+           window.location.href = "home.html";
         } else {
             if (hasil.message == 'Gagal mengubah email' || hasil.message == 'Silahkan lengkapi semua bidang') {
                 notificationIcon.src = "image/Notif kalo ada kesalahan.svg"; 
@@ -267,6 +269,7 @@ document.getElementById('btn_simpan').addEventListener("click", async () => {
 
 document.getElementById('keluar_btn').addEventListener('click', () => {
     localStorage.removeItem('authToken');
+    localStorage.removeItem('riwayatArray');
     window.location.href='login.html';
 })
 

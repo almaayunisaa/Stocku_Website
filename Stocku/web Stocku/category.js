@@ -6,6 +6,8 @@ const PopupEditCat = document.getElementById('PopupEditCat');
 const simpanKategori = document.getElementById('simpanKategori');
 const batalKategori = document.getElementById('batalKategori');
 const PopUpUbahEmail = document.getElementById('PopUpUbahEmail');
+const tabel_Produk = document.getElementById('tabel-produk');
+const PopUpKonfirmDel = document.getElementById('PopUpKonfirmDel');
 
 // Tambahkan class dan styling untuk dropdown menu
 dropdownMenu.classList.add('dropdown-custom');
@@ -13,6 +15,8 @@ dropdownMenu.style.display = 'none'; // Sembunyikan menu secara default
 PopupAddCat.style.display = "none";
 PopupEditCat.style.display = "none";
 PopUpUbahEmail.style.display='none';
+tabel_Produk.style.display='none';
+PopUpKonfirmDel.style.display='none';
 
 function decode(token) {
     const payload = token.split('.')[1];
@@ -24,7 +28,7 @@ function decode(token) {
 dropdownMenu.innerHTML = `
     <div class="dropdown-header">
         <span class="email-label">Email :</span>
-        <span class="email-address">admin@gmail.com</span>
+        <span id="text_email" class="email-address">admin@gmail.com</span>
     </div>
     <div id = "ubah_email_btn" class="dropdown-item">
         <img src="image/ubah email icon.svg" class="dropdown-icon" alt="Eye Icon">
@@ -33,10 +37,6 @@ dropdownMenu.innerHTML = `
     <div id="keluar_btn" class="dropdown-item">
         <img src="image/keluar icon.svg" class="dropdown-icon" alt="Logout Icon">
         Keluar
-    </div>
-    <div class="dropdown-item">
-        <img src="image/sign out icon .svg" class="dropdown-icon" alt="Sign Out Icon">
-        Sign Out
     </div>
 `;
 
@@ -57,51 +57,6 @@ document.addEventListener('click', (event) => {
 
 const searchInput = document.querySelector('.search-input');
 const notFoundAlert = document.getElementById('not-found-alert');
-
-// Fungsi untuk mencari produk dalam tabel
-function searchProduct() {
-    const searchValue = searchInput.value.toLowerCase();
-    
-    // Jika input kosong, sembunyikan notifikasi dan tampilkan semua produk
-    if (searchValue === '') {
-        notFoundAlert.classList.add('d-none');
-        const tableRows = document.querySelectorAll('.table tbody tr');
-        tableRows.forEach(row => {
-            row.style.display = ''; // Tampilkan semua produk
-        });
-        return;
-    }
-
-    const tableRows = document.querySelectorAll('.table tbody tr');
-    let found = false;
-
-    tableRows.forEach(row => {
-        const productName = row.querySelector('td:first-child').textContent.toLowerCase();
-        if (productName.includes(searchValue)) {
-            row.style.display = '';
-            found = true;
-        } else {
-            row.style.display = 'none';
-        }
-    });
-
-    // Tampilkan ikon notifikasi jika produk tidak ditemukan
-    if (!found) {
-        notFoundAlert.innerHTML = `
-            <img src="image/Notif Tidak dapat menemukan barang.svg" alt="Not Found Icon" class="not-found-icon" width="30" height="30" id="notFoundIcon">
-        `;
-        notFoundAlert.classList.remove('d-none');
-        // Tambahkan event listener ke ikon untuk menutup notifikasi saat diklik
-        document.getElementById('notFoundIcon').addEventListener('click', () => {
-            notFoundAlert.classList.add('d-none');
-        });
-    } else {
-        notFoundAlert.classList.add('d-none');
-    }
-}
-
-// Event listener untuk pencarian saat pengguna mengetik
-searchInput.addEventListener('input', searchProduct);
 
 //event listener buttonn add cat
 tambahPopup.addEventListener("click", function() {
@@ -144,7 +99,7 @@ simpanKategori.addEventListener("click", async function() {
             let storedRiwayat = localStorage.getItem("riwayatArray");
             storedRiwayat = storedRiwayat ? JSON.parse(storedRiwayat) : [];
             if (storedRiwayat.length > 6) {
-                storedRiwayat.shift(); // Hapus data terlama
+                storedRiwayat.shift();
             }
             const data_baru = `Kategori baru: ${namaCat}`;
             storedRiwayat.push(data_baru);
@@ -213,28 +168,46 @@ document.addEventListener("DOMContentLoaded", async () => {
                 
                 const deleteButton = categoryList.querySelector(`img#deleteCat_btn[dataCat_id="${hasil.categories[i].namaCategory}"]`);
                 deleteButton.addEventListener("click", async (event) => {
-                    const id = event.target.getAttribute('dataCat_id');
-                    try {
-                        const res = await fetch(`http://localhost:5500/api/category/kategori/${id}`, {
-                            method: 'DELETE',
-                            headers: {
-                                'Authorization': `Bearer ${token}`,
-                                'Content-Type': 'application/json',
-                            },
-                        });
+                    PopUpKonfirmDel.style.display='flex';
+                    
+                    document.getElementById('simpanKonfirm').addEventListener('click', async () => {
+                        const id = event.target.getAttribute('dataCat_id');
+                        try {
+                            const res = await fetch(`http://localhost:5500/api/category/kategori/${id}`, {
+                                method: 'DELETE',
+                                headers: {
+                                    'Authorization': `Bearer ${token}`,
+                                    'Content-Type': 'application/json',
+                                },
+                            });
     
-                        const hasil = await res.json();
+                            const hasil = await res.json();
     
-                        if (res.ok) {
-                            const item_cat = document.getElementById('categoryList');
-                            item_cat.remove();
-                            window.location.href = 'category.html'; 
-                        } else {
+                            if (res.ok) {
+                                const item_cat = document.getElementById('categoryList');
+                                item_cat.remove();
+                                window.location.href = 'category.html'; 
+
+                                let storedRiwayat = localStorage.getItem("riwayatArray");
+                                storedRiwayat = storedRiwayat ? JSON.parse(storedRiwayat) : [];
+                                console.log(storedRiwayat);
+                                if (storedRiwayat.length > 6) {
+                                    storedRiwayat.shift();
+                                }
+                                const data_baru = `Kategori dihapus: ${id}`;
+                                storedRiwayat.push(data_baru);
+                                localStorage.setItem("riwayatArray", JSON.stringify(storedRiwayat));
+                            } else {
+                                console.error('Error: Tidak dapat menghapus data', hasil.message)
+                            }
+                        } catch (err) {
                             console.error('Error: Tidak dapat menghapus data')
-                        }
-                    } catch (err) {
-                        console.error('Error: Tidak dapat menghapus data')
-                    }   
+                        }   
+                    })
+
+                    document.getElementById('batalKonfirm').addEventListener('click', async () => {
+                        PopUpKonfirmDel.style.display='none';
+                    })
                 })
 
                 const editCatButton = categoryList.querySelector(`img#editCat_btn[dataCat_id="${hasil.categories[i].namaCategory}"]`);
@@ -260,6 +233,16 @@ document.addEventListener("DOMContentLoaded", async () => {
         
                             if (res.ok) {
                                 window.location.href = 'category.html'; 
+
+                                let storedRiwayat = localStorage.getItem("riwayatArray");
+                                storedRiwayat = storedRiwayat ? JSON.parse(storedRiwayat) : [];
+                                console.log(storedRiwayat);
+                                if (storedRiwayat.length > 6) {
+                                    storedRiwayat.shift();
+                                }
+                                const data_baru = `Kategori diubah: ${id} menjadi ${namaCat}`;
+                                storedRiwayat.push(data_baru);
+                                localStorage.setItem("riwayatArray", JSON.stringify(storedRiwayat));
                             } else {
                                 console.log(hasil.message);
                                 console.error('Error: Tidak dapat mengubah data')
@@ -307,6 +290,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         const hasil = await res.json();
         if (res.ok) {
             email_text.textContent=hasil.email[0].email;
+            document.getElementById('user-teks').textContent=username;
             console.log('Berhasil mengambil email');
         } else {
             if (hasil.message == 'Gagal mengambil email') {
@@ -365,5 +349,45 @@ document.getElementById('btn_simpan').addEventListener("click", async () => {
 
 document.getElementById('keluar_btn').addEventListener('click', () => {
     localStorage.removeItem('authToken');
+    localStorage.removeItem('riwayatArray');
     window.location.href='login.html';
+})
+
+document.getElementById('search-btn').addEventListener('click', async () => {
+    const productList = document.getElementById('tableBody');
+    const searchInput = document.getElementById('search-input');
+    (document.getElementById('main-content')).style.display='none';
+
+    tabel_Produk.style.display='flex';
+    const token = localStorage.getItem('authToken');
+
+    console.log(searchInput);
+    try {
+        const res = await fetch(`http://localhost:5500/api/product/getReport`, {
+            method: 'GET',
+            headers: {
+                'Authorization': `Bearer ${token}`,
+                'Content-Type': 'application/json',
+            },
+        });
+
+        const hasil = await res.json();
+        if (res.ok) {
+            for (let i=0; i<hasil.datas.length;i++) {
+                if (searchInput.value.includes(hasil.datas[i].Produk)) {
+                    const per_product = 
+                    `<td>${hasil.datas[i].Produk}</td>
+                    <td>${hasil.datas[i].ID}</td>
+                    <td>${hasil.datas[i].Stok}</td>
+                    <td>${hasil.datas[i].harga}</td>`;
+                    productList.insertAdjacentHTML("beforeend", per_product);
+                }
+            } 
+
+        } else {
+            console.error('Error: Tidak dapat mengambil data')
+        }
+    } catch (error) {
+        console.error(error.message);
+    }
 })

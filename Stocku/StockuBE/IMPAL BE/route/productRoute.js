@@ -1,5 +1,5 @@
 const express = require('express');
-const {cariProduk, tambahProduk, hapusProduk, editProduk, editPrediksi, editCek, getProduct, getProduct_ID, sortASC, sortDESC, getReport, getOldProd, setOldProd} = require('../controller/productController');
+const {cariProduk, tambahProduk, hapusProduk, editProduk, editPrediksi, editCek, getProduct, getProduct_ID, sortASC, sortDESC, getReport, getOldProd, setOldProd, getOldData} = require('../controller/productController');
 
 const router = express.Router();
 
@@ -16,5 +16,6 @@ router.patch('/editCek/:id', editCek);
 router.get('/getReport', getReport);
 router.get('/getOldProd', getOldProd);
 router.post('/setOldProd', setOldProd);
+router.get('/getOldData', getOldData);
 
 module.exports=router;

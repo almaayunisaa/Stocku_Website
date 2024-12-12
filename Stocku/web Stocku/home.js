@@ -181,11 +181,11 @@ document.getElementById('btn_simpan').addEventListener("click", async () => {
 
 document.getElementById('keluar_btn').addEventListener('click', () => {
     localStorage.removeItem('authToken');
+    localStorage.removeItem('riwayatArray');
     window.location.href='login.html';
 })
 
 document.getElementById('search-btn').addEventListener('click', async () => {
-    const mainContent = document.getElementById('main-content');
     const productList = document.getElementById('tableBody');
     const searchInput = document.getElementById('search-input');
     (document.getElementById('main-content1')).style.display='none';
@@ -298,12 +298,18 @@ async function ambilCatatan() {
 document.addEventListener('DOMContentLoaded', async () => {
     await ambilProduk();
     await ambilCatatan();
+    let stop = 0;
     const riwayatData = document.getElementById('riwayat_list');
     const riwayatList = localStorage.getItem("riwayatArray");
-    for (let i=0; i<riwayatList.length ;i++) {
-        const per_riwayat = 
-        `<li class="riwayat-item">${riwayatList[i]}</li>`;
-        riwayatData.insertAdjacentHTML("beforeend", per_riwayat);
+    let parse_riwayatList = riwayatList ? JSON.parse(riwayatList) : [];
+    console.log(parse_riwayatList);
+    for (let i=riwayatList.length; i>0 && stop<4 ;i--) {
+        if (parse_riwayatList[i]!=undefined) {
+            const per_riwayat = 
+            `<li class="riwayat-item">${parse_riwayatList[i]}</li>`;
+            stop++;
+            riwayatData.insertAdjacentHTML("beforeend", per_riwayat);
+        }
     } 
 });
 

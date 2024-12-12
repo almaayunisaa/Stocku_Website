@@ -1,11 +1,13 @@
 const profileIcon = document.querySelector('.icon-container');
 const dropdownMenu = document.createElement('div');
 const PopUpUbahEmail = document.getElementById('PopUpUbahEmail');
+const PopUpKonfirmDel = document.getElementById('PopUpKonfirmDel');
 
 // Tambahkan class dan styling untuk dropdown menu
 dropdownMenu.classList.add('dropdown-custom');
 dropdownMenu.style.display = 'none'; // Sembunyikan menu secara default
 PopUpUbahEmail.style.display='none';
+PopUpKonfirmDel.style.display='none';
 
 function decode(token) {
     const payload = token.split('.')[1];
@@ -218,16 +220,22 @@ document.addEventListener('DOMContentLoaded', function() {
             const hasil = await res.json();
             console.log(hasil)
             if (res.ok) {
-                const storedRiwayat = localStorage.getItem("riwayatArray");
+                let storedRiwayat = localStorage.getItem("riwayatArray");
                 storedRiwayat = storedRiwayat ? JSON.parse(storedRiwayat) : [];
-                if (storedRiwayat.length>6) {
+                console.log(storedRiwayat);
+                if (storedRiwayat.length > 6) {
                     storedRiwayat.shift();
                 }
-                const data_baru = [`Produk diubah: ${namaProd_now}`];
+                const data_baru = `Produk diubah: ${namaProd_now}`;
                 storedRiwayat.push(data_baru);
                 localStorage.setItem("riwayatArray", JSON.stringify(storedRiwayat));
 
-                window.location.href = 'category.html'; 
+                notificationIcon.src = "image/notif-produk-edit.svg"; 
+                notification.style.display = 'block'; 
+                setTimeout(() => {
+                    window.location.href = "category.html";
+                }, 2000);
+
             } else {
                 if (hasil.message == 'Produk Tidak Valid' || hasil.message == 'Silahkan lengkapi semua bidang' || hasil.message == 'Stok atau harga harus berupa angka') {
                     notificationIcon.src = "image/Notif kalo ada kesalahan.svg"; 
@@ -262,32 +270,41 @@ document.getElementById('closeNotification').addEventListener('click', function(
 
 document.getElementById('btn_hapus_produk').addEventListener('click', async () => {
     const token = localStorage.getItem('authToken');
-    try {
-        const res = await fetch(`http://localhost:5500/api/product/hapusProduk/${product}`, {
-            method: 'DELETE',
-            headers: {
-                'Authorization': `Bearer ${token}`,
-                'Content-Type': 'application/json',
-            },
-        });
+    PopUpKonfirmDel.style.display='flex';
 
-        const hasil = await res.json();
-        if (res.ok) {
-            const storedRiwayat = localStorage.getItem("riwayatArray");
-            storedRiwayat = storedRiwayat ? JSON.parse(storedRiwayat) : [];
-            if (storedRiwayat.length>6) {
-                storedRiwayat.shift();
+    document.getElementById('simpanKonfirm').addEventListener('click', async () => {
+        try {
+            const res = await fetch(`http://localhost:5500/api/product/hapusProduk/${product}`, {
+                method: 'DELETE',
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                    'Content-Type': 'application/json',
+                },
+            });
+    
+            const hasil = await res.json();
+            if (res.ok) {
+                let storedRiwayat = localStorage.getItem("riwayatArray");
+                storedRiwayat = storedRiwayat ? JSON.parse(storedRiwayat) : [];
+                if (storedRiwayat.length>6) {
+                    storedRiwayat.shift();
+                }
+                const data_baru = [`Produk dihapus: ${product}`];
+                storedRiwayat.push(data_baru);
+                localStorage.setItem("riwayatArray", JSON.stringify(storedRiwayat));
             }
-            const data_baru = [`Produk dihapus: ${product}`];
-            storedRiwayat.push(data_baru);
-            localStorage.setItem("riwayatArray", JSON.stringify(storedRiwayat));
+            window.location.href='category.html';
+            console.log('Response dari server:', hasil);
+            return hasil;
+        } catch (err) {
+            console.log('Error:', err);
         }
-        window.location.href='category.html';
-        console.log('Response dari server:', hasil);
-        return hasil;
-    } catch (err) {
-        console.log('Error:', err);
-    }
+    })
+
+    document.getElementById('batalKonfirm').addEventListener('click', async () => {
+        PopUpKonfirmDel.style.display='none';
+    })
+
 })
 
 function stokNotStonk(stok_bfr, stok_now) {
@@ -380,5 +397,6 @@ document.getElementById('btn_simpan').addEventListener("click", async () => {
 
 document.getElementById('keluar_btn').addEventListener('click', () => {
     localStorage.removeItem('authToken');
+    localStorage.removeItem('riwayatArray');
     window.location.href='login.html';
 })

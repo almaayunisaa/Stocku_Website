@@ -375,22 +375,26 @@ input[type=number] {
     padding: 5px;
 }
 
-#notification {
+.notification {
     position: fixed;
-    bottom: 20px;
-    left: 20px;
-    background-color: rgba(0, 0, 0, 0.8);
-    color: white;
-    padding: 10px;
-    border-radius: 5px;
-    display: none; /* Pastikan elemen ini disembunyikan secara default */
+    top: -50px;
+    right: 5px;
+    background: none;
+    border: none;
+    padding: 0;
+    z-index: 1000;
 }
 
-#notification img {
-    width: 20px;
-    height: 20px;
-    margin-right: 10px;
-    vertical-align: middle;
+.close-button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+}
+
+.close-button img {
+    width: 350px;
+    height: 200px;
 }
 
 .popup-modal {

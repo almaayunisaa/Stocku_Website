@@ -475,3 +475,108 @@ label {
     font-family: 'Poppins', sans-serif;
     text-align: center;
 }
+
+/* CSS Tabel Produk */
+.table-container {
+    margin-top: 20px;
+}
+
+.table {
+    width: 100%;
+    margin-bottom: 1rem;
+    background-color: white; 
+    border: 2px solid #FF9900; 
+    border-collapse: collapse; 
+   
+}
+
+.table-striped tbody tr:nth-of-type(odd) {
+    background-color: white;
+}
+
+th {
+    text-align: left;
+    color: #FF9900; 
+    font-weight: bold;
+    height: 20px;
+}
+
+td {
+    font-size: 14px;
+    background-color: white;
+    vertical-align: middle;
+}
+
+.kolom {
+    color: #EA8D45 !important;
+}
+
+td, th {
+    text-align: center;
+}
+
+/* CSS Konfirmasi Delete */
+.popup-modal-konfirm {
+    display: flex;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 700px;
+    height: 300px;
+    justify-content: center;
+    align-items: center;
+    background: url('image/bg-notif-konfirm.svg') no-repeat center center;
+}
+
+.popup-content-konfirm {
+    font-family: 'Poppins', sans-serif;
+    background-size: cover;
+    padding: 30px 20px;
+    border-radius: 8px;
+    text-align: center;
+    width: 90%;
+    max-width: 400px;
+    position: fixed; 
+    top: 50%;
+    left: 50%;
+    transform: translate(-40%, -50%);
+}
+
+#konfirm-teks {
+    font-family: 'Poppins', sans-serif;
+    font-weight: 500;
+    font-size: 20px;
+    color: #EA8D45;
+}
+
+#konfirm-teks .hapus {
+    color: #999999;
+    font-weight: bold;
+}
+
+#konfirm-teks br {
+    margin-top: 10px;
+}
+
+#simpanKonfirm {
+    background: url('image/btn-ya.svg') no-repeat center center;
+    background-size: contain;  
+    border: none;
+    padding: 10px;
+    width: 90px; 
+    height: 25px;
+    margin: 10px 5px;
+    cursor: pointer;
+}
+
+#batalKonfirm {
+    background: url('image/btn-tidak.svg') no-repeat center center;
+    background-size: contain;  
+    border: none;
+    padding: 10px;
+    width: 90px; 
+    height: 25px;
+    margin: 10px 5px;
+    cursor: pointer;
+}
