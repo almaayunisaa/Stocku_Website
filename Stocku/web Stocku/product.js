@@ -42,7 +42,7 @@ dropdownMenu.innerHTML = `
         <img src="image/ubah email icon.svg" class="dropdown-icon" alt="Eye Icon">
         Ubah email
     </div>
-    <div class="dropdown-item">
+    <div id="keluar_btn" class="dropdown-item">
         <img src="image/keluar icon.svg" class="dropdown-icon" alt="Logout Icon">
         Keluar
     </div>
@@ -193,6 +193,15 @@ async function ambilProduk(category) {
                             const hasil = await res.json();
                     
                             if (res.ok) {
+                                const storedRiwayat = localStorage.getItem("riwayatArray");
+                                storedRiwayat = storedRiwayat ? JSON.parse(storedRiwayat) : [];
+                                if (storedRiwayat.length>6) {
+                                    storedRiwayat.shift();
+                                }
+                                const data_baru = [`Komentar baru: ${id}`];
+                                storedRiwayat.push(data_baru);
+                                localStorage.setItem("riwayatArray", JSON.stringify(storedRiwayat));
+
                                 window.location.href = 'category.html'; 
                             } else {
                                 if ((hasil.message == 'Produk Tidak Valid') || (hasil.message == 'Silahkan lengkapi semua bidang')) {
@@ -599,5 +608,10 @@ document.getElementById('btn_simpan').addEventListener("click", async () => {
     } catch (err) {
         console.error('Error:', err.message);
     }
+})
+
+document.getElementById('keluar_btn').addEventListener('click', () => {
+    localStorage.removeItem('authToken');
+    window.location.href='login.html';
 })
 

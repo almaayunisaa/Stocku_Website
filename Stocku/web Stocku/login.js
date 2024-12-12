@@ -20,7 +20,7 @@ document.getElementById('loginButton').addEventListener('click', async function(
         if (res.ok) {
             const token = hasil.token;
             localStorage.setItem('authToken', token);
-            window.location.href = 'category.html'; 
+            window.location.href = 'home.html'; 
         } else {
             if (hasil.message == 'Username Anda salah Silahkan coba lagi') {
                 // Set icon for username error

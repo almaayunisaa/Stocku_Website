@@ -30,7 +30,7 @@ dropdownMenu.innerHTML = `
         <img src="image/ubah email icon.svg" class="dropdown-icon" alt="Eye Icon">
         Ubah email
     </div>
-    <div class="dropdown-item">
+    <div id="keluar_btn" class="dropdown-item">
         <img src="image/keluar icon.svg" class="dropdown-icon" alt="Logout Icon">
         Keluar
     </div>
@@ -141,6 +141,15 @@ simpanKategori.addEventListener("click", async function() {
 
         const hasil = await res.json();
         if (res.ok) {
+            let storedRiwayat = localStorage.getItem("riwayatArray");
+            storedRiwayat = storedRiwayat ? JSON.parse(storedRiwayat) : [];
+            if (storedRiwayat.length > 6) {
+                storedRiwayat.shift(); // Hapus data terlama
+            }
+            const data_baru = `Kategori baru: ${namaCat}`;
+            storedRiwayat.push(data_baru);
+            localStorage.setItem("riwayatArray", JSON.stringify(storedRiwayat));
+
             window.location.href = 'category.html'; 
         } else {
             if (hasil.message == 'Kategori sama silahkan input kembali') {
@@ -352,4 +361,9 @@ document.getElementById('btn_simpan').addEventListener("click", async () => {
     } catch (err) {
         console.error('Error:', err.message);
     }
+})
+
+document.getElementById('keluar_btn').addEventListener('click', () => {
+    localStorage.removeItem('authToken');
+    window.location.href='login.html';
 })

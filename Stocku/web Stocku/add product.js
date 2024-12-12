@@ -23,7 +23,7 @@ dropdownMenu.innerHTML = `
         <img src="image/ubah email icon.svg" class="dropdown-icon" alt="Eye Icon">
         Ubah email
     </div>
-    <div class="dropdown-item">
+    <div id="keluar_btn" class="dropdown-item">
         <img src="image/keluar icon.svg" class="dropdown-icon" alt="Logout Icon">
         Keluar
     </div>
@@ -80,6 +80,16 @@ document.addEventListener('DOMContentLoaded', function() {
             const hasil = await res.json();
             console.log(hasil)
             if (res.ok) {
+                const storedRiwayat = localStorage.getItem("riwayatArray");
+                console.log(storedRiwayat);
+                storedRiwayat = storedRiwayat ? JSON.parse(storedRiwayat) : [];
+                if (storedRiwayat.length>6) {
+                    storedRiwayat.shift();
+                }
+                const data_baru = `Produk baru: ${productName}`;
+                storedRiwayat.push(data_baru);
+                localStorage.setItem("riwayatArray", JSON.stringify(storedRiwayat));
+
                 window.location.href = 'category.html'; 
             } else {
                 if (hasil.message == 'Stok dan harga harus berupa angka' || hasil.message == 'ID sudah digunakan') {
@@ -128,8 +138,6 @@ plusButton.addEventListener('click', () => {
     let currentValue = parseInt(stockInput.value);
     stockInput.value = currentValue + 1;
 });
-
-
 
 const searchInput = document.querySelector('.search-input');
 const notFoundAlert = document.getElementById('not-found-alert');
@@ -255,5 +263,10 @@ document.getElementById('btn_simpan').addEventListener("click", async () => {
     } catch (err) {
         console.error('Error:', err.message);
     }
+})
+
+document.getElementById('keluar_btn').addEventListener('click', () => {
+    localStorage.removeItem('authToken');
+    window.location.href='login.html';
 })
 

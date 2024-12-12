@@ -195,7 +195,7 @@ h3 {
     margin-right: 700px; /* Jarak dari sisi kanan */
     margin-top: -535px;
     width: 550px; /* Sesuaikan lebar container */
-    height: 200px;
+    height: 220px;
     border: 2px solid #ff9900;
     border-radius: 20px;
     background-color: #fff;
@@ -324,7 +324,7 @@ a{
 .riwayat-container {
     border: 2px solid #ff9900;
     border-radius: 20px;
-    background-color: #fff;
+    background-color: #ffffff;
     padding: 15px;
     margin-bottom: 20px;
     height: 300px; /* Sesuaikan tinggi container */
@@ -547,4 +547,145 @@ label {
 
 #list-produk-lrs {
     background-color: #FFFFFF;
+}
+
+.table-container {
+    margin-top: 20px;
+}
+
+.table {
+    width: 100%;
+    margin-bottom: 1rem;
+    background-color: white; /* Warna latar belakang putih */
+    border: 2px solid #FF9900; /* Border oranye di seluruh tabel */
+    border-collapse: collapse; 
+   
+}
+
+.table-striped tbody tr:nth-of-type(odd) {
+    background-color: white;
+}
+
+th {
+    text-align: left;
+    color: #FF9900; /* Matches the orange styling */
+    font-weight: bold;
+    height: 20px;
+}
+
+td {
+    font-size: 14px;
+    background-color: white;
+    vertical-align: middle;
+}
+
+.kolom {
+    color: #EA8D45 !important;
+}
+
+td, th {
+    text-align: center;
+}
+
+.popup-modal {
+    display: flex;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 698px;
+    height: 259px;
+    justify-content: center;
+    align-items: center;
+    background: url('image/bgcat.svg') no-repeat center center;
+}
+
+.popup-content {
+    font-family: 'Poppins', sans-serif;
+    background-size: cover;
+    padding: 30px 20px;
+    border-radius: 8px;
+    text-align: center;
+    width: 90%;
+    max-width: 400px;
+}
+
+label {
+    font-family: 'Poppins', sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    color: #333;
+    display: block;
+    margin-bottom: 8px;
+}
+
+#simpanKategori {
+    background: url('image/simpanbtn.svg') no-repeat center center;
+    background-size: contain;  
+    border: none;
+    padding: 10px;
+    width: 100px; 
+    height: 40px;
+    margin: 10px 5px;
+    cursor: pointer;
+}
+
+#batalKategori {
+    background: url('image/batalbtn.svg') no-repeat center center;
+    background-size: contain;  
+    border: none;
+    padding: 10px;
+    width: 100px; 
+    height: 40px;
+    margin: 10px 5px;
+    cursor: pointer;
+}
+
+
+#kategori-nama {
+    width: 100%;
+    height: 43px;
+    padding: 10px;
+    border-radius: 10px;
+    border: 1px solid #EA8D45 !important;
+    font-family: 'Poppins', sans-serif;
+    font-size: 16px;
+    box-sizing: border-box;
+    margin-bottom: 20px;
+}
+
+#kategori-nama::placeholder {
+    color: #C6C6C6;
+    font-size: 15px;
+    font-family: 'Poppins', sans-serif;
+    text-align: center;
+}
+
+#kategori-teks {
+    font-family: 'Poppins', sans-serif;
+    font-weight: bold;
+    font-size: 23px;
+    color: #EA8D45;
+}
+
+.notification {
+    position: fixed;
+    top: -50px;
+    right: 5px;
+    background: none;
+    border: none;
+    padding: 0;
+    z-index: 1000;
+}
+
+.close-button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+}
+
+.close-button img {
+    width: 350px;
+    height: 200px;
 }
