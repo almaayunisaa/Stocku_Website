@@ -36,7 +36,7 @@ if (kategori) {
 dropdownMenu.innerHTML = `
     <div class="dropdown-header">
         <span class="email-label">Email :</span>
-        <span class="email-address">admin@gmail.com</span>
+        <span id="text_email" class="email-address">admin@gmail.com</span>
     </div>
     <div id="ubah_email_btn" class="dropdown-item">
         <img src="image/ubah email icon.svg" class="dropdown-icon" alt="Eye Icon">
@@ -193,7 +193,7 @@ async function ambilProduk(category) {
                             const hasil = await res.json();
                     
                             if (res.ok) {
-                                const storedRiwayat = localStorage.getItem("riwayatArray");
+                                let storedRiwayat = localStorage.getItem("riwayatArray");
                                 storedRiwayat = storedRiwayat ? JSON.parse(storedRiwayat) : [];
                                 if (storedRiwayat.length>6) {
                                     storedRiwayat.shift();
@@ -202,7 +202,7 @@ async function ambilProduk(category) {
                                 storedRiwayat.push(data_baru);
                                 localStorage.setItem("riwayatArray", JSON.stringify(storedRiwayat));
 
-                                window.location.href = 'category.html'; 
+                                pop_up_komentar.style.display='none';
                             } else {
                                 if ((hasil.message == 'Produk Tidak Valid') || (hasil.message == 'Silahkan lengkapi semua bidang')) {
                                     notificationIcon.src = "image/Notif kalo ada kesalahan.svg";
@@ -554,6 +554,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         const hasil = await res.json();
         if (res.ok) {
             email_text.textContent=hasil.email[0].email;
+            document.getElementById('user-teks').textContent=username;
             console.log('Berhasil mengambil email');
         } else {
             if (hasil.message == 'Gagal mengambil email') {

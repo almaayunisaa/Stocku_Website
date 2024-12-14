@@ -580,3 +580,9 @@ td, th {
     margin: 10px 5px;
     cursor: pointer;
 }
+
+#categoryList {
+    max-height: 600px;
+    padding-right: 10px;
+    overflow-y: auto;
+}

@@ -67,7 +67,7 @@ objek
 dropdownMenu.innerHTML = `
     <div class="dropdown-header">
         <span class="email-label">Email :</span>
-        <span class="email-address">admin@gmail.com</span>
+        <span id="teks_email" class="email-address">admin@gmail.com</span>
     </div>
     <div id="ubah_email_btn" class="dropdown-item">
         <img src="image/ubah email icon.svg" class="dropdown-icon" alt="Eye Icon">
@@ -76,10 +76,6 @@ dropdownMenu.innerHTML = `
     <div id="keluar_btn" class="dropdown-item">
         <img src="image/keluar icon.svg" class="dropdown-icon" alt="Logout Icon">
         Keluar
-    </div>
-    <div class="dropdown-item">
-        <img src="image/sign out icon .svg" class="dropdown-icon" alt="Sign Out Icon">
-        Sign Out
     </div>
 `;
 
@@ -318,7 +314,7 @@ function updateSelisih(selisih) {
 }
 
 document.addEventListener('DOMContentLoaded', async () => {
-    const email_text = document.getElementById("text_email");
+    const email_text = document.getElementById("teks_email");
     const token = localStorage.getItem('authToken');
     const decodeToken = (token) => {
         const payload = token.split('.')[1];
@@ -339,6 +335,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         const hasil = await res.json();
         if (res.ok) {
             email_text.textContent=hasil.email[0].email;
+            document.getElementById('user-teks').textContent=username;
             console.log('Berhasil mengambil email');
         } else {
             if (hasil.message == 'Gagal mengambil email') {
