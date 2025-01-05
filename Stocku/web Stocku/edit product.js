@@ -46,7 +46,6 @@ async function ambilDataProduk(product) {
         });
 
         const hasil = await res.json();
-        console.log('Response dari server:', hasil);
         return hasil;
     } catch (err) {
         console.log('Error:', err);
@@ -292,9 +291,6 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 });
 
-// Event listener untuk pencarian saat pengguna mengetik
-searchInput.addEventListener('input', searchProduct);
-
 // Event listener to hide the notification when the close button is clicked
 document.getElementById('closeNotification').addEventListener('click', function() {
     document.getElementById('notification').style.display = 'none'; // Hide notification
@@ -304,6 +300,7 @@ document.getElementById('closeNotification').addEventListener('click', function(
 * Menghapus produk dengan permintaan DELETE ke server.
 */
 document.getElementById('btn_hapus_produk').addEventListener('click', async () => {
+    console.log("test");
     const token = localStorage.getItem('authToken');
     PopUpKonfirmDel.style.display='flex';
     console.log('Token:', token);
@@ -319,6 +316,7 @@ document.getElementById('btn_hapus_produk').addEventListener('click', async () =
     
             const hasil = await res.json();
             if (res.ok) {
+                
                 let storedRiwayat = localStorage.getItem("riwayatArray");
                 storedRiwayat = storedRiwayat ? JSON.parse(storedRiwayat) : [];
                 if (storedRiwayat.length>6) {
