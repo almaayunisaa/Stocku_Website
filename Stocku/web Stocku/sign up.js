@@ -1,3 +1,9 @@
+/**
+ * Event listener untuk tombol register.
+ * Mengirim permintaan ke server untuk membuat akun pengguna baru berdasarkan data yang dimasukkan.
+ * Jika pendaftaran berhasil, pengguna akan diarahkan ke halaman `loading.html`.
+ * Jika gagal, menampilkan notifikasi kesalahan terkait validasi atau proses pendaftaran.
+ */
 document.getElementById('registerButton').addEventListener('click', async function() {
     const username = document.getElementById('username').value;
     const email = document.getElementById('email').value;
@@ -50,7 +56,10 @@ document.getElementById('registerButton').addEventListener('click', async functi
     }
 });
 
-// Event listener untuk menutup notifikasi saat ikon diklik
+/**
+ * Event listener untuk menutup notifikasi.
+ * Menyembunyikan elemen notifikasi ketika ikon close diklik.
+ */
 document.getElementById('closeNotification').addEventListener('click', function() {
     document.getElementById('notification').style.display = 'none';
 });

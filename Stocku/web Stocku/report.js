@@ -1,21 +1,32 @@
+
+/**
+ * Deklarasi elemen-elemen HTML yang digunakan.
+ */
 const profileIcon = document.querySelector('.icon-container');
 const dropdownMenu = document.createElement('div');
 const PopUpUbahEmail = document.getElementById('PopUpUbahEmail');
 const tabel_Produk = document.getElementById('tabel-produk');
 
-// Tambahkan class dan styling untuk dropdown menu
+/**
+ * Menyembunyikan dropdown menu dan popup secara default.
+ */
 dropdownMenu.classList.add('dropdown-custom');
 dropdownMenu.style.display = 'none'; // Sembunyikan menu secara default
 PopUpUbahEmail.style.display='none';
 tabel_Produk.style.display='none';
 
+/**
+ * Fungsi untuk mendekode token JWT.
+ * @param {string} token - Token JWT yang akan didekode.
+ * @returns {Object} Objek payload dari token JWT.
+ */
 function decode(token) {
     const payload = token.split('.')[1];
     const decoded = atob(payload);
     return JSON.parse(decoded);
 }
 
-// Tambahkan opsi sesuai gambar
+// Tambahkan elemen dropdown ke dalam DOM
 dropdownMenu.innerHTML = `
     <div class="dropdown-header">
         <span class="email-label">Email :</span>
@@ -34,12 +45,16 @@ dropdownMenu.innerHTML = `
 // Tambahkan dropdown ke dalam body
 document.body.appendChild(dropdownMenu);
 
-// Fungsi toggle menu dropdown
+/**
+ * Event listener untuk membuka/menutup dropdown menu.
+ */
 profileIcon.addEventListener('click', () => {
     dropdownMenu.style.display = dropdownMenu.style.display === 'none' ? 'block' : 'none';
 });
 
-// Menutup dropdown jika klik di luar menu
+/**
+ * Event listener untuk menutup dropdown menu jika klik di luar menu.
+ */
 document.addEventListener('click', (event) => {
     if (!profileIcon.contains(event.target) && !dropdownMenu.contains(event.target)) {
         dropdownMenu.style.display = 'none';
@@ -49,6 +64,11 @@ document.addEventListener('click', (event) => {
 const searchInput = document.querySelector('.search-input');
 const notFoundAlert = document.getElementById('not-found-alert');
 
+
+/**
+ * Event listener untuk tombol laporan produk.
+ * Mengambil data produk dan mengunduhnya sebagai file Excel.
+ */
 document.getElementById('laporan_btn').addEventListener('click', async () => {
     const token = localStorage.getItem('authToken');
     const notification = document.getElementById('notification');
@@ -85,10 +105,17 @@ document.getElementById('laporan_btn').addEventListener('click', async () => {
     }
 })
 
+/**
+ * Event listener untuk menutup notifikasi.
+ */
 document.getElementById('closeNotification').addEventListener('click', function() {
     document.getElementById('notification').style.display = 'none'; // Hide notification
 });
 
+/**
+ * Event listener untuk mengambil email pengguna dari server.
+ * Menampilkan email pengguna di dropdown menu.
+ */
 document.addEventListener('DOMContentLoaded', async () => {
     const email_text = document.getElementById("text_email");
     const token = localStorage.getItem('authToken');
@@ -126,14 +153,24 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
 })
 
+/**
+ * Event listener untuk membuka popup ubah email.
+ */
 document.getElementById('ubah_email_btn').addEventListener('click', () => {
     PopUpUbahEmail.style.display='flex';
 })
 
+/**
+ * Event listener untuk tombol batal pada popup ubah email.
+ */
 document.getElementById('btn_batal').addEventListener("click", function() {
     PopUpUbahEmail.style.display = "none";
 })
 
+/**
+ * Event listener untuk tombol simpan pada popup ubah email.
+ * Mengirim permintaan ubah email ke server.
+ */
 document.getElementById('btn_simpan').addEventListener("click", async () => {
     const new_email = document.getElementById('email-text').value;
     const token = localStorage.getItem('authToken');
@@ -169,12 +206,20 @@ document.getElementById('btn_simpan').addEventListener("click", async () => {
     }
 })
 
+/**
+ * Event listener untuk tombol keluar.
+ * Menghapus token dan riwayat pengguna dari localStorage, lalu mengarahkan ke halaman login.
+ */
 document.getElementById('keluar_btn').addEventListener('click', () => {
     localStorage.removeItem('authToken');
     localStorage.removeItem('riwayatArray');
     window.location.href='login.html';
 })
 
+/**
+ * Event listener untuk mencari produk berdasarkan input pencarian.
+ * Menampilkan hasil pencarian dalam tabel.
+ */
 document.getElementById('search-btn').addEventListener('click', async () => {
     const productList = document.getElementById('tableBody');
     const searchInput = document.getElementById('search-input');
@@ -215,6 +260,10 @@ document.getElementById('search-btn').addEventListener('click', async () => {
     }
 })
 
+/**
+ * Mengambil catatan produk dengan status tertentu.
+ * Menampilkan maksimum 2 catatan dalam daftar.
+ */
 async function ambilCatatan() {
     const catatan_list = document.getElementById('catatan-list');
     const token = localStorage.getItem('authToken');
@@ -249,6 +298,10 @@ async function ambilCatatan() {
     }
 }
 
+/**
+ * Mengambil daftar produk laris berdasarkan stok dan tanggal.
+ * Menampilkan maksimum 10 produk laris dalam daftar.
+ */
 async function ambilProdukLaris() {
     let produk_laris= document.getElementById('produk-laris-list');
     const token = localStorage.getItem('authToken');
@@ -299,6 +352,10 @@ async function ambilProdukLaris() {
     }
 }
 
+/**
+ * Mengambil daftar produk tidak laris berdasarkan stok dan tanggal.
+ * Menampilkan maksimum 10 produk tidak laris dalam daftar.
+ */
 async function ambilProdukTidakLaris() {
     let produk_tidaklaris= document.getElementById('produk-tidaklaris-list');
     const token = localStorage.getItem('authToken');
@@ -349,6 +406,10 @@ async function ambilProdukTidakLaris() {
     }
 }
 
+/**
+ * Mengambil total penjualan produk berdasarkan stok, harga, dan tanggal.
+ * Menampilkan total penjualan dalam elemen teks.
+ */
 async function ambilLaporan() {
     let teks_total_penjualan = document.getElementById('totalPenj-teks');
     const token = localStorage.getItem('authToken');
@@ -393,6 +454,15 @@ async function ambilLaporan() {
     }
 }
 
+/**
+ * Mengambil data produk lama dari server untuk membuat grafik pendapatan bulan lalu.
+ * Data diambil berdasarkan stok, harga, dan tanggal kedaluwarsa produk.
+ * Grafik ditampilkan pada elemen kanvas dengan ID 'graf'.
+ * 
+ * @async
+ * @function ambilGraf
+ * @returns {Promise<Chart|void>} Mengembalikan objek grafik (Chart.js) jika berhasil, atau `undefined` jika terjadi error.
+ */
 async function ambilGraf() {
     const chart = document.getElementById('graf').getContext('2d');
     const token = localStorage.getItem('authToken');
@@ -457,7 +527,10 @@ async function ambilGraf() {
     }
 }
 
-
+/**
+ * Event listener untuk menjalankan fungsi yang diimpor setelah halaman selesai dimuat.
+ * Fungsi yang dipanggil: `ambilCatatan`, `ambilProdukLaris`, `ambilProdukTidakLaris`, `ambilLaporan`, dan `ambilGraf`.
+ */
 document.addEventListener('DOMContentLoaded', async () => {
     await ambilCatatan();
     await ambilProdukLaris();
