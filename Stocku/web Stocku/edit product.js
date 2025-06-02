@@ -1,6 +1,3 @@
-/**
- * Menampilkan atau menyembunyikan dropdown menu saat ikon profil diklik.
- */
 const profileIcon = document.querySelector('.icon-container');
 const dropdownMenu = document.createElement('div');
 const PopUpUbahEmail = document.getElementById('PopUpUbahEmail');
@@ -18,22 +15,13 @@ function decode(token) {
     return JSON.parse(decoded);
 }
 
-/**
- * Mengambil parameter dari URL.
- * @param {string} param - Nama parameter yang ingin diambil.
- * @returns {string|null} Nilai parameter atau null jika tidak ditemukan.
- */
 function getProduct(param) {
     const url = new URLSearchParams(window.location.search);
     return url.get(param);
 }
+
 const product = getProduct('product');
 
-/**
- * Mengambil data produk dari server berdasarkan nama produk.
- * @param {string} product - Nama produk yang ingin diambil.
- * @returns {Promise<Object>} Data produk yang diperoleh dari server.
- */
 async function ambilDataProduk(product) {
     const token = localStorage.getItem('authToken');
     try {
@@ -46,15 +34,13 @@ async function ambilDataProduk(product) {
         });
 
         const hasil = await res.json();
+        console.log('Response dari server:', hasil);
         return hasil;
     } catch (err) {
         console.log('Error:', err);
     }
 }
 
-/**
- * Menampilkan data produk ke form setelah data diambil.
- */
 const objek = ambilDataProduk(product);
 objek
   .then((result) => {
@@ -77,9 +63,7 @@ objek
     console.error("Error:", error);
   });
 
-/**
- * Tambahkan elemen dropdown ke dalam DOM.
- */
+// Tambahkan opsi sesuai gambar
 dropdownMenu.innerHTML = `
     <div class="dropdown-header">
         <span class="email-label">Email :</span>
@@ -95,26 +79,22 @@ dropdownMenu.innerHTML = `
     </div>
 `;
 
-
+// Tambahkan dropdown ke dalam body
 document.body.appendChild(dropdownMenu);
 
-
+// Fungsi toggle menu dropdown
 profileIcon.addEventListener('click', () => {
     dropdownMenu.style.display = dropdownMenu.style.display === 'none' ? 'block' : 'none';
 });
 
-/**
- * Menutup dropdown.
- */
+// Menutup dropdown jika klik di luar menu
 document.addEventListener('click', (event) => {
     if (!profileIcon.contains(event.target) && !dropdownMenu.contains(event.target)) {
         dropdownMenu.style.display = 'none';
     }
 });
 
-/**
- * Event listener untuk validasi dan pengiriman formulir.
- */
+// Form validation and submission
 document.addEventListener('DOMContentLoaded', function() {
     const form = document.querySelector('form');
     const productName = document.getElementById('productName');
@@ -123,10 +103,6 @@ document.addEventListener('DOMContentLoaded', function() {
     const productPrice = document.getElementById('productPrice');
     const productDescription = document.getElementById('productDescription');
 
-    /**
-     * Validasi formulir sebelum disimpan.
-     * @param {Event} e - Objek event.
-     */
     form.addEventListener('submit', function(e) {
         e.preventDefault(); // Prevent form submission for now
 
@@ -141,9 +117,7 @@ document.addEventListener('DOMContentLoaded', function() {
         form.reset(); // Reset the form fields
     });
 
-    /**
-     * Fungsi untuk membatalkan perubahan dan mereset formulir.
-     */
+    // Optional: Add functionality for 'Cancel' button
     const cancelButton = document.querySelector('.btn-secondary');
     cancelButton.addEventListener('click', function() {
         if (confirm('Apakah Anda yakin ingin membatalkan? Semua perubahan akan hilang.')) {
@@ -152,9 +126,6 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 });
 
-/**
- * Menangani pengurangan dan penambahan stok produk.
- */
 const stockInput = document.getElementById('productStock');
 const minButton = document.querySelector('.btn-min-stock');
 const plusButton = document.querySelector('.btn-plus-stock');
@@ -174,9 +145,7 @@ plusButton.addEventListener('click', () => {
 const searchInput = document.querySelector('.search-input');
 const notFoundAlert = document.getElementById('not-found-alert');
 
-/**
- * Fungsi pencarian produk di dalam tabel.
- */
+// Fungsi untuk mencari produk dalam tabel berdasarkan list produk yang ada di tabel halaman product.html
 function searchProduct() {
     const searchValue = searchInput.value.toLowerCase();
     const tableRows = document.querySelectorAll('.table tbody tr'); // Ambil semua baris produk dari tabel
@@ -221,10 +190,6 @@ function searchProduct() {
 document.addEventListener('DOMContentLoaded', function() {
     const form = document.querySelector('form');
 
-    /**
-     * Menyimpan data produk dengan mengirimkan permintaan PATCH ke server.
-     * @param {Event} e - Objek event.
-     */
     document.querySelector('.btn-primary').addEventListener('click', async function(e) {
         e.preventDefault();
         const namaProd_now = document.getElementById('productName').value;
@@ -282,7 +247,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
-    
+    // Optional: Add functionality for 'Cancel' button
     const cancelButton = document.querySelector('.btn-secondary');
     cancelButton.addEventListener('click', function() {
         if (confirm('Apakah Anda yakin ingin membatalkan? Semua perubahan akan hilang.')) {
@@ -291,16 +256,15 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 });
 
+// Event listener untuk pencarian saat pengguna mengetik
+searchInput.addEventListener('input', searchProduct);
+
 // Event listener to hide the notification when the close button is clicked
 document.getElementById('closeNotification').addEventListener('click', function() {
     document.getElementById('notification').style.display = 'none'; // Hide notification
 });
 
-/**
-* Menghapus produk dengan permintaan DELETE ke server.
-*/
 document.getElementById('btn_hapus_produk').addEventListener('click', async () => {
-    console.log("test");
     const token = localStorage.getItem('authToken');
     PopUpKonfirmDel.style.display='flex';
     console.log('Token:', token);
@@ -316,7 +280,6 @@ document.getElementById('btn_hapus_produk').addEventListener('click', async () =
     
             const hasil = await res.json();
             if (res.ok) {
-                
                 let storedRiwayat = localStorage.getItem("riwayatArray");
                 storedRiwayat = storedRiwayat ? JSON.parse(storedRiwayat) : [];
                 if (storedRiwayat.length>6) {
@@ -340,38 +303,19 @@ document.getElementById('btn_hapus_produk').addEventListener('click', async () =
 
 })
 
-/**
- * Validasi apakah stok sebelumnya lebih besar dari stok sekarang.
- * @param {number} stok_bfr - Stok sebelumnya.
- * @param {number} stok_now - Stok sekarang.
- * @returns {boolean} True jika stok sebelumnya lebih besar.
- */
 function stokNotStonk(stok_bfr, stok_now) {
     return stok_bfr>stok_now;
 }
 
-/**
- * Menyimpan perbedaan stok ke dalam localStorage.
- * @param {number} selisih - Selisih stok.
- */
 function updateSelisih(selisih) {
     let total = parseInt(localStorage.getItem("totalSelisih")) || 0;
     total = total +selisih;
     localStorage.setItem("totalSelisih", total);
 }
 
-/**
- * Fungsi yang dijalankan saat halaman selesai dimuat untuk mengambil email pengguna dan menampilkan di UI.
- */
 document.addEventListener('DOMContentLoaded', async () => {
     const email_text = document.getElementById("teks_email");
     const token = localStorage.getItem('authToken');
-     
-    /**
-     * Mendekode token JWT untuk mendapatkan payload.
-     * @param {string} token - Token JWT yang akan didekode.
-     * @returns {Object} Payload dari token JWT.
-     */
     const decodeToken = (token) => {
         const payload = token.split('.')[1];
         return JSON.parse(atob(payload));
@@ -405,33 +349,17 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
 })
 
-/**
- * Event listener untuk tombol "Ubah Email". Menampilkan pop-up form ubah email.
- */
 document.getElementById('ubah_email_btn').addEventListener('click', () => {
     PopUpUbahEmail.style.display='flex';
 })
 
-/**
- * Event listener untuk tombol "Batal" di pop-up ubah email. Menyembunyikan pop-up.
- */
 document.getElementById('btn_batal').addEventListener("click", function() {
     PopUpUbahEmail.style.display = "none";
 })
 
-/**
- * Event listener untuk tombol "Simpan" di pop-up ubah email.
- * Mengirim permintaan POST untuk memperbarui email pengguna.
- */
 document.getElementById('btn_simpan').addEventListener("click", async () => {
     const new_email = document.getElementById('email-text').value;
     const token = localStorage.getItem('authToken');
-    
-    /**
-     * Mendekode token JWT untuk mendapatkan payload.
-     * @param {string} token - Token JWT yang akan didekode.
-     * @returns {Object} Payload dari token JWT.
-     */
     const decodeToken = (token) => {
         const payload = token.split('.')[1];
         return JSON.parse(atob(payload));
@@ -464,9 +392,6 @@ document.getElementById('btn_simpan').addEventListener("click", async () => {
     }
 })
 
-/**
- * Event listener untuk tombol "Keluar". Menghapus token dan riwayat, lalu mengarahkan ke halaman login.
- */
 document.getElementById('keluar_btn').addEventListener('click', () => {
     localStorage.removeItem('authToken');
     localStorage.removeItem('riwayatArray');

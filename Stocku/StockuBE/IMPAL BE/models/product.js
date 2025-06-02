@@ -1,22 +1,6 @@
 const db = require('../config/db');
 
-/**
- * Kelas untuk menangani operasi CRUD pada tabel produk di database.
- */
 class Product {
-    /**
-     * Menambahkan produk baru ke dalam database.
-     * 
-     * @param {string} namaCat - Nama kategori produk.
-     * @param {string} produk - Nama produk.
-     * @param {string} id - ID produk.
-     * @param {number} stok - Stok produk.
-     * @param {number} harga - Harga produk.
-     * @param {string} cek - Status cek produk.
-     * @param {string} prediksi - Data prediksi produk.
-     * @param {string} deskripsi - Deskripsi produk.
-     * @returns {Promise<Object>} Promise yang berisi hasil query.
-     */
     static create(namaCat, produk, id, stok, harga, cek, prediksi, deskripsi) {
         const query = 'INSERT INTO product (namaCategory, Produk, ID, Stok, harga, Cek, Prediksi, deskripsi) VALUES (?, ?, ?, ?, ?, ?, ?, ?)';
         return new Promise((resolve, reject) => {
@@ -30,14 +14,8 @@ class Product {
         });
     }
 
-    /**
-     * Mencari produk berdasarkan nama.
-     * 
-     * @param {string} namaProduk - Nama produk yang akan dicari.
-     * @returns {Promise<Object[]>} Promise yang berisi array hasil query.
-     */
     static findName(namaProduk) {
-        const query = 'SELECT * FROM product WHERE Produk = ?';
+        const query = 'SELECT * FROM product WHERE Produk = ? AND deleted_at IS NULL';
         return new Promise((resolve, reject) => {
             db.query(query, [namaProduk], (err, results) => {
                 if (err) {
@@ -49,14 +27,8 @@ class Product {
         });
     }
 
-    /**
-     * Mencari produk berdasarkan ID.
-     * 
-     * @param {string} id - ID produk.
-     * @returns {Promise<Object[]>} Promise yang berisi array hasil query.
-     */
     static findID(id) {
-        const query = 'SELECT * FROM product WHERE ID = ?';
+        const query = 'SELECT * FROM product WHERE ID = ? AND deleted_at IS NULL';
         return new Promise((resolve, reject) => {
             db.query(query, [id], (err, results) => {
                 if (err) {
@@ -68,14 +40,8 @@ class Product {
         });
     }
 
-    /**
-     * Menghapus produk berdasarkan ID.
-     * 
-     * @param {string} id - ID produk yang akan dihapus.
-     * @returns {Promise<Object>} Promise yang berisi hasil query.
-     */
     static delete(id) {
-        const query = 'DELETE FROM product WHERE ID = ?';
+        const query = 'UPDATE product SET deleted_at = NOW() WHERE ID = ?';
         return new Promise((resolve, reject) => {
             db.query(query, [id], (err, results) => {
                 if (err) {
@@ -87,15 +53,8 @@ class Product {
         });
     }
 
-    /**
-     * Mengedit nama produk berdasarkan ID.
-     * 
-     * @param {string} id - ID produk.
-     * @param {string} produk - Nama produk baru.
-     * @returns {Promise<Object>} Promise yang berisi hasil query.
-     */
     static editNama(id, produk) {
-        const query = 'UPDATE product SET Produk = ? WHERE ID = ?';
+        const query = 'UPDATE product SET Produk = ? WHERE ID = ? AND deleted_at IS NULL';
         return new Promise((resolve, reject) => {
             db.query(query, [produk, id], (err, results) => {
                 if (err) {
@@ -107,15 +66,8 @@ class Product {
         });
     }
 
-    /**
-     * Mengedit stok produk berdasarkan ID.
-     * 
-     * @param {string} id - ID produk.
-     * @param {number} stok - Stok produk baru.
-     * @returns {Promise<Object>} Promise yang berisi hasil query.
-     */
     static editStok(id, stok) {
-        const query = 'UPDATE product SET Stok = ? WHERE ID = ?';
+        const query = 'UPDATE product SET Stok = ? WHERE ID = ? AND deleted_at IS NULL';
         return new Promise((resolve, reject) => {
             db.query(query, [stok, id], (err, results) => {
                 if (err) {
@@ -127,15 +79,8 @@ class Product {
         });
     }
 
-    /**
-     * Mengedit harga produk berdasarkan ID.
-     * 
-     * @param {string} id - ID produk.
-     * @param {number} harga - Harga produk baru.
-     * @returns {Promise<Object>} Promise yang berisi hasil query.
-     */
     static editHarga(id, harga) {
-        const query = 'UPDATE product SET Harga = ? WHERE ID = ?';
+        const query = 'UPDATE product SET harga = ? WHERE ID = ? AND deleted_at IS NULL';
         return new Promise((resolve, reject) => {
             db.query(query, [harga, id], (err, results) => {
                 if (err) {
@@ -147,15 +92,8 @@ class Product {
         });
     }
 
-    /**
-        * Memperbarui kolom "Cek" pada tabel produk dengan nilai yang diberikan berdasarkan ID produk.
-        * @param {string} id - ID produk yang akan diperbarui.
-        * @param {string} cek - Nilai baru untuk kolom "Cek".
-        * @returns {Promise<object>} Promise yang akan diselesaikan dengan hasil query SQL jika berhasil.
-        * @throws {Error} Jika terjadi kesalahan selama eksekusi query.
-        */
     static editCek(id, cek) {
-        const query = 'UPDATE product SET Cek = ? WHERE ID = ?';
+        const query = 'UPDATE product SET Cek = ? WHERE ID = ? AND deleted_at IS NULL';
         return new Promise((resolve, reject) => {
             db.query(query, [cek, id], (err, results) => {
                 if (err) {
@@ -167,15 +105,8 @@ class Product {
         });
     }
 
-    /**
-    * Memperbarui kolom "Prediksi" pada tabel produk dengan nilai yang diberikan berdasarkan ID produk.
-    * @param {string} id - ID produk yang akan diperbarui.
-    * @param {string} prediksi - Nilai baru untuk kolom "Prediksi".
-    * @returns {Promise<object>} Promise yang akan diselesaikan dengan hasil query SQL jika berhasil.
-    * @throws {Error} Jika terjadi kesalahan selama eksekusi query.
-    */
     static editPrediksi(id, prediksi) {
-        const query = 'UPDATE product SET Prediksi = ? WHERE ID = ?';
+        const query = 'UPDATE product SET Prediksi = ? WHERE ID = ? AND deleted_at IS NULL';
         return new Promise((resolve, reject) => {
             db.query(query, [prediksi, id], (err, results) => {
                 if (err) {
@@ -187,15 +118,8 @@ class Product {
         });
     }
 
-    /**
-     * Mengedit deskripsi produk berdasarkan ID.
-     * 
-     * @param {string} id - ID produk.
-     * @param {string} deskripsi - Deskripsi baru untuk produk.
-     * @returns {Promise<Object>} Promise yang berisi hasil query.
-     */
     static editDes(id, deskripsi) {
-        const query = 'UPDATE product SET deskripsi = ? WHERE ID = ?';
+        const query = 'UPDATE product SET deskripsi = ? WHERE ID = ? AND deleted_at IS NULL';
         return new Promise((resolve, reject) => {
             db.query(query, [deskripsi, id], (err, results) => {
                 if (err) {
@@ -220,14 +144,8 @@ class Product {
         });
     }
 
-    /**
-     * Mengambil produk berdasarkan kategori.
-     * 
-     * @param {string} namaCat - Nama kategori produk.
-     * @returns {Promise<Object[]>} Promise yang berisi array hasil query.
-     */
     static get(namaCat) {
-        const query = 'SELECT * FROM product WHERE namaCategory = ?';
+        const query = 'SELECT * FROM product WHERE namaCategory = ? AND deleted_at IS NULL';
         return new Promise((resolve, reject) => {
             db.query(query, [namaCat], (err, results) => {
                 if (err) {
@@ -239,14 +157,8 @@ class Product {
         });
     }
 
-    /**
-     * Mengambil produk berdasarkan nama.
-     *
-     * @param {string} namaCat - Nama produk yang akan dicari.
-     * @returns {Promise<Object[]>} Promise yang berisi array hasil query.
-     */
     static getWithName(namaCat) {
-        const query = 'SELECT * FROM product WHERE Produk = ?';
+        const query = 'SELECT * FROM product WHERE Produk = ? AND deleted_at IS NULL';
         return new Promise((resolve, reject) => {
             db.query(query, [namaCat], (err, results) => {
                 if (err) {
@@ -258,14 +170,8 @@ class Product {
         });
     }
 
-    /**
-     * Mengambil produk berdasarkan ID.
-     *
-     * @param {string} id - ID produk.
-     * @returns {Promise<Object[]>} Promise yang berisi array hasil query.
-     */
     static getWithID(id) {
-        const query = 'SELECT * FROM product WHERE ID = ?';
+        const query = 'SELECT * FROM product WHERE ID = ? AND deleted_at IS NULL';
         return new Promise((resolve, reject) => {
             db.query(query, [id], (err, results) => {
                 if (err) {
@@ -277,14 +183,8 @@ class Product {
         });
     }
 
-    /**
-     * Mengambil produk dalam kategori tertentu dan mengurutkan secara ascending berdasarkan nama produk.
-     *
-     * @param {string} namaCat - Nama kategori produk.
-     * @returns {Promise<Object[]>} Promise yang berisi array hasil query.
-     */
     static sort_asc(namaCat) {
-        const query = 'SELECT * FROM product WHERE namaCategory = ? ORDER by Produk ASC';
+        const query = 'SELECT * FROM product WHERE namaCategory = ? AND deleted_at IS NULL ORDER BY Produk ASC';
         return new Promise((resolve, reject) => {
             db.query(query, [namaCat], (err, results) => {
                 if (err) {
@@ -296,14 +196,8 @@ class Product {
         });
     }
 
-    /**
-     * Mengambil produk dalam kategori tertentu dan mengurutkan secara descending berdasarkan nama produk.
-     *
-     * @param {string} namaCat - Nama kategori produk.
-     * @returns {Promise<Object[]>} Promise yang berisi array hasil query.
-     */
     static sort_dsc(namaCat) {
-        const query = 'SELECT * FROM product WHERE namaCategory = ? ORDER by Produk DESC';
+        const query = 'SELECT * FROM product WHERE namaCategory = ? AND deleted_at IS NULL ORDER BY Produk DESC';
         return new Promise((resolve, reject) => {
             db.query(query, [namaCat], (err, results) => {
                 if (err) {
@@ -315,13 +209,8 @@ class Product {
         });
     }
 
-    /**
-     * Mengambil semua data produk dari database.
-     *
-     * @returns {Promise<Object[]>} Promise yang berisi array hasil query.
-     */
     static getData() {
-        const query = 'SELECT * FROM product';
+        const query = 'SELECT * FROM product WHERE deleted_at IS NULL';
         return new Promise((resolve, reject) => {
             db.query(query, (err, results) => {
                 if (err) {
@@ -333,16 +222,6 @@ class Product {
         });
     }
 
-    /**
-     * Menambahkan stok produk lama ke tabel `oldproduct`.
-     *
-     * @param {string} ID - ID produk lama.
-     * @param {number} Stok - Jumlah stok produk lama.
-     * @param {number} Harga - Harga produk lama.
-     * @param {string} IDProduk - ID produk terkait.
-     * @param {string} tanggal_habis - Tanggal habis stok.
-     * @returns {Promise<Object>} Promise yang berisi hasil query.
-     */
     static setStokOld(ID, Stok, Harga, IDProduk, tanggal_habis) {
         const query = 'INSERT INTO oldproduct (ID, Stok, Harga, IDProduk, tanggal_habis) VALUES (?, ?, ?, ?, ?)';
         return new Promise((resolve, reject) => {
@@ -356,11 +235,6 @@ class Product {
         });
     }
 
-    /**
-     * Mengambil semua data produk lama dari tabel `oldproduct`.
-     *
-     * @returns {Promise<Object[]>} Promise yang berisi array hasil query.
-     */
     static getDataOld() {
         const query = 'SELECT * FROM oldproduct';
         return new Promise((resolve, reject) => {

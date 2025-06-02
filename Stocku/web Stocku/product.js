@@ -13,22 +13,12 @@ notification.style.display = 'none';
 
 PopUpUbahEmail.style.display='none';
 
-/**
- * Mendekode token JWT untuk mendapatkan payload JSON.
- * @param {string} token - Token JWT.
- * @returns {Object} Payload yang telah didekodekan.
- */
 function decode(token) {
     const payload = token.split('.')[1];
     const decoded = atob(payload);
     return JSON.parse(decoded);
 }
 
-/**
- * Mengambil nilai parameter query dari URL.
- * @param {string} param - Nama parameter query yang diinginkan.
- * @returns {string|null} Nilai parameter atau null jika tidak ditemukan.
- */
 function getCategory(param) {
     const url = new URLSearchParams(window.location.search);
     return url.get(param);
@@ -90,9 +80,7 @@ document.addEventListener('click', (event) => {
 const searchInput = document.querySelector('.search-input');
 const notFoundAlert = document.getElementById('not-found-alert');
 
-/**
- * Fungsi mencari produk.
- */
+// Fungsi untuk mencari produk dalam tabel
 function searchProduct() {
     const searchValue = searchInput.value.toLowerCase();
     
@@ -134,13 +122,6 @@ function searchProduct() {
     }
 }
 
-/**
- * Mengambil data produk berdasarkan kategori dari API dan memperbarui tabel produk.
- * @async
- * @function ambilProduk
- * @param {string} category - Nama kategori untuk produk.
- * @returns {Promise<void>} Tidak mengembalikan nilai.
- */
 async function ambilProduk(category) {
     const productList = document.getElementById('tableBody');
     const token = localStorage.getItem('authToken');
@@ -243,9 +224,6 @@ async function ambilProduk(category) {
     }
 }
 
-/**
- * Event listener untuk menjalankan fungsi pengambilan produk setelah halaman selesai dimuat.
- */
 document.addEventListener('DOMContentLoaded', () => {
     const kategori = getCategory('category'); 
     if (kategori) {
@@ -258,10 +236,6 @@ searchInput.addEventListener('input', searchProduct);
 
 let isAsc = false;
 
-/**
- * Event listener untuk mengurutkan produk berdasarkan kolom nama produk (asc/desc).
- * Mengirim permintaan ke server untuk mengambil data yang diurutkan berdasarkan kategori.
- */
 document.getElementById("kolom_produk").addEventListener('click', async () => {
     const productList = document.getElementById('tableBody');
     isAsc=!isAsc;
@@ -456,19 +430,10 @@ document.getElementById("kolom_produk").addEventListener('click', async () => {
     }
 })
 
-/**
- * Event listener untuk tombol batal di pop-up komentar.
- * Menutup pop-up komentar.
- */
 document.getElementById("btn_komentar_batal").addEventListener('click', () => {
     pop_up_komentar.style.display='none';
 })
 
-/**
- * Mengecek apakah produk memenuhi syarat untuk diprediksi.
- * @param {string} id - ID produk.
- * @returns {Promise<boolean>} True jika memenuhi syarat, false jika tidak.
- */
 async function bisaPrediksi(id) {
     const token = localStorage.getItem('authToken');
     try {
@@ -496,12 +461,6 @@ async function bisaPrediksi(id) {
     }
 }
 
-/**
- * Menambahkan sejumlah hari ke tanggal tertentu.
- * @param {string|Date} tanggal - Tanggal awal dalam format string atau objek Date.
- * @param {number} hari - Jumlah hari yang ingin ditambahkan.
- * @returns {Date|null} Objek Date yang mewakili tanggal baru, atau null jika input tidak valid.
- */
 function tambahHari(tanggal, hari) {
     if (isNaN(Date.parse(tanggal)) || isNaN(hari)) {
         console.error("Input tanggal atau hari tidak valid");
@@ -512,11 +471,6 @@ function tambahHari(tanggal, hari) {
     return hasil;
 }
 
-/**
- * Memperkirakan tanggal berdasarkan ID produk.
- * @param {string} id - ID produk.
- * @returns {Promise<string>} Tanggal prediksi dalam format string, atau pesan jika prediksi belum tersedia.
- */
 async function prediksiTanggal(id) {
     const bisa = await bisaPrediksi(id);
     if (bisa) {
@@ -548,12 +502,6 @@ async function prediksiTanggal(id) {
         
 }
 
-/**
- * Mengecek tanggal dan memperbarui stok produk jika sudah mencapai awal bulan.
- * @param {number} stok - Jumlah stok produk.
- * @param {number} harga - Harga produk.
- * @param {string} id_prod - ID produk.
- */
 function checkTanggalandUpdate(stok, harga, id_prod) {
     const tanggal = new Date();
 
@@ -566,14 +514,6 @@ function checkTanggalandUpdate(stok, harga, id_prod) {
     }
 }
 
-/**
- * Mengirim data stok habis ke server untuk diperbarui.
- * @param {string} id - ID stok yang habis.
- * @param {number} stok - Jumlah stok.
- * @param {number} harga - Harga produk.
- * @param {string} id_prod - ID produk.
- * @param {string} tanggalnow - Tanggal saat ini dalam format ISO string.
- */
 async function updateStokHabis(id, stok, harga, id_prod, tanggalnow) {
     const token = localStorage.getItem('authToken');
     try {
@@ -592,13 +532,6 @@ async function updateStokHabis(id, stok, harga, id_prod, tanggalnow) {
     }
 }
 
-
-// --- Event Listener ---
-
-/**
- * Mengambil dan menampilkan email pengguna pada halaman.
- * @event DOMContentLoaded
- */
 document.addEventListener('DOMContentLoaded', async () => {
     const email_text = document.getElementById("text_email");
     const token = localStorage.getItem('authToken');
@@ -635,23 +568,14 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
 })
 
-/**
- * Menampilkan pop-up untuk mengubah email.
- */
 document.getElementById('ubah_email_btn').addEventListener('click', () => {
     PopUpUbahEmail.style.display='flex';
 })
 
-/**
- * Menutup pop-up email ketika tombol batal diklik.
- */
 document.getElementById('btn_batal').addEventListener("click", function() {
     PopUpUbahEmail.style.display = "none";
 })
 
-/**
- * Menyimpan email baru dan mengirimkan data ke server.
- */
 document.getElementById('btn_simpan').addEventListener("click", async () => {
     const new_email = document.getElementById('email-text').value;
     const token = localStorage.getItem('authToken');
@@ -687,9 +611,6 @@ document.getElementById('btn_simpan').addEventListener("click", async () => {
     }
 })
 
-/**
- * Menghapus data autentikasi dan mengarahkan pengguna ke halaman login.
- */
 document.getElementById('keluar_btn').addEventListener('click', () => {
     localStorage.removeItem('authToken');
     localStorage.removeItem('riwayatArray');

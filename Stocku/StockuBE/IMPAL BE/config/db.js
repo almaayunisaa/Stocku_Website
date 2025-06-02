@@ -3,8 +3,8 @@ const mysql = require('mysql2');
 // Membuat koneksi ke database
 const connection = 
 mysql.createConnection({
-    host:'',
-    user:'',
+    host:'localhost',
+    user:'root',
     password:'',
     database:'stocku'
 })

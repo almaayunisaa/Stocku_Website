@@ -1,9 +1,3 @@
-/**
- * Event listener untuk tombol login.
- * Mengirim permintaan ke server untuk memverifikasi kredensial pengguna dan menyimpan token autentikasi ke `localStorage`.
- * Jika login berhasil, pengguna diarahkan ke halaman `loading.html`.
- * Jika gagal, menampilkan notifikasi kesalahan.
- */
 document.getElementById('loginButton').addEventListener('click', async function() {
     const username = document.getElementById('username').value;
     const password = document.getElementById('password').value;
@@ -49,10 +43,7 @@ document.getElementById('loginButton').addEventListener('click', async function(
     }
 });
 
-/**
- * Event listener untuk menutup notifikasi kesalahan.
- * Menyembunyikan elemen notifikasi ketika tombol tutup diklik.
- */
+// Event listener to hide the notification when the close button is clicked
 document.getElementById('closeNotification').addEventListener('click', function() {
     document.getElementById('notification').style.display = 'none'; // Hide notification
 });
