@@ -282,7 +282,7 @@ const getProduct_ID = async (req, res) => {
 };
 
 /**
- * Mengurutkan produk berdasarkan harga (ascending).
+ * Mengurutkan produk berdasarkan nama (ascending).
  * @param {Object} req - Objek request dari client.
  * @param {Object} res - Objek response untuk mengirimkan hasil operasi.
  */
