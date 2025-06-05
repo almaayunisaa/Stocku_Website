@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login Page</title>
+    <link rel="stylesheet" href="login.css">
+</head>
+<body>
+    <div class="container">
+        <div class="image-section">
+            <img src="image/gambar login 1.svg" alt="Warehouse Image">
+        </div>
+        <div class="login-section">
+            <h1>MASUK</h1>
+            <div class="icon">
+                <img src="image/Icon Akun login.svg" alt="profil">
+            </div>
+            <form id="loginForm">
+                <div class="input-group">
+                    <label for="username">Username</label>
+                    <input type="text" id="username" name="username" placeholder="Username">
+                </div>
+                <div class="input-group">
+                    <label for="password">Kata Sandi</label>
+                    <input type="password" id="password" name="password" placeholder="Kata Sandi">
+                </div>
+                <p id="error-message" class="error-message"></p>
+                <div class="footer">
+                    <p class="kedaftar">Tidak punya akun? <a href="sign up.html">Daftar</a></p>
+                </div>
+                <button type="button" id="loginButton">Masuk</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Notifikasi error -->
+    <div id="notification" class="notification" style="display: none;">
+        <button id="closeNotification" class="close-button">
+            <img id="notificationIcon" src="" alt="notification icon" width="30px" height="30px">
+        </button>
+    </div>
+
+    <script src="login.js"></script>
+</body>
+</html>

@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>add product</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="add product.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container-fluid">
+        <div class="row flex-nowrap">
+            <!-- Sidebar -->
+            <div class="col-12 col-md-2 col-lg-2 sidebar bg-orange text-white p-4">
+                <div class="d-flex align-items-center mb-4 logo-container">
+                    <img src="image/logo Stocku.svg" alt="StocKu Logo" class="logo-image me-2">
+                    <h3 class="m-0">StocKu</h3>
+                </div>
+                
+                
+                <ul class="nav flex-column">
+                    <li class="nav-item mb-3">
+                        <a class="nav-link text-white d-flex align-items-center" href="home.html">
+                            <img src="image/dasbor-btn-off.svg">
+                            <span class="indicator"></span>
+                            <span class="teks-off">Dasbor</span>
+                        </a>
+                    </li>
+                    <li class="nav-item mb-3">
+                        <a class="nav-link active text-white d-flex align-items-center" href="category.html">
+                            <img src="image/product-btn-on.svg">
+                            <span class="indicator"></span>
+                            <span class="teks">Kategori</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-white d-flex align-items-center" href="report.html">
+                            <img src="image/report.svg" >
+                            <span class="indicator"></span>
+                            <span class="teks-off">Laporan</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="col p-4">
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <h2 class="dashboard-title">Tambah Produk</h2>
+                    <div class="d-flex align-items-center">
+                        <span id="user-teks" class="admin-text me-2">ADMIN</span>
+                        <div class="icon-container">
+                            <img src="image/admin icon .svg" alt="Admin Icon" class="admin-icon">
+                        </div>
+                    </div>
+                </div>
+            
+                <hr class="header-line">
+                
+                 <!-- Product Form -->
+                 <form>
+                    <div class="row mb-3">
+                        <div class="col mb-3">
+                            <label for="productName" class="form-label">Produk</label>
+                            <input type="text" class="form-control" id="productName" placeholder="Masukkan produk...">
+                        </div>
+                        <div class="col">
+                            <label for="productCode" class="form-label">Kode</label>
+                            <input type="text" class="form-control" id="productCode" placeholder="Masukkan code...">
+                        </div>
+                        <div class="col">
+                            <label for="productStock" class="form-label">Stok</label>
+                            <div class="input-group stock-input-group">
+                                <button type="button" class="btn btn-min-stock">
+                                    <img src="image/min s icon.svg" alt="Min Icon" class="icon-min">
+                                </button>
+                        
+                                <input type="number" class="form-control text-center" id="productStock" value="0" min="0">
+                        
+                                <button type="button" class="btn btn-plus-stock">
+                                    <img src="image/plus s icon.svg" alt="Plus Icon" class="icon-plus">
+                                </button>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <label for="namaCat" class="form-label">Kategori</label>
+                            <select class="form-select" id="namaCat">
+                                <option value="">Loading kategori...</option>
+                            </select>
+                        </div>
+
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="productPrice" class="form-label">Harga</label>
+                        <input type="number" class="form-control" id="productPrice" placeholder="Masukkan harga...">
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="productDescription" class="form-label">Deskripsi</label>
+                        <textarea class="form-control" id="productDescription" rows="3" placeholder="Masukkan deskripsi..."></textarea>
+                    </div>
+                </form>
+                <div class="form-buttons">
+                    <button id="button_batal" type="button" class="btn btn-secondary">Batal</button>
+                    <button id="button_simpan" type="submit" class="btn btn-primary">Simpan</button>
+                </div>
+                <div id="not-found-alert" class="not-found-alert d-none">
+                    <img id="not-found-icon" src="" alt="Not Found Icon" width="30" height="30">
+                    <button type="button" class="btn-close" id="close-alert-btn" aria-label="Close"></button>
+                </div>
+
+               <!-- Notifikasi -->
+                <div id="notification" class="notification" style="display: none;">
+                    <button id="closeNotification" class="close-button">
+                        <img id="notificationIcon" src="" alt="notification icon" width="30px" height="30px">
+                    </button>
+                </div>
+
+                 <!--Pop Up Email-->
+                <div id="PopUpUbahEmail" class="popup-modal">
+                    <div class="popup-content">
+                        <label id="teks-email" for="Email">Email</label>
+                        <input type="text" id="email-text" placeholder="Masukkan email baru..."> 
+                        <div class="button-container">
+                            <button id="btn_simpan" class="btn btn-primary"></button>
+                            <button id="btn_batal" class="btn btn-secondary"></button>
+                        </div>
+                    </div>
+                </div>
+
+
+    <script src="add product.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.10.5/font/bootstrap-icons.min.css">
+</body>
+</html>

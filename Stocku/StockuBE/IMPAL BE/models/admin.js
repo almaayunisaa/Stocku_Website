@@ -1,58 +1,32 @@
-const db = require('../config/db');
+const { knex } = require('../config/db');
 
 class Admin {
     static create(username, email, password) {
-        const query = 'INSERT INTO Administrator (username, pass, email) VALUES (?, ?, ?)';
-        return new Promise((resolve, reject) => {
-            db.query(query, [username, password, email], (err, results) => {
-                if (err) {
-                    reject(err);
-                } else {
-                    resolve(results);
-                }
-            });
+        return knex('Administrator').insert({
+            username: username,
+            pass: password,
+            email: email
         });
     }
 
     static findUser(username) {
-        const query = 'SELECT * FROM Administrator WHERE username = ?';
-        return new Promise((resolve, reject) => {
-            db.query(query, [username], (err, results) => {
-                if (err) {
-                    reject(err);
-                } else {
-                    resolve(results);
-                }
-            });
-        });
+        return knex('Administrator')
+            .where({ username: username })
+            .select('*');
     }
 
     static editEmail(username, email) {
-        const query = 'UPDATE Administrator SET email = ? WHERE username = ?';
-        return new Promise((resolve, reject) => {
-            db.query(query, [email, username], (err, results) => {
-                if (err) {
-                    reject(err);
-                } else {
-                    resolve(results);
-                }
-            });
-        });
+        return knex('Administrator')
+            .where({ username: username })
+            .update({ email: email });
     }
 
     static getEmail(username) {
         console.log(username);
-        const query = 'SELECT email FROM Administrator WHERE username = ?';
-        return new Promise((resolve, reject) => {
-            db.query(query, [username], (err, results) => {
-                if (err) {
-                    reject(err);
-                } else {
-                    resolve(results);
-                }
-            });
-        });
+        return knex('Administrator')
+            .where({ username: username })
+            .select('email');
     }
 }
 
-module.exports=Admin;
+module.exports = Admin;

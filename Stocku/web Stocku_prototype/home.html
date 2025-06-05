@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>StockKu Dashboard</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="home.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container-fluid">
+        <div class="row flex-nowrap">
+            <!-- Sidebar -->
+             <div class="col-12 col-md-2 col-lg-2 sidebar bg-orange text-white p-4">
+                <div class="d-flex align-items-center mb-4 logo-container">
+                    <img src="image/logo Stocku.svg" alt="StocKu Logo" class="logo-image me-2">
+                    <h3 class="m-0">StocKu</h3>
+                </div>
+                
+                
+                <ul class="nav flex-column">
+                    <li class="nav-item mb-3">
+                        <a class="nav-link active text-white d-flex align-items-center" href="home.html">
+                            <img src="image/dashboard icon .svg">
+                            <span class="indicator"></span>
+                            <span class="teks">Dasbor</span>
+                        </a>
+                    </li>
+                    <li class="nav-item mb-3">
+                        <a class="nav-link text-white d-flex align-items-center" href="category.html">
+                            <img src="image/Product icon.svg">
+                            <span class="indicator"></span>
+                            <span class="teks-off">Kategori</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-white d-flex align-items-center" href="report.html">
+                            <img src="image/report.svg" >
+                            <span class="indicator"></span>
+                            <span class="teks-off">Laporan</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="col p-4">
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <h2 class="dashboard-title">DASBOR</h2>
+                    <div class="d-flex align-items-center">
+                        <span id="user-teks" class="admin-text me-2">ADMIN</span>
+                        <div class="icon-container">
+                            <img src="image/admin icon .svg" alt="Admin Icon" class="admin-icon">
+                        </div>
+                    </div>
+                </div>
+            
+                <hr class="header-line">
+               
+                <div class="col">
+                    <div class="input-group">
+                        <input id="search-input" type="text" class="form-control search-input" placeholder="Cari produk...">
+                        <img id="search-btn" src="image/search icon.svg" alt="Search Icon" class="search-icon">
+                    </div>
+                    <!-- Bagian Riwayat -->
+                    <div id="main-content1" class="col-md-6 right-content ml-auto">
+                        <div class="riwayat-container">
+                            <h4 class="riwayat-title">
+                                <img class="riwayat-icon" src="image/history icon.svg" alt="Riwayat Icon">
+                                <span class="teks-riwayat">Riwayat</span>
+                            </h4>
+                            <ul id="riwayat_list" class="riwayat-list list-group-flush">
+                            </ul>
+                        </div>
+                    </div>
+                
+                    <!-- Bagian Catatan -->
+                    <div id="main-content2" class="col-md-6 right-content ml-auto">
+                        <div class="catatan-container">
+                            <h4 class="catatan-title">
+                                <img class="catatan-icon" src="image/catatan icon.svg" alt="Catatan Icon">
+                                Catatan
+                            </h4>
+                            <ul id="catatan-list" class="catatan-list list-group-flush">
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Segera Cek Stok Barang -->
+                <div id="main-content3" class="parent-container">
+                    <div class="stok-barang-container">
+                        <h4 class="stok-barang-title">
+                            <img class="warningicon" src="image/warning icon.svg" alt="Alert Icon">
+                            <span class="teks-cekstok">SEGERA CEK STOK BARANG</span>
+                        </h4>
+                        <ul id="stok-list" class="stok-list list-group-flush">
+                        </ul>
+                    </div>
+                </div>
+
+                 <!-- Bagian Aksi Produk -->
+                <div  id="main-content4" class="editing">
+                    <div class="row-buttons mb-4">
+                        <a href="add product.html">
+                            <button class="action-button">
+                                <img src="image/plus icon.svg" class="action-icon" alt="Tambah Produk">
+                                <span class="teks-tambahprod">Tambah Produk</span>
+                            </button>
+                        </a>
+                        <a id="tambah_kategori">
+                            <button class="action-button">
+                                <img src="image/tambah kategori icon.svg" class="action-icon" alt="Tambah Kategori">
+                                <span class="teks-tambahcat">Tambah Kategori</span>
+                            </button>
+                        </a>
+                    </div>
+                   
+                </div>
+
+                <!-- Notifikasi tidak ditemukan -->
+                <div id="not-found-alert" class="not-found-alert d-none">
+                    <img id="not-found-icon" src="image/icon.svg" alt="Not Found Icon" width="30" height="30">
+                    <button type="button" class="btn-close" id="close-alert-btn" aria-label="Close"></button>
+                </div>
+
+                <!-- Notifikasi error -->
+                <div id="notification" class="notification" style="display: none;">
+                    <button id="closeNotification" class="close-button">
+                        <img id="notificationIcon" src="" alt="notification icon" width="30px" height="30px">
+                    </button>
+                </div>
+
+                <!--Pop Up Email-->
+                <div id="PopUpUbahEmail" class="popup-modal">
+                    <div class="popup-content">
+                        <label id="teks-email" for="Email">Email</label>
+                        <input type="text" id="email-text" placeholder="Masukkan email baru..."> 
+                        <div class="button-container">
+                            <button id="btn_simpan" class="btn btn-primary"></button>
+                            <button id="btn_batal" class="btn btn-secondary"></button>
+                        </div>
+                    </div>
+                </div>
+
+                <!--Tabel Produk-->
+                <div id="tabel-produk" class="table-container">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th id="kolom_produk" scope="col" class="kolom">PRODUK</th>
+                                <th scope="col" class="kolom">KODE</th>
+                                <th scope="col" class="kolom">STOK</th>
+                                <th scope="col" class="kolom">HARGA</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tableBody"></tbody>
+                        
+                    </table>
+                </div>
+                <div id="not-found-alert" class="not-found-alert d-none">
+                    <img id="not-found-icon" src="image/Notif Tidak dapat menemukan barang.svg" alt="Not Found Icon" width="30" height="30">
+                    <button type="button" class="btn-close" id="close-alert-btn" aria-label="Close"></button>
+                </div>     
+                
+                <!--POP UP KOMENTAR-->
+                <div id="Pop-Komentar" class="pop-up-container">
+                    <div class="pop-up-content">
+                        <h2>Komentar</h2>
+                        <textarea id="text_komen" class="pop-up-text" placeholder="Masukkan saran /pesan..."></textarea>
+                        <div class="button-container">
+                            <button id= "btn_komentar_batal" class="btn_batal"></button>
+                            <button id= "btn_komentar_simpan" class="btn_simpan"></button>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="PopupAddCat" class="popup-modal">
+                    <div class="popup-content">
+                        <label id="kategori-teks" for="namaKategori">Nama Kategori</label>
+                        <input type="text" id="kategori-nama" placeholder="Masukkan nama kategori..."> 
+                        <div class="button-container">
+                            <button id="simpanKategori" class="btn btn-primary"></button>
+                            <button id="batalKategori" class="btn btn-secondary"></button>
+                        </div>
+                    </div>
+                </div>
+
+    <script src="home.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.10.5/font/bootstrap-icons.min.css" rel="stylesheet">
+</body>
+</html>

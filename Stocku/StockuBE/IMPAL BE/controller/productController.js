@@ -1,7 +1,5 @@
 const product = require('../models/product');
 const category = require('../models/kategori');
-const db = require('../config/db');
-const mysql = require('mysql2/promise');
 const xlsx = require('xlsx');
 const fs = require('fs'); 
 const tf = require('@tensorflow/tfjs'); 
@@ -42,11 +40,13 @@ const tambahProduk = async (req, res) => {
             return res.status(400).json({ message: "Stok dan harga harus berupa angka" });
         }
 
-        if (product.findID(id)>0) {
+        const existingProduct = await product.findID(id);
+        if (existingProduct.length > 0) {
             return res.status(400).json({ message: "ID sudah digunakan" });
         }
 
-        if (category.find(namaCat)===0) {
+        const existingCategory = await category.find(namaCat);
+        if (existingCategory.length === 0) {
             return res.status(400).json({ message: "Kategori tidak ada" });
         }
 

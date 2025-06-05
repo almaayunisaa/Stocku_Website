@@ -1,251 +1,142 @@
-const db = require('../config/db');
+const { knex } = require('../config/db');
 
 class Product {
     static create(namaCat, produk, id, stok, harga, cek, prediksi, deskripsi) {
-        const query = 'INSERT INTO product (namaCategory, Produk, ID, Stok, harga, Cek, Prediksi, deskripsi) VALUES (?, ?, ?, ?, ?, ?, ?, ?)';
-        return new Promise((resolve, reject) => {
-            db.query(query, [namaCat, produk, id, stok, harga, cek, prediksi, deskripsi], (err, results) => {
-                if (err) {
-                    reject(err);
-                } else {
-                    resolve(results);
-                }
-            });
+        return knex('product').insert({
+            namaCategory: namaCat,
+            Produk: produk,
+            ID: id,
+            Stok: stok,
+            harga: harga,
+            Cek: cek,
+            Prediksi: prediksi,
+            deskripsi: deskripsi
         });
     }
 
     static findName(namaProduk) {
-        const query = 'SELECT * FROM product WHERE Produk = ? AND deleted_at IS NULL';
-        return new Promise((resolve, reject) => {
-            db.query(query, [namaProduk], (err, results) => {
-                if (err) {
-                    reject(err);
-                } else {
-                    resolve(results);
-                }
-            });
-        });
+        return knex('product')
+            .where({ Produk: namaProduk })
+            .whereNull('deleted_at')
+            .select('*');
     }
 
     static findID(id) {
-        const query = 'SELECT * FROM product WHERE ID = ? AND deleted_at IS NULL';
-        return new Promise((resolve, reject) => {
-            db.query(query, [id], (err, results) => {
-                if (err) {
-                    reject(err);
-                } else {
-                    resolve(results);
-                }
-            });
-        });
+        return knex('product')
+            .where({ ID: id })
+            .whereNull('deleted_at')
+            .select('*');
     }
 
     static delete(id) {
-        const query = 'UPDATE product SET deleted_at = NOW() WHERE ID = ?';
-        return new Promise((resolve, reject) => {
-            db.query(query, [id], (err, results) => {
-                if (err) {
-                    reject(err);
-                } else {
-                    resolve(results);
-                }
-            });
-        });
+        return knex('product')
+            .where({ ID: id })
+            .update({ deleted_at: knex.fn.now() });
     }
 
     static editNama(id, produk) {
-        const query = 'UPDATE product SET Produk = ? WHERE ID = ? AND deleted_at IS NULL';
-        return new Promise((resolve, reject) => {
-            db.query(query, [produk, id], (err, results) => {
-                if (err) {
-                    reject(err);
-                } else {
-                    resolve(results);
-                }
-            });
-        });
+        return knex('product')
+            .where({ ID: id })
+            .whereNull('deleted_at')
+            .update({ Produk: produk });
     }
 
     static editStok(id, stok) {
-        const query = 'UPDATE product SET Stok = ? WHERE ID = ? AND deleted_at IS NULL';
-        return new Promise((resolve, reject) => {
-            db.query(query, [stok, id], (err, results) => {
-                if (err) {
-                    reject(err);
-                } else {
-                    resolve(results);
-                }
-            });
-        });
+        return knex('product')
+            .where({ ID: id })
+            .whereNull('deleted_at')
+            .update({ Stok: stok });
     }
 
     static editHarga(id, harga) {
-        const query = 'UPDATE product SET harga = ? WHERE ID = ? AND deleted_at IS NULL';
-        return new Promise((resolve, reject) => {
-            db.query(query, [harga, id], (err, results) => {
-                if (err) {
-                    reject(err);
-                } else {
-                    resolve(results);
-                }
-            });
-        });
+        return knex('product')
+            .where({ ID: id })
+            .whereNull('deleted_at')
+            .update({ harga: harga });
     }
 
     static editCek(id, cek) {
-        const query = 'UPDATE product SET Cek = ? WHERE ID = ? AND deleted_at IS NULL';
-        return new Promise((resolve, reject) => {
-            db.query(query, [cek, id], (err, results) => {
-                if (err) {
-                    reject(err);
-                } else {
-                    resolve(results);
-                }
-            });
-        });
+        return knex('product')
+            .where({ ID: id })
+            .whereNull('deleted_at')
+            .update({ Cek: cek });
     }
 
     static editPrediksi(id, prediksi) {
-        const query = 'UPDATE product SET Prediksi = ? WHERE ID = ? AND deleted_at IS NULL';
-        return new Promise((resolve, reject) => {
-            db.query(query, [prediksi, id], (err, results) => {
-                if (err) {
-                    reject(err);
-                } else {
-                    resolve(results);
-                }
-            });
-        });
+        return knex('product')
+            .where({ ID: id })
+            .whereNull('deleted_at')
+            .update({ Prediksi: prediksi });
     }
 
     static editDes(id, deskripsi) {
-        const query = 'UPDATE product SET deskripsi = ? WHERE ID = ? AND deleted_at IS NULL';
-        return new Promise((resolve, reject) => {
-            db.query(query, [deskripsi, id], (err, results) => {
-                if (err) {
-                    reject(err);
-                } else {
-                    resolve(results);
-                }
-            });
-        });
+        return knex('product')
+            .where({ ID: id })
+            .whereNull('deleted_at')
+            .update({ deskripsi: deskripsi });
     }
 
     static getTanggalHabisNStok(id) {
-        const query = 'SELECT tanggal_habis, Stok FROM oldproduct WHERE IDProduk = ? ';
-        return new Promise((resolve, reject) => {
-            db.query(query, [id], (err, results) => {
-                if (err) {
-                    reject(err);
-                } else {
-                    resolve(results);
-                }
-            });
-        });
+        return knex('oldproduct')
+            .where({ IDProduk: id })
+            .select('tanggal_habis', 'Stok');
     }
 
     static get(namaCat) {
-        const query = 'SELECT * FROM product WHERE namaCategory = ? AND deleted_at IS NULL';
-        return new Promise((resolve, reject) => {
-            db.query(query, [namaCat], (err, results) => {
-                if (err) {
-                    reject(err);
-                } else {
-                    resolve(results);
-                }
-            });
-        });
+        return knex('product')
+            .where({ namaCategory: namaCat })
+            .whereNull('deleted_at')
+            .select('*');
     }
 
-    static getWithName(namaCat) {
-        const query = 'SELECT * FROM product WHERE Produk = ? AND deleted_at IS NULL';
-        return new Promise((resolve, reject) => {
-            db.query(query, [namaCat], (err, results) => {
-                if (err) {
-                    reject(err);
-                } else {
-                    resolve(results);
-                }
-            });
-        });
+    static getWithName(namaProduk) {
+        return knex('product')
+            .where({ Produk: namaProduk })
+            .whereNull('deleted_at')
+            .select('*');
     }
 
     static getWithID(id) {
-        const query = 'SELECT * FROM product WHERE ID = ? AND deleted_at IS NULL';
-        return new Promise((resolve, reject) => {
-            db.query(query, [id], (err, results) => {
-                if (err) {
-                    reject(err);
-                } else {
-                    resolve(results);
-                }
-            });
-        });
+        return knex('product')
+            .where({ ID: id })
+            .whereNull('deleted_at')
+            .select('*');
     }
 
     static sort_asc(namaCat) {
-        const query = 'SELECT * FROM product WHERE namaCategory = ? AND deleted_at IS NULL ORDER BY Produk ASC';
-        return new Promise((resolve, reject) => {
-            db.query(query, [namaCat], (err, results) => {
-                if (err) {
-                    reject(err);
-                } else {
-                    resolve(results);
-                }
-            });
-        });
+        return knex('product')
+            .where({ namaCategory: namaCat })
+            .whereNull('deleted_at')
+            .orderBy('Produk', 'asc')
+            .select('*');
     }
 
     static sort_dsc(namaCat) {
-        const query = 'SELECT * FROM product WHERE namaCategory = ? AND deleted_at IS NULL ORDER BY Produk DESC';
-        return new Promise((resolve, reject) => {
-            db.query(query, [namaCat], (err, results) => {
-                if (err) {
-                    reject(err);
-                } else {
-                    resolve(results);
-                }
-            });
-        });
+        return knex('product')
+            .where({ namaCategory: namaCat })
+            .whereNull('deleted_at')
+            .orderBy('Produk', 'desc')
+            .select('*');
     }
 
     static getData() {
-        const query = 'SELECT * FROM product WHERE deleted_at IS NULL';
-        return new Promise((resolve, reject) => {
-            db.query(query, (err, results) => {
-                if (err) {
-                    reject(err);
-                } else {
-                    resolve(results);
-                }
-            });
-        });
+        return knex('product')
+            .whereNull('deleted_at')
+            .select('*');
     }
 
     static setStokOld(ID, Stok, Harga, IDProduk, tanggal_habis) {
-        const query = 'INSERT INTO oldproduct (ID, Stok, Harga, IDProduk, tanggal_habis) VALUES (?, ?, ?, ?, ?)';
-        return new Promise((resolve, reject) => {
-            db.query(query, [ID, Stok, Harga, IDProduk, tanggal_habis], (err, results) => {
-                if (err) {
-                    reject(err);
-                } else {
-                    resolve(results);
-                }
-            });
+        return knex('oldproduct').insert({
+            ID: ID,
+            Stok: Stok,
+            Harga: Harga,
+            IDProduk: IDProduk,
+            tanggal_habis: tanggal_habis
         });
     }
 
     static getDataOld() {
-        const query = 'SELECT * FROM oldproduct';
-        return new Promise((resolve, reject) => {
-            db.query(query, (err, results) => {
-                if (err) {
-                    reject(err);
-                } else {
-                    resolve(results);
-                }
-            });
-        });
+        return knex('oldproduct').select('*');
     }
 }
 

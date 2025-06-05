@@ -48,9 +48,10 @@ const editCategory = async (req, res) => {
 
         const cat = await kategori.edit(namaKategori, editNama);
 
-        if (cat.affectedRows === 0) {
-            return res.status(404).json({message : 'Kategori invalid'});
+        if (!cat || cat === 0) {
+            return res.status(404).json({ message: 'Kategori invalid' });
         }
+
 
         res.status(200).json({
             message: "Yey Kategori Berhasil diubah!",
@@ -65,10 +66,6 @@ const editCategory = async (req, res) => {
 const hapusKategori = async (req, res) => {
     try {
         const {namaKategori} = req.params;
-
-        if (!(kategori.find(namaKategori))) {
-            return res.status(404).json({ message: "Kategori tidak ditemukan" });
-        }
 
         const cariCat = await kategori.find(namaKategori);
 

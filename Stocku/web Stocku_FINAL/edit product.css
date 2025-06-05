@@ -1,0 +1,525 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
+/* Global Styling */
+body {
+    background-color: #f8f9fa;
+    font-family: 'Poppins', sans-serif;
+}
+
+/* Sidebar Styling */
+.sidebar {
+    background-color: #EA8D45;
+    min-height: 100vh;
+}
+
+.nav-link {
+    font-size: 18px;
+    margin-bottom: 10px;
+    position: relative;
+}
+/* Container Logo */
+.logo-container {
+    display: flex;
+    align-items: center;
+    justify-content: start;
+}
+
+/* Styling untuk Logo Image */
+.logo-image {
+    width: 30px;  /* Atur ukuran logo */
+    height: 30px; /* Sama seperti lingkaran sebelumnya */
+    object-fit: contain; /* Agar gambar tidak terpotong */
+}
+
+
+/* Styling Teks StocKu */
+h3 {
+    color: white;
+    font-weight: bold;
+    margin: 0; /* Hilangkan margin agar rapi */
+}
+
+/* Indikator Kecil di Kiri */
+.indicator {
+    width: 10px;
+    height: 30px;
+    background-color: transparent;
+    border-radius: 3px;
+    position: absolute;
+    left: -25px; /* Memaksa menempel sedikit ke luar sidebar */
+    top: 50%; /* Posisikan indikator di tengah secara vertikal */
+    transform: translateY(-50%);
+    transition: background-color 0.3s;
+}
+
+/* Indikator untuk Menu Aktif */
+.nav-link.active .indicator {
+    background-color: #CBF3F0; /* Warna sesuai permintaan */
+}
+
+/* Highlighted Indicator */
+.nav-link.active .indicator {
+    background-color: #CBF3F0;
+}
+
+/* Main Content Styling */
+.header-content {
+    background-color: white; /* Latar belakang putih untuk header */
+    padding: 10px 20px; /* Tambahkan padding untuk header */
+    border-bottom: 2px solid #ff9900; /* Garis pemisah di bawah header */
+}
+
+.dashboard-title {
+    color: #CBF3F0; /* Warna teks Dashboard */
+    font-weight: bold;
+}
+
+.admin-text {
+    color: #B9B9B9; /* Warna teks Admin */
+    font-weight: bold;
+    font-size: 16px;
+    margin-right: 40px !important;
+}
+
+.icon-container {
+    width: 40px;
+    height: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 5px;
+    margin-right: 30px;
+}
+
+.admin-icon {
+    width: 50px;
+    height: 50px;
+}
+
+/* Horizontal Line Styling */
+.header-line {
+    border: none;
+    border-top: 2px solid #ff9900; /* Warna garis */
+    width: 100%;
+    margin: 20px 0; /* Jarak atas dan bawah garis */
+}
+
+.search-input {
+    border: 2px solid #ff9900; /* Warna border oranye */
+    box-sizing: border-box;
+    border-radius: 50px !important;
+    padding: 10px 40px; /* Padding untuk memberi ruang pada teks dan ikon */
+    outline: none; /* Menghapus outline default */
+    font-size: 16px; /* Ukuran font yang sesuai */
+    width: 50px; /* Mengatur lebar menjadi setengah dari konten utama */
+    margin-right: 700px;
+    
+}
+
+.search-input::placeholder {
+    color: #b0b0b0; /* Warna placeholder */
+}
+
+.search-icon {
+    position: absolute; /* Menempatkan ikon secara absolut */
+    right: 730px; /* Jarak dari kanan */
+    top: 50%; /* Posisikan di tengah vertikal */
+    transform: translateY(-50%); /* Memastikan ikon berada di tengah */
+    width: 20px; /* Ukuran ikon */
+    height: 20px; /* Ukuran ikon */
+}
+
+.d-none {
+    display: none;
+}
+
+.not-found-alert {
+    position: fixed; /* Tetapkan posisi tetap agar tidak memengaruhi layout halaman */
+    top: -80px; /* Sesuaikan posisi */
+    right: -35px;
+    z-index: 1000; /* Buat notifikasi di atas elemen lain */
+    display: flex;
+    align-items: center;
+}
+
+/* Dropdown Styling */
+.dropdown-custom {
+    position: absolute;
+    top: 80px; /* Sesuaikan dengan posisi */
+    right: 30px;
+    background-color: white;
+    border: 1px solid #EA8D45;
+    border-radius: 10px;
+    padding: 15px;
+    min-width: 200px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    font-family: 'Arial', sans-serif;
+}
+
+
+/* Header dalam Dropdown */
+.dropdown-header {
+    margin-bottom: 10px;
+    text-align: center;
+}
+
+.email-label {
+    font-weight: bold;
+    color: #A4D0C4;
+}
+
+.email-address {
+    display: block;
+    color: gray;
+    margin-top: 5px;
+}
+
+/* Item Dropdown */
+.dropdown-item {
+    display: flex;
+    align-items: center;
+    margin-top: 10px;
+    font-size: 16px;
+    color: gray;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.dropdown-item:hover {
+    background-color: #f1f1f1;
+    border-radius: 5px;
+    padding: 5px;
+}
+
+/* Ikon dalam Dropdown */
+.dropdown-icon {
+    width: 20px;
+    height: 20px;
+    margin-right: 10px;
+}
+
+/* Form Styling */
+form {
+    background-color: #ffffff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+    margin-top: 30px;
+}
+
+/* Label Styling */
+form .form-label {
+    font-weight: bold;
+    color: #EA8D45;
+}
+
+/* Input Fields Styling */
+form .form-control {
+    border: 2px solid #EA8D45;
+    border-radius: 25px;
+    padding: 10px;
+    font-size: 16px;
+}
+
+form .form-control:focus {
+    border-color: #CBF3F0;
+    box-shadow: none;
+}
+
+/* Textarea Styling */
+form textarea.form-control {
+    resize: none;
+    height: 100px; /* Sesuaikan tinggi textarea */
+}
+/* Styling untuk Tombol Simpan dan Batal */
+.form-buttons {
+    display: flex;
+    gap: 15px; /* Jarak antara tombol */
+    margin-top: 20px;
+    justify-content: end;
+}
+
+#button_batal, #button_simpan {
+    width: 120px;
+    height: 40px;
+    background-color: rgba(255, 159, 28, 0.5) !important;
+    border: none;
+    color: white;
+    font-size: 16px;
+    border-radius: 25px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.3s, box-shadow 0.3s;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.btn-hapus{
+    width: 200px;
+    height: 40px;
+    background-color: rgba(255, 159, 28, 0.5) !important;
+    border: none;
+    color: white;
+    font-size: 16px;
+    border-radius: 25px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.3s, box-shadow 0.3s;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+}
+.btn-hapus:hover {
+    background-color: #ff9f1c !important;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+    color: white;
+}
+
+#button_simpan:hover{
+    background-color: #ff9f1c !important;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+#button_batal {
+    background-color: #F0F0F0 !important;
+    color: #333 !important;
+}
+
+#button_batal:hover {
+    background-color: #ff9f1c !important;
+}
+
+#productStock {
+    max-width: 100px; /* Sesuaikan lebar input stok */
+}
+
+/* Styling untuk Group Input Stok */
+.stock-input-group {
+    display: flex;
+    align-items: center;
+    border: 2px solid #EA8D45;
+    border-radius: 25px;
+    overflow: hidden;
+    max-width: 200px;
+}
+
+/* Styling Tombol di Dalam Input */
+.stock-input-group .btn {
+    border: none;
+    padding: 5px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 25px;
+    height: 25px;
+    margin-left: 23px;
+}
+
+/* Styling untuk Ikon */
+.stock-input-group .icon-min, 
+.stock-input-group .icon-plus {
+    width: 24px;
+    height: 24px;
+}
+
+/* Styling untuk Input */
+.stock-input-group input {
+    border: none;
+    text-align: center;
+    font-size: 18px;
+    width: 80px;
+    outline: none;
+}
+
+/* Menghapus Spinner pada Input Number */
+input[type=number]::-webkit-outer-spin-button,
+input[type=number]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+input[type=number] {
+    -moz-appearance: textfield;
+}
+
+.notification {
+    position: fixed;
+    top: -50px;
+    right: 5px;
+    background: none;
+    border: none;
+    padding: 0;
+    z-index: 1000;
+}
+
+.close-button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+}
+
+.close-button img {
+    width: 350px;
+    height: 200px;
+}
+
+.nav-link .teks {
+    margin-left: 3px;
+    font-size: 17px;
+    font-weight: 500;
+}
+
+.nav-link .teks-off {
+    margin-left: 3px;
+    font-size: 17px;
+    font-weight: 500;
+    color: #E2DDDD;
+}
+
+#teks-email {
+    font-family: 'Poppins', sans-serif;
+    font-weight: bold;
+    font-size: 23px;
+    color: #EA8D45;
+}
+
+.popup-modal {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 698px;
+    height: 259px;
+    justify-content: center;
+    align-items: center;
+    background: url('image/bgcat.svg') no-repeat center center;
+}
+
+.popup-content {
+    font-family: 'Poppins', sans-serif;
+    background-size: cover;
+    padding: 30px 20px;
+    border-radius: 8px;
+    text-align: center;
+    width: 90%;
+    max-width: 400px;
+}
+
+label {
+    font-family: 'Poppins', sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    color: #333;
+    display: block;
+    margin-bottom: 8px;
+}
+
+#btn_simpan {
+    background: url('image/simpanbtn.svg') no-repeat center center;
+    background-size: contain;  
+    border: none;
+    padding: 10px;
+    width: 100px; 
+    height: 40px;
+    margin: 10px 5px;
+    cursor: pointer;
+}
+
+#btn_batal {
+    background: url('image/batalbtn.svg') no-repeat center center;
+    background-size: contain;  
+    border: none;
+    padding: 10px;
+    width: 100px; 
+    height: 40px;
+    margin: 10px 5px;
+    cursor: pointer;
+}
+
+
+#email-text {
+    width: 100%;
+    height: 43px;
+    padding: 10px;
+    border-radius: 10px;
+    border: 1px solid #EA8D45 !important;
+    font-family: 'Poppins', sans-serif;
+    font-size: 16px;
+    box-sizing: border-box;
+    margin-bottom: 20px;
+}
+
+#email-text::placeholder {
+    color: #C6C6C6;
+    font-size: 15px;
+    font-family: 'Poppins', sans-serif;
+    text-align: center;
+}
+
+/* CSS Konfirmasi Delete */
+.popup-modal-konfirm {
+    display: flex;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 700px;
+    height: 300px;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    background: url('image/bg-notif-konfirm.svg') no-repeat center center;
+}
+
+.popup-content-konfirm {
+    font-family: 'Poppins', sans-serif;
+    background-size: cover;
+    padding: 30px 20px;
+    border-radius: 8px;
+    text-align: center;
+    width: 90%;
+    max-width: 400px;
+    position: fixed; 
+    top: 50%;
+    left: 50%;
+    transform: translate(-40%, -50%);
+}
+
+#konfirm-teks {
+    font-family: 'Poppins', sans-serif;
+    font-weight: 500;
+    font-size: 20px;
+    color: #EA8D45;
+}
+
+#konfirm-teks .hapus {
+    color: #999999;
+    font-weight: bold;
+}
+
+#konfirm-teks br {
+    margin-top: 10px;
+}
+
+#simpanKonfirm {
+    background: url('image/btn-ya.svg') no-repeat center center;
+    background-size: contain;  
+    border: none;
+    padding: 10px;
+    width: 90px; 
+    height: 25px;
+    margin: 10px 5px;
+    cursor: pointer;
+}
+
+#batalKonfirm {
+    background: url('image/btn-tidak.svg') no-repeat center center;
+    background-size: contain;  
+    border: none;
+    padding: 10px;
+    width: 90px; 
+    height: 25px;
+    margin: 10px 5px;
+    cursor: pointer;
+}
